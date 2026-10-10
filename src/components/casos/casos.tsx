@@ -5,7 +5,8 @@ import { DispositivosA7 } from "@/components/maquetas/DispositivosA7";
 import { TableroForge } from "@/components/maquetas/Forge";
 import { PantallaForge } from "@/components/maquetas/ForgeEscritorio";
 import { TelefonoGlobalFit } from "@/components/maquetas/GlobalFit";
-import { AsistenciaGF, EntrenoGF, ReservarGF } from "@/components/maquetas/GlobalFitMas";
+import { AsistenciaGF, EntrenoGF, PagosGF, ReservarGF } from "@/components/maquetas/GlobalFitMas";
+import type { IconoFuncion } from "./IconosFuncion";
 
 export type Slug = "global-fit" | "a7-sports" | "forge-studio";
 
@@ -18,7 +19,12 @@ export type Caso = {
   logo: string;
   titular: string;
   bajada: string;
-  datos: [string, string][];
+  /** Lo que muestra que la app está viva: números reales de producción. */
+  numeros: Numero[];
+  /** De dónde y cuándo salen los números. */
+  numerosAl: string;
+  /** Con qué está hecha, en una línea. */
+  hechoCon: string;
   /** La decisión que se destaca en el recorrido del inicio. */
   decision: string;
   decisionDetalle: string;
@@ -31,7 +37,10 @@ export type Caso = {
 };
 
 export type Ancho = "telefono" | "ventana" | "dispositivos";
-export type Pantalla = { titulo: string; texto: string; maqueta: ReactNode; ancho: Ancho };
+export type Pantalla = { titulo: string; texto: string; icono: IconoFuncion; maqueta: ReactNode; ancho: Ancho };
+
+/** Un número de uso real, sacado de la base de producción de cada app. */
+export type Numero = { valor: string; etiqueta: string };
 
 /** El ancho máximo de cada tipo de maqueta, en clases. */
 export const MAX_ANCHO: Record<Ancho, string> = {
@@ -53,13 +62,14 @@ export const CASOS: Record<Slug, Caso> = {
     titular: "Del cuaderno al celular.",
     bajada:
       "La app de un gimnasio de Mendoza. Los socios reservan desde el celular, los profesores toman asistencia en la clase y el dueño maneja socios, pagos y horarios desde un panel.",
-    datos: [
-      ["Para", "Global Fit, un gimnasio de Mendoza"],
-      ["Mi rol", "De punta a punta: relevamiento con el dueño, diseño, desarrollo, deploy y soporte"],
-      ["En producción", "Desde el 12/09/2026, en globalfit.ar"],
-      ["Con", "Next.js, TypeScript, PostgreSQL, Prisma, Auth.js, Tailwind, Vercel y Sentry"],
-      ["Pruebas", "Más de 500 casos automáticos, con concurrencia contra un Postgres real"],
+    numeros: [
+      { valor: "28", etiqueta: "socios activos" },
+      { valor: "48", etiqueta: "clases por semana" },
+      { valor: "56", etiqueta: "reservas desde el 16/09" },
+      { valor: "12/09", etiqueta: "en producción desde" },
     ],
+    numerosAl: "Datos reales de producción al 10/10/2026",
+    hechoCon: "Next.js, TypeScript, PostgreSQL y Prisma, en Vercel",
     decision: "Los datos de salud no son un campo más.",
     decisionDetalle:
       "Consentimiento antes de guardar nada, cada profesor ve solo a sus alumnos y al año de la baja se borran solos, como pide la Ley 25.326.",
@@ -68,26 +78,37 @@ export const CASOS: Record<Slug, Caso> = {
     galeria: [
       {
         titulo: "Reservar una clase",
+        icono: "reservar",
         texto: "El socio elige el día y la clase, y ve cuántos lugares quedan. El cupo se respeta aunque dos reserven en el mismo segundo.",
         maqueta: <ReservarGF />,
         ancho: "telefono",
       },
       {
         titulo: "Su semana, de un vistazo",
+        icono: "semana",
         texto: "La próxima clase, cuántas lleva en la semana y si la cuota está por vencer.",
         maqueta: <TelefonoGlobalFit />,
         ancho: "telefono",
       },
       {
         titulo: "Tomar asistencia",
+        icono: "asistencia",
         texto: "El profesor ve solo a sus alumnos, los marca en la clase, y sabe antes de empezar quién reportó dolor.",
         maqueta: <AsistenciaGF />,
         ancho: "telefono",
       },
       {
         titulo: "Cargar el entrenamiento",
+        icono: "entreno",
         texto: "El socio anota qué trabajó y ve su racha. Es un diario personal: no lo ven ni el profe ni el dueño.",
         maqueta: <EntrenoGF />,
+        ancho: "telefono",
+      },
+      {
+        titulo: "Confirmar los pagos",
+        icono: "pagos",
+        texto: "El socio avisa que transfirió y el dueño lo confirma de un toque. Sabe quién está al día sin cruzar mensajes.",
+        maqueta: <PagosGF />,
         ancho: "telefono",
       },
     ],
@@ -101,13 +122,14 @@ export const CASOS: Record<Slug, Caso> = {
     titular: "De la planilla a la caja.",
     bajada:
       "Ventas, stock, caja y una tienda pública para un emprendimiento familiar de pádel. La usan cinco personas desde el celular, en el local y en los eventos.",
-    datos: [
-      ["Para", "A7 Sports, el emprendimiento de pádel de mi familia"],
-      ["Mi rol", "De punta a punta, y además soy uno de los que vende"],
-      ["En producción", "Desde el 04/10/2026; antes, sobre una planilla de Google"],
-      ["Con", "Next.js, TypeScript, PostgreSQL, Prisma, Auth.js, Vitest, Vercel y Sentry"],
-      ["Pruebas", "Más de 150 casos automáticos"],
+    // Pendiente: los números reales de A7 (falta permiso para leer su base).
+    numeros: [
+      { valor: "5", etiqueta: "personas vendiendo" },
+      { valor: "62", etiqueta: "productos en la tienda" },
+      { valor: "04/10", etiqueta: "en producción desde" },
     ],
+    numerosAl: "Datos reales de producción al 10/10/2026",
+    hechoCon: "Next.js, TypeScript, PostgreSQL y Prisma, en Vercel",
     decision: "Tocar dos veces −10% sigue siendo −10%.",
     decisionDetalle:
       "El descuento se calcula siempre contra el precio de lista y nunca contra el de pantalla. El precio que se cobró queda guardado.",
@@ -116,26 +138,37 @@ export const CASOS: Record<Slug, Caso> = {
     galeria: [
       {
         titulo: "Vender en la caja",
+        icono: "caja",
         texto: "Desde el celular, en el local o en un evento: las líneas entran, la promo se elige y el total se cuenta solo.",
         maqueta: <CajaA7 />,
         ancho: "telefono",
       },
       {
         titulo: "Manejar el stock",
+        icono: "stock",
         texto: "Cada venta descuenta al momento. Lo que se está por terminar se marca antes de que falte.",
         maqueta: <GestionA7 vista="stock" />,
         ancho: "ventana",
       },
       {
         titulo: "Cargar las compras",
+        icono: "compras",
         texto: "Claude lee el PDF del proveedor y devuelve un archivo; la app lo revisa antes de cargarlo y recalcula el costo.",
         maqueta: <GestionA7 vista="compras" />,
         ancho: "ventana",
       },
       {
         titulo: "La tienda para los clientes",
+        icono: "tienda",
         texto: "Una vidriera pública que se filtra por categoría y talle, y termina en una consulta por WhatsApp.",
         maqueta: <TiendaA7 />,
+        ancho: "ventana",
+      },
+      {
+        titulo: "Ver los números",
+        icono: "numeros",
+        texto: "Lo que se vendió en el mes, por semana y cuánto salió de los eventos, sin abrir una planilla.",
+        maqueta: <GestionA7 vista="resumen" />,
         ancho: "ventana",
       },
     ],
@@ -149,13 +182,14 @@ export const CASOS: Record<Slug, Caso> = {
     titular: "Del Trello a un tablero con revisión humana.",
     bajada:
       "El tablero donde trabaja mi equipo, con un agente que corre en la máquina de cada desarrollador y un plugin para trabajar con IA sin perder el control.",
-    datos: [
-      ["Para", "El equipo de ADJ Solutions"],
-      ["Mi rol", "Lo diseñé, lo construí y lo uso todos los días"],
-      ["En uso", "Desde el 09/09/2026, para todos los proyectos"],
-      ["Con", "Next.js, TypeScript, PostgreSQL, Prisma, Auth.js, un agente en Node y un plugin de Claude Code"],
-      ["Pruebas", "Más de 150 casos automáticos, incluidos los candados del plugin"],
+    numeros: [
+      { valor: "7", etiqueta: "proyectos" },
+      { valor: "321", etiqueta: "tareas en el tablero" },
+      { valor: "219", etiqueta: "llegaron a producción" },
+      { valor: "09/09", etiqueta: "en uso desde" },
     ],
+    numerosAl: "Datos reales de producción al 10/10/2026",
+    hechoCon: "Next.js, TypeScript, PostgreSQL, un agente en Node y un plugin de Claude Code",
     decision: "Por la red viaja un verbo, nunca un comando.",
     decisionDetalle:
       "Qué significa cada pedido lo decide la configuración local. Aunque el servidor cayera en malas manos, no puede hacer que tu compu ejecute otra cosa.",
@@ -164,24 +198,28 @@ export const CASOS: Record<Slug, Caso> = {
     galeria: [
       {
         titulo: "Lo que te espera hoy",
+        icono: "inicio",
         texto: "Al entrar, el Inicio dice qué tarjetas esperan tu revisión, qué tenés en curso y si tu agente está reportando.",
         maqueta: <PantallaForge vista="inicio" />,
         ancho: "ventana",
       },
       {
         titulo: "El tablero",
+        icono: "tablero",
         texto: "Seis columnas, de Backlog a En producción. Las tarjetas avanzan con el trabajo y el magenta marca lo que espera a una persona.",
         maqueta: <PantallaForge vista="tablero" />,
         ancho: "ventana",
       },
       {
         titulo: "La revisión",
+        icono: "revision",
         texto: "Lint, tipos, pruebas y build antes de entregar, y la aprobación de una persona antes de llegar a producción.",
         maqueta: <TableroForge />,
         ancho: "ventana",
       },
       {
         titulo: "El calendario",
+        icono: "calendario",
         texto: "Las salidas y las fechas de todos los proyectos en un mes, cada uno con su color.",
         maqueta: <PantallaForge vista="calendario" />,
         ancho: "ventana",

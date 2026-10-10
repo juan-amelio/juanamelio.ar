@@ -90,12 +90,12 @@ export function Recorrido() {
                   <p className="text-xl font-bold">{caso.decision}</p>
                   <p className="mt-2 max-w-[52ch] leading-normal text-(--caso-texto-medio)">{caso.decisionDetalle}</p>
                 </div>
-                <dl className="mt-8 flex flex-wrap gap-x-10 gap-y-5 text-[15px]">
-                  {/* Desde cuándo y con qué: los dos datos que se leen de un vistazo. */}
-                  {caso.datos.slice(2, 4).map(([etiqueta, valor]) => (
-                    <div key={etiqueta} className="max-w-[30ch]">
-                      <dt className="text-(--caso-suave)">{etiqueta}</dt>
-                      <dd className="mt-1 text-[17px] leading-snug font-semibold">{valor}</dd>
+                <dl className="mt-8 flex flex-wrap gap-x-10 gap-y-5">
+                  {/* Los números de uso real: que se vea que la app está viva. */}
+                  {caso.numeros.slice(0, 3).map((n) => (
+                    <div key={n.etiqueta}>
+                      <dd className="text-[34px] leading-none font-extrabold tabular-nums">{n.valor}</dd>
+                      <dt className="mt-1.5 text-[14px] text-(--caso-suave)">{n.etiqueta}</dt>
                     </div>
                   ))}
                 </dl>

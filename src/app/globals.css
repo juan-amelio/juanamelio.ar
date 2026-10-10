@@ -94,6 +94,17 @@ body {
   font-family: var(--font-bricolage), system-ui, sans-serif;
 }
 
+/* Con la barra fija, un ancla no puede quedar tapada por ella. */
+[id] {
+  scroll-margin-top: 80px;
+}
+
+/* La barra no participa de la transición entre páginas: queda quieta arriba. */
+::view-transition-group(encabezado) {
+  animation: none;
+  z-index: 20;
+}
+
 :focus-visible {
   outline: 3px solid currentColor;
   outline-offset: 4px;
@@ -274,7 +285,18 @@ body {
   transition: filter 0.3s ease, transform 0.3s ease;
 }
 .atras:hover,
-.atras:focus-visible {
+.atras/* Con la barra fija, un ancla no puede quedar tapada por ella. */
+[id] {
+  scroll-margin-top: 80px;
+}
+
+/* La barra no participa de la transición entre páginas: queda quieta arriba. */
+::view-transition-group(encabezado) {
+  animation: none;
+  z-index: 20;
+}
+
+:focus-visible {
   filter: brightness(0.9);
   transform: translateY(-10px);
 }

@@ -189,3 +189,55 @@ export function EntrenoGF({ activo = true }: { activo?: boolean }) {
     </Telefono>
   );
 }
+
+const PAGOS = [
+  { n: "Martina R.", plan: "3 días" },
+  { n: "Diego P.", plan: "Libre" },
+  { n: "Carla M.", plan: "3 días" },
+  { n: "Tomás G.", plan: "Libre" },
+];
+
+export function PagosGF({ activo = true }: { activo?: boolean }) {
+  const { ref, paso } = useCiclo(6, 1000, activo);
+  const confirmados = Math.max(0, Math.min(paso - 1, PAGOS.length));
+  return (
+    <Telefono refCiclo={ref} etiqueta="Global Fit: el dueño confirma los pagos que avisaron los socios, con datos de demo">
+      <div>
+        <p className="text-[13px] text-gf-suave">Panel del gimnasio</p>
+        <p className="text-[22px] font-bold">Pagos de octubre</p>
+      </div>
+      <div className="grid grid-cols-2 gap-2.5">
+        <div className="rounded-2xl bg-gf-tarjeta p-3.5">
+          <p className="text-[26px] leading-none font-extrabold tabular-nums">{PAGOS.length - confirmados}</p>
+          <p className="mt-1 text-[11px] text-gf-suave">por confirmar</p>
+        </div>
+        <div className="rounded-2xl bg-linear-160 from-[#1d3132] to-[#14191a] p-3.5 shadow-[0_0_0_1px_rgba(0,181,181,.25)]">
+          <p className="text-[26px] leading-none font-extrabold text-[#e9fffe] tabular-nums">{22 + confirmados}</p>
+          <p className="mt-1 text-[11px] text-[#8fd9d8]">al día</p>
+        </div>
+      </div>
+      <p className="mt-1 text-[12px] text-gf-suave">Avisaron que pagaron</p>
+      {PAGOS.map((p, i) => {
+        const ok = i < confirmados;
+        return (
+          <div key={p.n} className="flex items-center gap-3 rounded-2xl bg-gf-tarjeta px-4 py-3">
+            <div className="min-w-0 flex-1">
+              <p className="text-[14px] font-semibold">{p.n}</p>
+              <p className="text-[11px] text-gf-suave">Plan {p.plan} · transferencia</p>
+            </div>
+            {ok ? (
+              <span className="entrar rounded-full px-3 py-1.5 text-[11px] font-bold text-gf-turquesa shadow-[inset_0_0_0_1.5px_var(--color-gf-turquesa)]">
+                Confirmado
+              </span>
+            ) : (
+              <span className="rounded-full bg-gf-turquesa px-3 py-1.5 text-[11px] font-bold text-gf-fondo">Confirmar</span>
+            )}
+          </div>
+        );
+      })}
+      <p className="mt-auto rounded-2xl bg-gf-tarjeta px-4 py-3 text-[11px] leading-snug text-gf-suave">
+        La app no cobra: el socio transfiere y avisa, y el dueño confirma.
+      </p>
+    </Telefono>
+  );
+}

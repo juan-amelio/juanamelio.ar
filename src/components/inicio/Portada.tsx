@@ -99,13 +99,37 @@ export function Portada({ encabezado }: { encabezado: ReactNode }) {
     return () => clearInterval(t);
   }, [tocado]);
 
-  // Deslizar en el celular.
-  const inicioToque = useRef<number | null>(null);
+  /* Arrastrar (mouse o dedo) y el scroll horizontal del trackpad giran la
+     ronda. Un arrastre corto sigue siendo un clic; uno largo no deja que el
+     clic traiga además la pantalla que quedó abajo del puntero. */
+  const arrastre = useRef<{ x: number; movio: boolean } | null>(null);
+  const ruedaAcumulada = useRef(0);
+  const ruedaEspera = useRef(0);
+  const escenarioRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = escenarioRef.current;
+    if (!el) return;
+    const rueda = (e: WheelEvent) => {
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return; // vertical: es para bajar la página
+      e.preventDefault();
+      if (performance.now() < ruedaEspera.current) return;
+      ruedaAcumulada.current += e.deltaX;
+      if (Math.abs(ruedaAcumulada.current) > 60) {
+        setTocado(true);
+        setAngulo((a) => a + Math.sign(ruedaAcumulada.current) * PASO);
+        ruedaAcumulada.current = 0;
+        ruedaEspera.current = performance.now() + 650; // un gesto, un paso
+      }
+    };
+    el.addEventListener("wheel", rueda, { passive: false });
+    return () => el.removeEventListener("wheel", rueda);
+  }, []);
 
   return (
     <section ref={ref} className="portada relative isolate overflow-hidden">
       {encabezado}
-      <div className="mx-auto grid min-h-[calc(100svh-84px)] max-w-7xl items-center gap-x-12 gap-y-6 px-4 pb-16 sm:px-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:pb-20">
+      <div className="mx-auto grid min-h-svh max-w-7xl items-center gap-x-12 gap-y-6 px-4 pt-24 pb-16 sm:px-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:pb-20">
         <div className="portada-texto relative z-10">
           <h1 className="animate-subir max-w-[11ch] text-[clamp(44px,7.2vw,112px)] leading-[0.94] font-extrabold tracking-[-0.04em]">
             Apps que la gente abre todos los días.
@@ -124,20 +148,30 @@ export function Portada({ encabezado }: { encabezado: ReactNode }) {
             role="group"
             aria-roledescription="carrusel"
             aria-label="Mis proyectos"
-            className="escenario relative h-[380px] w-full max-w-[680px] touch-pan-y [--radio:105px] sm:h-[520px] sm:[--radio:220px]"
+            className="escenario relative h-[380px] w-full max-w-[680px] cursor-grab touch-pan-y select-none active:cursor-grabbing [--radio:105px] sm:h-[520px] sm:[--radio:220px]"
             onKeyDown={(e) => {
               if (e.key === "ArrowRight") girar(1);
               if (e.key === "ArrowLeft") girar(-1);
             }}
+            ref={escenarioRef}
             onPointerDown={(e) => {
-              if (e.pointerType !== "mouse") inicioToque.current = e.clientX;
+              arrastre.current = { x: e.clientX, movio: false };
+            }}
+            onPointerMove={(e) => {
+              if (arrastre.current && Math.abs(e.clientX - arrastre.current.x) > 8) arrastre.current.movio = true;
             }}
             onPointerUp={(e) => {
-              const x0 = inicioToque.current;
-              inicioToque.current = null;
-              if (x0 === null) return;
-              const dx = e.clientX - x0;
+              const a = arrastre.current;
+              if (!a) return;
+              const dx = e.clientX - a.x;
               if (Math.abs(dx) > 40) girar(dx < 0 ? 1 : -1);
+              setTimeout(() => (arrastre.current = null), 0);
+            }}
+            onClickCapture={(e) => {
+              if (arrastre.current?.movio) {
+                e.preventDefault();
+                e.stopPropagation();
+              }
             }}
           >
             <div className="anillo" style={{ "--angulo": `${angulo}deg` } as CSSProperties}>
