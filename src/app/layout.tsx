@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Redes } from "@/components/Redes";
 import { variablesDeFuentes } from "./fuentes";
 import "./globals.css";
 
@@ -10,7 +11,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="es" className={`${variablesDeFuentes} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <Redes />
+      </body>
     </html>
   );
 }

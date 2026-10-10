@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { Contacto, Pie } from "@/components/inicio/Contacto";
 import { Encabezado } from "@/components/inicio/Encabezado";
+import { ADENTRO, ArribaDeTodo, MaquetaQueViaja, Pagina } from "@/components/transiciones/Transiciones";
 import { CASOS, type Ancho, type Slug } from "./casos";
 import { Galeria } from "./Galeria";
 import { Marca } from "./Marca";
@@ -19,6 +20,8 @@ const COLUMNA: Record<Ancho, string> = {
 export function MarcoCaso({ slug, children }: { slug: Slug; children: ReactNode }) {
   const caso = CASOS[slug];
   return (
+    <Pagina>
+    <ArribaDeTodo />
     <div
       data-caso={slug}
       className="flex flex-1 flex-col bg-(--caso-fondo) font-(family-name:--caso-fuente) text-(--caso-texto) [background-image:var(--caso-brillo)] bg-no-repeat"
@@ -44,7 +47,7 @@ export function MarcoCaso({ slug, children }: { slug: Slug; children: ReactNode 
             </dl>
           </div>
           <div className={`mx-auto min-w-0 ${COLUMNA[caso.ancho]}`}>
-            {caso.maqueta}
+            <MaquetaQueViaja caso={slug}>{caso.maqueta}</MaquetaQueViaja>
             <p className="mt-3.5 text-center text-[13px] text-(--caso-suave)">Datos de demo</p>
           </div>
         </section>
@@ -57,6 +60,7 @@ export function MarcoCaso({ slug, children }: { slug: Slug; children: ReactNode 
       </main>
       <CierreCaso />
     </div>
+    </Pagina>
   );
 }
 
@@ -66,6 +70,7 @@ function Siguiente({ slug }: { slug: Slug }) {
     <section data-caso={slug} className="border-t border-(--caso-borde) bg-(--caso-fondo) font-(family-name:--caso-fuente) text-(--caso-texto)">
       <Link
         href={`/casos/${slug}`}
+        transitionTypes={ADENTRO}
         className="group mx-auto block max-w-7xl px-4 py-16 no-underline sm:px-14 sm:py-24"
       >
         <span className="block text-[15px] text-(--caso-suave)">Siguiente caso</span>
