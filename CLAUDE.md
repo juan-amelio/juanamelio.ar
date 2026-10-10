@@ -21,11 +21,15 @@ El repo es **público**. Nada que no se pueda leer en internet entra acá: ni
 - **Idioma:** español primero; el inglés se suma después (#11 deja las rutas listas, #22 traduce).
 - **Dominio:** `juanamelio.ar` (lo compra Juan, #18).
 - **Dirección visual: la C · En vivo**, elegida el 10/10/2026. El sitio habla con
-  Bricolage Grotesque sobre gris claro, y **cada caso se viste con la marca real
-  de su producto** en su sección: Global Fit (negro + turquesa, Geist), A7 Sports
+  Bricolage Grotesque sobre **grafito oscuro** (desde la #23), y **cada caso se
+  viste con la marca real de su producto** en su sección: Global Fit (negro + turquesa, Geist), A7 Sports
   (negro + lima, Archivo) y Forge Studio (gris claro, Source Serif 4 y los
   colores de imprenta). El prototipo está en
   https://claude.ai/artifact/EMLjqPagbSz9YcC64oPbv3 (`EnVivo.dc.html`).
+- **La portada son las tres apps vivas** (#23): flotan en perspectiva, se mueven
+  solas y siguen al mouse; al bajar, una escena fija cambia el fondo a la marca
+  de cada caso. Sin botones de contacto en la portada: eso va al menú y al final.
+  Todo movimiento respeta «reducir movimiento».
 - **A7 Sports se llama siempre así**, nunca X-Trust.
 - **Capturas y videos, siempre con datos de demo.** Global Fit guarda fichas de
   salud (Ley 25.326) y A7 Sports nombres de clientes. Al gimnasio se lo puede
