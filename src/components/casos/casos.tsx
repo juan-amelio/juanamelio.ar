@@ -51,6 +51,10 @@ export const MAX_ANCHO: Record<Ancho, string> = {
 
 /* La portada de cada caso. El relato —antes, qué construí, las decisiones—
    vive en el MDX de su página; acá sólo lo que va arriba de todo. */
+/* Los números de cada caso son de ejemplo hasta que se junten los reales de
+   producción (#30). Cuando estén, cada caso lleva su propia fecha acá. */
+const NUMEROS_DE_EJEMPLO = "Números de ejemplo: los reales están en camino";
+
 export const ORDEN: Slug[] = ["global-fit", "a7-sports", "forge-studio"];
 
 export const CASOS: Record<Slug, Caso> = {
@@ -63,12 +67,12 @@ export const CASOS: Record<Slug, Caso> = {
     bajada:
       "La app de un gimnasio de Mendoza. Los socios reservan desde el celular, los profesores toman asistencia en la clase y el dueño maneja socios, pagos y horarios desde un panel.",
     numeros: [
-      { valor: "28", etiqueta: "socios activos" },
-      { valor: "48", etiqueta: "clases por semana" },
-      { valor: "56", etiqueta: "reservas desde el 16/09" },
+      { valor: "XX", etiqueta: "socios activos" },
+      { valor: "XX", etiqueta: "clases por semana" },
+      { valor: "XX", etiqueta: "reservas en el último mes" },
       { valor: "12/09", etiqueta: "en producción desde" },
     ],
-    numerosAl: "Datos reales de producción al 10/10/2026",
+    numerosAl: NUMEROS_DE_EJEMPLO,
     hechoCon: "Next.js, TypeScript, PostgreSQL y Prisma, en Vercel",
     decision: "Los datos de salud no son un campo más.",
     decisionDetalle:
@@ -122,13 +126,12 @@ export const CASOS: Record<Slug, Caso> = {
     titular: "De la planilla a la caja.",
     bajada:
       "Ventas, stock, caja y una tienda pública para un emprendimiento familiar de pádel. La usan cinco personas desde el celular, en el local y en los eventos.",
-    // Pendiente: los números reales de A7 (falta permiso para leer su base).
     numeros: [
-      { valor: "5", etiqueta: "personas vendiendo" },
-      { valor: "62", etiqueta: "productos en la tienda" },
+      { valor: "XX", etiqueta: "ventas en el último mes" },
+      { valor: "XX", etiqueta: "eventos en el último año" },
       { valor: "04/10", etiqueta: "en producción desde" },
     ],
-    numerosAl: "Datos reales de producción al 10/10/2026",
+    numerosAl: NUMEROS_DE_EJEMPLO,
     hechoCon: "Next.js, TypeScript, PostgreSQL y Prisma, en Vercel",
     decision: "Tocar dos veces −10% sigue siendo −10%.",
     decisionDetalle:
@@ -183,12 +186,12 @@ export const CASOS: Record<Slug, Caso> = {
     bajada:
       "El tablero donde trabaja mi equipo, con un agente que corre en la máquina de cada desarrollador y un plugin para trabajar con IA sin perder el control.",
     numeros: [
-      { valor: "7", etiqueta: "proyectos" },
-      { valor: "321", etiqueta: "tareas en el tablero" },
-      { valor: "219", etiqueta: "llegaron a producción" },
+      { valor: "XX", etiqueta: "proyectos" },
+      { valor: "XX", etiqueta: "tareas en el tablero" },
+      { valor: "XX", etiqueta: "llegaron a producción" },
       { valor: "09/09", etiqueta: "en uso desde" },
     ],
-    numerosAl: "Datos reales de producción al 10/10/2026",
+    numerosAl: NUMEROS_DE_EJEMPLO,
     hechoCon: "Next.js, TypeScript, PostgreSQL, un agente en Node y un plugin de Claude Code",
     decision: "Por la red viaja un verbo, nunca un comando.",
     decisionDetalle:

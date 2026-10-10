@@ -47,7 +47,7 @@ export function MarcoCaso({ slug, children }: { slug: Slug; children: ReactNode 
             </dl>
             <p className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] text-(--caso-suave)">
               <span className="flex items-center gap-1.5">
-                <span aria-hidden="true" className="size-1.5 animate-pulse rounded-full bg-[#3fb46a]" />
+                <span aria-hidden="true" className="size-1.5 rounded-full bg-(--caso-suave)" />
                 {caso.numerosAl}
               </span>
               <span>{caso.hechoCon}</span>
