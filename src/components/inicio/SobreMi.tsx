@@ -27,8 +27,8 @@ export function SobreMi() {
           </p>
           <p>
             En 2026 empecé a construir mis propios productos, y los tres de esta página están en producción. Los hago
-            con Claude Code como herramienta principal y con una regla que no cambio: ningún cambio llega a la gente
-            sin que una persona lo revise.
+            con Claude Code como herramienta principal y con una regla que no cambio: en mis productos, ningún cambio
+            llega a la gente sin que una persona lo revise.
           </p>
         </div>
         <dl className="grid flex-[1_1_300px] content-start gap-y-5">
