@@ -1,21 +1,131 @@
 @import "tailwindcss";
 
-/* Los tokens de la dirección C se fijan en la #6; esto es solo la base neutra. */
-:root {
-  --fondo: #e7e9eb;
-  --tinta: #121416;
-  --tinta-suave: #565c63;
+/*
+ * Tokens de la dirección C · En vivo (#6).
+ *
+ * El sitio habla en neutro (gris claro, Bricolage Grotesque) y cada caso se
+ * viste con la marca REAL de su producto adentro de su sección. Los valores de
+ * cada marca salen de su repo y no se inventan:
+ *   Global Fit   gym-app/src/app/globals.css (bloque .dark) y el handoff "Enérgica"
+ *   A7 Sports    seiszero/catalogo-web/src/styles/base.css (tema oscuro)
+ *   Forge Studio forge-studio/src/app/marca.css
+ * Si una marca cambia allá, se cambia acá.
+ */
+@theme {
+  /* El sitio */
+  --color-fondo: #e7e9eb;
+  --color-superficie: #f4f5f6;
+  --color-tinta: #121416;
+  --color-tinta-media: #2c3136;
+  --color-tinta-suave: #565c63;
+  --color-borde-oscuro: #6b7178;
+
+  /* Global Fit: negro frío y turquesa */
+  --color-gf-fondo: #0f1213;
+  --color-gf-tarjeta: #181b1c;
+  --color-gf-bisel: #2a3032;
+  --color-gf-texto: #eef1f1;
+  --color-gf-texto-medio: #c5cacb;
+  --color-gf-suave: #9b9fa0;
+  --color-gf-turquesa: #00b5b5;
+  --color-gf-turquesa-claro: #3bd0cf;
+  --color-gf-aviso: #f0d58a;
+
+  /* A7 Sports: negro, hueso y lima */
+  --color-a7-fondo: #131314;
+  --color-a7-superficie: #1c1c1e;
+  --color-a7-superficie-alta: #2a2a2e;
+  --color-a7-linea: #2f2f34;
+  --color-a7-control: #7c7c84;
+  --color-a7-hueso: #f1f0e7;
+  --color-a7-texto-medio: #cfcec6;
+  --color-a7-suave: #a3a39b;
+  --color-a7-lima: #bede14;
+  --color-a7-lima-claro: #d4f23a;
+
+  /* Forge Studio: papel, tinta y las tres planchas de imprenta */
+  --color-fs-fondo: #f3f2f2;
+  --color-fs-panel: #eae9e9;
+  --color-fs-panel-2: #efeeee;
+  --color-fs-borde: #d1d0d0;
+  --color-fs-hairline: #e0dfdf;
+  --color-fs-tinta: #201e1d;
+  --color-fs-gris: #444141;
+  --color-fs-gris-suave: #605d5d;
+  --color-fs-cian: #0088b0;
+  --color-fs-cian-texto: #006786;
+  --color-fs-cian-fuerte: #004961;
+  --color-fs-cian-suave: #e9f8ff;
+  --color-fs-magenta: #d6006c;
+  --color-fs-magenta-oscuro: #aa0b56;
+  --color-fs-amarillo: #edbb00;
+
+  /* Movimiento: un solo momento orquestado, la entrada de las tres puertas. */
+  --animate-subir: subir 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  @keyframes subir {
+    from {
+      opacity: 0;
+      transform: translateY(56px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
 }
 
 @theme inline {
-  --color-fondo: var(--fondo);
-  --color-tinta: var(--tinta);
-  --color-tinta-suave: var(--tinta-suave);
-  --font-sans: var(--font-bricolage);
+  --font-sitio: var(--font-bricolage);
+  --font-gf: var(--font-geist);
+  --font-a7: var(--font-archivo);
+  --font-fs: var(--font-source-serif);
 }
 
 body {
-  background: var(--fondo);
-  color: var(--tinta);
+  background: var(--color-fondo);
+  color: var(--color-tinta);
   font-family: var(--font-bricolage), system-ui, sans-serif;
+}
+
+:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@layer components {
+  .boton {
+    display: inline-flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 0 24px;
+    border-radius: 999px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  /* Cada puerta de la portada lleva a la sección de su caso. */
+  .puerta {
+    display: flex;
+    min-height: 360px;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 48px;
+    padding: 28px;
+    border-radius: 18px;
+    text-decoration: none;
+    transition: translate 0.25s ease;
+  }
+  .puerta:hover {
+    translate: 0 -6px;
+  }
 }
