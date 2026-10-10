@@ -7,9 +7,9 @@ export function Encabezado() {
         Juan Amelio
       </Link>
       <nav aria-label="Secciones" className="flex flex-wrap gap-x-7 gap-y-2 text-base font-medium">
-        <a href="#global-fit">Trabajos</a>
-        <a href="#metodo">Cómo trabajo</a>
-        <a href="#contacto">Contacto</a>
+        <Link href="/#global-fit">Trabajos</Link>
+        <Link href="/#metodo">Cómo trabajo</Link>
+        <Link href="/#contacto">Contacto</Link>
       </nav>
     </header>
   );
