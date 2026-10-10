@@ -10,7 +10,7 @@ export const contacto = {
   cv: null as string | null,
   github: "https://github.com/juan-amelio",
   /** Con código de país y sin espacios ni signos (549261…). En null, el botón no aparece. */
-  whatsapp: null as string | null,
+  whatsapp: "5492613679513" as string | null,
 };
 
 /** El mensaje que llega escrito al abrir WhatsApp desde el sitio. */
