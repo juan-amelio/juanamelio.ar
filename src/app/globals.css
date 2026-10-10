@@ -191,30 +191,58 @@ body {
   perspective: 1400px;
 }
 
-.pantalla {
-  --abrir: 0px;
-  --desvanecer: 1.6;
+/* La ronda de la portada (#24). --angulo se registra para poder animarlo: el
+   anillo gira para un lado y cada pantalla para el otro, y así orbitan
+   mirando siempre de frente. */
+@property --angulo {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 0deg;
+}
+
+.portada-ronda {
+  transform: translateY(calc(var(--salida) * 140px));
+  opacity: calc(1 - var(--salida) * 1.4);
+}
+
+.anillo {
   position: absolute;
+  inset: 0;
+  /* En 3D, la caja del anillo queda delante de las pantallas de atrás:
+     sin esto se come el clic que las trae adelante. */
+  pointer-events: none;
+  transform-style: preserve-3d;
+  transform:
+    translateZ(calc(var(--radio) * -1))
+    rotateX(calc(5deg - var(--my) * 5deg))
+    rotateY(calc(var(--mx) * 8deg - var(--angulo)));
+  transition: --angulo 0.9s cubic-bezier(0.3, 0.7, 0.2, 1);
+}
+
+.orbita {
+  --i: 0;
+  position: absolute;
+  pointer-events: auto;
+  top: var(--arriba, 0px);
+  left: 50%;
   transform-origin: top center;
   transform:
-    translate3d(
-      calc(var(--mx) * var(--prof) * -1 + var(--salida) * var(--abrir)),
-      calc(var(--my) * var(--prof) * -1 + var(--salida) * 160px),
-      var(--z)
-    )
-    rotateY(calc(var(--giro) + var(--mx) * 5deg))
-    rotateX(calc(7deg - var(--my) * 5deg))
+    translateX(-50%)
+    rotateY(calc(var(--i) * 120deg))
+    translateZ(var(--radio))
+    rotateY(calc(var(--i) * -120deg + var(--angulo) - var(--mx) * 8deg))
     scale(var(--escala));
-  opacity: calc(1 - var(--salida) * var(--desvanecer));
-  will-change: transform;
 }
-.pantalla:nth-child(1) {
-  --abrir: -260px;
-  --desvanecer: 1.5;
+
+/* Las de atrás se apagan un poco, y al pasar el mouse se asoman. */
+.atras {
+  filter: brightness(0.55) saturate(0.8);
+  transition: filter 0.3s ease, transform 0.3s ease;
 }
-.pantalla:nth-child(2) {
-  --abrir: 260px;
-  --desvanecer: 1.5;
+.atras:hover,
+.atras:focus-visible {
+  filter: brightness(0.9);
+  transform: translateY(-10px);
 }
 
 /* La flecha de "bajá": una raya con un punto que cae. */

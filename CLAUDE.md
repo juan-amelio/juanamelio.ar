@@ -45,3 +45,16 @@ El repo es **público**. Nada que no se pueda leer en internet entra acá: ni
 | `src/app/casos/<caso>/page.mdx` | Cada caso, en MDX |
 | `src/mdx-components.tsx` | Los componentes que usa el MDX (obligatorio con App Router) |
 | `src/app/globals.css` | Tokens del sitio (se fijan en la #6) |
+
+## Gotchas
+
+- **El servidor de desarrollo puede quedarse con CSS viejo.** Pasó varias veces
+  con `globals.css`: la página carga, pero sin las reglas nuevas (se ve en que
+  falta una clase que sí está en el archivo). Suele pasar después de editar el
+  archivo reemplazándolo (`sed -i` en la Mac) o de correr `next build` con el
+  servidor prendido. Se arregla bajándolo, borrando `.next/dev` y levantándolo
+  de nuevo. `npm run build` no tiene el problema: si el build sale bien y el dev
+  no, es esto.
+- **La ronda de la portada usa `@property --angulo`** para poder animar el giro.
+  La caja del anillo lleva `pointer-events: none`: en 3D queda delante de las
+  pantallas de atrás y se comía el clic.

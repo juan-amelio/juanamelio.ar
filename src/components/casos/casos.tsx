@@ -8,6 +8,10 @@ export type Slug = "global-fit" | "a7-sports" | "forge-studio";
 export type Caso = {
   slug: Slug;
   nombre: string;
+  /** Una línea: qué es, para la tarjeta de la portada. */
+  corto: string;
+  /** El logo real del producto, copiado de su repo a public/logos. */
+  logo: string;
   titular: string;
   bajada: string;
   datos: [string, string][];
@@ -28,6 +32,8 @@ export const CASOS: Record<Slug, Caso> = {
   "global-fit": {
     slug: "global-fit",
     nombre: "Global Fit",
+    corto: "La app de un gimnasio de Mendoza",
+    logo: "/logos/global-fit.png",
     titular: "Del cuaderno al celular.",
     bajada:
       "La app de un gimnasio de Mendoza. Los socios reservan desde el celular, los profesores toman asistencia en la clase y el dueño maneja socios, pagos y horarios desde un panel.",
@@ -47,6 +53,8 @@ export const CASOS: Record<Slug, Caso> = {
   "a7-sports": {
     slug: "a7-sports",
     nombre: "A7 Sports",
+    corto: "Ventas, stock y caja de una tienda de pádel",
+    logo: "/logos/a7-sports.svg",
     titular: "De la planilla a la caja.",
     bajada:
       "Ventas, stock, caja y una tienda pública para un emprendimiento familiar de pádel. La usan cinco personas desde el celular, en el local y en los eventos.",
@@ -66,6 +74,8 @@ export const CASOS: Record<Slug, Caso> = {
   "forge-studio": {
     slug: "forge-studio",
     nombre: "Forge Studio",
+    corto: "El tablero donde trabaja mi equipo",
+    logo: "/logos/forge-studio.svg",
     titular: "Del Trello a un tablero con revisión humana.",
     bajada:
       "El tablero donde trabaja mi equipo, con un agente que corre en la máquina de cada desarrollador y un plugin para trabajar con IA sin perder el control.",
