@@ -1,80 +1,97 @@
-import { hrefCv, hrefEmail } from "@/lib/contacto";
+"use client";
 
-/* Las tres puertas adelantan lo que pasa más abajo: cada una ya tiene la marca
-   de su producto, y lleva a su sección. Su entrada es el único movimiento que
-   arranca solo en toda la página. */
-export function Portada() {
+import { useEffect, useRef, type ReactNode } from "react";
+import { CajaA7 } from "@/components/maquetas/A7";
+import { TableroForge } from "@/components/maquetas/Forge";
+import { TelefonoGlobalFit } from "@/components/maquetas/GlobalFit";
+
+/*
+ * La portada (#23): las tres apps, vivas, flotando en perspectiva.
+ *
+ * Tres variables CSS mueven todo sin re-renderizar React:
+ *   --mx, --my   dónde está el mouse (-1 a 1): parallax de las pantallas y la luz
+ *   --salida     cuánto de la portada ya se scrolleó (0 a 1): las pantallas
+ *                bajan y se abren, y dejan paso al recorrido de los casos
+ * Con «reducir movimiento» no se escriben, y todo queda en su lugar.
+ */
+/** `encabezado` va adentro para que la luz de la portada lo cubra también. */
+export function Portada({ encabezado }: { encabezado: ReactNode }) {
+  const ref = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let raf = 0;
+    let mx = 0;
+    let my = 0;
+    const pintar = () => {
+      raf = 0;
+      const alto = el.offsetHeight || 1;
+      el.style.setProperty("--mx", mx.toFixed(3));
+      el.style.setProperty("--my", my.toFixed(3));
+      el.style.setProperty("--salida", Math.min(1, Math.max(0, window.scrollY / alto)).toFixed(3));
+    };
+    const pedir = () => {
+      if (!raf) raf = requestAnimationFrame(pintar);
+    };
+    const mover = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") return;
+      mx = (e.clientX / window.innerWidth) * 2 - 1;
+      my = (e.clientY / window.innerHeight) * 2 - 1;
+      pedir();
+    };
+    window.addEventListener("pointermove", mover, { passive: true });
+    window.addEventListener("scroll", pedir, { passive: true });
+    pedir();
+    return () => {
+      window.removeEventListener("pointermove", mover);
+      window.removeEventListener("scroll", pedir);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
   return (
-    <section className="mx-auto w-full max-w-7xl px-4 pt-8 pb-20 sm:px-14 sm:pt-20 sm:pb-32">
-      <div className="flex flex-wrap items-end justify-between gap-x-16 gap-y-7">
-        <h1 className="max-w-[12ch] text-[clamp(44px,8vw,124px)] leading-[0.94] font-extrabold tracking-[-0.04em]">
-          Apps que la gente abre todos los días.
-        </h1>
-        <div className="flex-[0_1_380px]">
-          <p className="text-xl leading-normal text-tinta-media">
-            Soy Juan Amelio. Las diseño, las construyo y las sostengo en producción. Estoy abierto a un
-            puesto o a un proyecto.
+    <section ref={ref} className="portada relative isolate overflow-hidden">
+      {encabezado}
+      <div className="mx-auto grid min-h-[calc(100svh-84px)] max-w-7xl items-center gap-x-12 gap-y-6 px-4 pb-16 sm:px-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:pb-24">
+        <div className="portada-texto relative z-10">
+          <h1 className="animate-subir max-w-[11ch] text-[clamp(44px,7.2vw,112px)] leading-[0.94] font-extrabold tracking-[-0.04em]">
+            Apps que la gente abre todos los días.
+          </h1>
+          <p className="animate-subir mt-7 max-w-[34ch] text-xl leading-normal text-tinta-media [animation-delay:.12s]">
+            Soy Juan Amelio. Las diseño, las construyo y las sostengo en producción. Estas tres se usan hoy.
           </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <a href={hrefEmail} className="boton bg-tinta text-white hover:bg-[#363b41]">
-              Escribime
-            </a>
-            <a href={hrefCv} className="boton border-[1.5px] border-tinta hover:bg-tinta hover:text-white">
-              Descargar CV
-            </a>
+          <a href="#trabajos" className="animate-subir group mt-10 inline-flex items-center gap-3 text-base font-semibold [animation-delay:.24s]">
+            <span className="indicador" aria-hidden="true" />
+            Bajá y miralas por dentro
+          </a>
+        </div>
+
+        <div className="escenario relative mx-auto h-[440px] w-full max-w-[680px] sm:h-[560px] lg:h-[640px]" aria-hidden="true">
+          <div className="pantalla [--z:-140px] [--prof:10px] left-[calc(34%-280px)] top-[34%] w-[560px] [--giro:22deg] [--escala:.48] sm:[--escala:.55]">
+            <div className="animate-subir [animation-delay:.35s]">
+              <div className="flotar [animation-delay:-2s]">
+                <TableroForge />
+              </div>
+            </div>
+          </div>
+          <div className="pantalla [--z:-70px] [--prof:18px] left-[calc(90%-160px)] top-[12%] w-80 [--giro:-24deg] [--escala:.56] sm:[--escala:.7]">
+            <div className="animate-subir [animation-delay:.5s]">
+              <div className="flotar [animation-delay:-4s]">
+                <CajaA7 />
+              </div>
+            </div>
+          </div>
+          <div className="pantalla [--z:40px] [--prof:30px] left-[calc(58%-160px)] top-[5%] w-80 [--giro:-8deg] [--escala:.62] sm:[--escala:.78]">
+            <div className="animate-subir [animation-delay:.2s]">
+              <div className="flotar">
+                <TelefonoGlobalFit />
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
-      <div className="mt-12 grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-4 sm:mt-20">
-        <a href="#global-fit" className="puerta animate-subir bg-gf-fondo font-gf text-gf-texto [animation-delay:.15s]">
-          <span className="text-[34px] font-extrabold tracking-[-1px]">
-            GLOBAL<span className="text-gf-turquesa">FIT</span>
-          </span>
-          <span className="block">
-            <span className="block text-[17px] text-gf-suave line-through decoration-gf-turquesa">
-              Era un cuaderno de reservas.
-            </span>
-            <span className="mt-1.5 block text-2xl leading-tight font-semibold">Es la app del gimnasio.</span>
-          </span>
-        </a>
-        <a href="#a7" className="puerta animate-subir bg-a7-fondo font-a7 text-a7-hueso [animation-delay:.3s]">
-          <span className="text-[34px] font-extrabold tracking-[-0.01em] [font-stretch:125%]">
-            A7 <span className="text-a7-lima">sports</span>
-          </span>
-          <span className="block">
-            <span className="block text-[17px] text-a7-suave line-through decoration-a7-lima">
-              Era una planilla de Google.
-            </span>
-            <span className="mt-1.5 block text-2xl leading-tight font-semibold">Es la caja de la tienda.</span>
-          </span>
-        </a>
-        <a
-          href="#forge"
-          className="puerta animate-subir bg-fs-fondo font-fs text-fs-tinta shadow-[inset_0_0_0_1px_var(--color-fs-borde)] [animation-delay:.45s]"
-        >
-          <span className="flex items-center justify-between gap-3">
-            <span className="text-[clamp(28px,2.6vw,34px)] font-semibold tracking-[-0.01em] whitespace-nowrap">Forge Studio</span>
-            <Planchas tamano={12} />
-          </span>
-          <span className="block">
-            <span className="block text-[17px] text-fs-gris-suave line-through decoration-fs-magenta">Era un Trello.</span>
-            <span className="mt-1.5 block text-2xl leading-tight font-semibold">Es el tablero de mi equipo.</span>
-          </span>
-        </a>
-      </div>
     </section>
-  );
-}
-
-/** Los tres puntos de la marca de Forge Studio: las planchas cian, magenta y amarilla. */
-export function Planchas({ tamano }: { tamano: number }) {
-  const punto = { width: tamano, height: tamano };
-  return (
-    <span aria-hidden="true" className="flex gap-1">
-      <span style={punto} className="rounded-full bg-fs-cian" />
-      <span style={punto} className="rounded-full bg-fs-magenta" />
-      <span style={punto} className="rounded-full bg-fs-amarillo" />
-    </span>
   );
 }

@@ -7,7 +7,7 @@ export function Encabezado() {
         Juan Amelio
       </Link>
       <nav aria-label="Secciones" className="flex flex-wrap gap-x-7 gap-y-2 text-base font-medium">
-        <Link href="/#global-fit">Trabajos</Link>
+        <Link href="/#trabajos">Trabajos</Link>
         <Link href="/#sobre-mi">Sobre mí</Link>
         <Link href="/#metodo">Cómo trabajo</Link>
         <Link href="/#contacto">Contacto</Link>

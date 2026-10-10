@@ -1,4 +1,3 @@
-import { Planchas } from "@/components/inicio/Portada";
 import type { Slug } from "./casos";
 
 /** El nombre de cada producto escrito como lo escribe su propia marca. */
@@ -19,6 +18,18 @@ export function Marca({ caso, className = "" }: { caso: Slug; className?: string
     <span className={`inline-flex items-center gap-3 font-semibold ${className}`}>
       Forge Studio
       <Planchas tamano={10} />
+    </span>
+  );
+}
+
+/** Los tres puntos de la marca de Forge Studio: las planchas cian, magenta y amarilla. */
+export function Planchas({ tamano }: { tamano: number }) {
+  const punto = { width: tamano, height: tamano };
+  return (
+    <span aria-hidden="true" className="flex gap-1">
+      <span style={punto} className="rounded-full bg-fs-cian" />
+      <span style={punto} className="rounded-full bg-fs-magenta" />
+      <span style={punto} className="rounded-full bg-fs-amarillo" />
     </span>
   );
 }

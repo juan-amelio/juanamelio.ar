@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
-import { CajaA7 } from "@/components/inicio/CasoA7";
-import { TableroForge } from "@/components/inicio/CasoForge";
-import { TelefonoGlobalFit } from "@/components/inicio/CasoGlobalFit";
+import { CajaA7 } from "@/components/maquetas/A7";
+import { TableroForge } from "@/components/maquetas/Forge";
+import { TelefonoGlobalFit } from "@/components/maquetas/GlobalFit";
 
 export type Slug = "global-fit" | "a7-sports" | "forge-studio";
 
@@ -11,6 +11,9 @@ export type Caso = {
   titular: string;
   bajada: string;
   datos: [string, string][];
+  /** La decisión que se destaca en el recorrido del inicio. */
+  decision: string;
+  decisionDetalle: string;
   maqueta: ReactNode;
   /** La maqueta de Forge es una ventana, más ancha que un teléfono. */
   maquetaAncha?: boolean;
@@ -19,6 +22,8 @@ export type Caso = {
 
 /* La portada de cada caso. El relato —antes, qué construí, las decisiones—
    vive en el MDX de su página; acá sólo lo que va arriba de todo. */
+export const ORDEN: Slug[] = ["global-fit", "a7-sports", "forge-studio"];
+
 export const CASOS: Record<Slug, Caso> = {
   "global-fit": {
     slug: "global-fit",
@@ -33,6 +38,9 @@ export const CASOS: Record<Slug, Caso> = {
       ["Con", "Next.js, TypeScript, PostgreSQL, Prisma, Auth.js, Tailwind, Vercel y Sentry"],
       ["Pruebas", "Más de 500 casos automáticos, con concurrencia contra un Postgres real"],
     ],
+    decision: "Los datos de salud no son un campo más.",
+    decisionDetalle:
+      "Consentimiento antes de guardar nada, cada profesor ve solo a sus alumnos y al año de la baja se borran solos, como pide la Ley 25.326.",
     maqueta: <TelefonoGlobalFit />,
     siguiente: "a7-sports",
   },
@@ -49,6 +57,9 @@ export const CASOS: Record<Slug, Caso> = {
       ["Con", "Next.js, TypeScript, PostgreSQL, Prisma, Auth.js, Vitest, Vercel y Sentry"],
       ["Pruebas", "Más de 150 casos automáticos"],
     ],
+    decision: "Tocar dos veces −10% sigue siendo −10%.",
+    decisionDetalle:
+      "El descuento se calcula siempre contra el precio de lista y nunca contra el de pantalla. El precio que se cobró queda guardado.",
     maqueta: <CajaA7 />,
     siguiente: "forge-studio",
   },
@@ -65,6 +76,9 @@ export const CASOS: Record<Slug, Caso> = {
       ["Con", "Next.js, TypeScript, PostgreSQL, Prisma, Auth.js, un agente en Node y un plugin de Claude Code"],
       ["Pruebas", "Más de 150 casos automáticos, incluidos los candados del plugin"],
     ],
+    decision: "Por la red viaja un verbo, nunca un comando.",
+    decisionDetalle:
+      "Qué significa cada pedido lo decide la configuración local. Aunque el servidor cayera en malas manos, no puede hacer que tu compu ejecute otra cosa.",
     maqueta: <TableroForge />,
     maquetaAncha: true,
     siguiente: "global-fit",
