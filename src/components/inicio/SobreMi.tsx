@@ -20,11 +20,10 @@ export function SobreMi() {
             semana con los clientes, en inglés, para mostrar avances, ajustar requisitos y planear lo que sigue.
           </p>
           <p>
-            Ahí hice de punta a punta el ERP de una planta industrial de Utah: inventario por lotes, compras,
-            producción con listas de materiales y órdenes de trabajo, ventas y envíos, asignación FIFO de lotes,
-            integración con su tienda online y reportes. También construí agentes de IA con Gemini: uno que audita
-            liquidaciones de sueldo contra la normativa laboral de Estados Unidos, un chatbot de soporte para
-            instrumentos de laboratorio y otros que extraen datos de documentos.
+            Ahí hice de punta a punta un ERP para una empresa industrial: inventario, compras, producción, ventas y
+            envíos, integración con su tienda online y reportes. También construí agentes de IA que automatizan
+            procesos en industrias reguladas: revisar documentos contra una normativa, responder consultas de soporte
+            técnico y extraer datos de documentos.
           </p>
           <p>
             En 2026 empecé a construir mis propios productos, y los tres de esta página están en producción. Los hago
