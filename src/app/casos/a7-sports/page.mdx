@@ -1,7 +1,53 @@
 export const metadata = {
   title: "A7 Sports — Juan Amelio",
+  description: "Ventas, stock, caja y tienda pública para un emprendimiento de pádel. De una planilla de Google a una app propia.",
 };
 
 # A7 Sports
 
-Borrador. El texto del caso sale de la #3 y la página con la marca del producto, de la #15.
+Ventas, stock, caja y una tienda pública para A7 Sports, un emprendimiento familiar de ropa y accesorios de pádel. La usan cinco personas desde el celular, en el local y en los eventos. Empezó sobre una planilla de Google y el 4 de octubre de 2026 pasó a una app propia.
+
+- **Para:** A7 Sports, el emprendimiento de pádel de mi familia
+- **Mi rol:** todo, de punta a punta, y además soy uno de los que vende
+- **Tiempo:** desde agosto de 2026; la app nueva está en producción desde el 4 de octubre
+- **Con:** Next.js, TypeScript, PostgreSQL, Prisma, Auth.js con Google, Vitest, Vercel y Sentry
+- **Pruebas:** más de 150 casos automáticos
+
+## Antes
+
+Todo vivía en una planilla. Cada venta era una fila escrita a mano, el stock se calculaba con fórmulas y el que estaba en un evento no sabía qué quedaba en el local.
+
+## La primera versión, a propósito barata
+
+La primera app la hice sobre esa misma planilla, con Apps Script: una pantalla de caja para el celular, el registro de ventas, el stock y una vidriera pública. Cero infraestructura, cero costo, y cualquiera de la familia podía abrir la planilla y ver todo. Para arrancar era lo correcto.
+
+Con el uso aparecieron los límites. Cada pedido al servidor tardaba más de un segundo aunque no leyera nada, la vidriera bajaba casi 2 MB de fotos por visita y, después de cobrar, la caja recargaba el catálogo entero. En un evento, con gente esperando, eso se nota.
+
+## La mudanza
+
+En octubre la pasé a una app propia, con su base de datos. Las reglas del negocio pasaron enteras; lo que cambió es dónde viven y que ahora tienen pruebas.
+
+- Cada pedido bajó a entre 0,2 y 0,5 segundos.
+- La vidriera pasó a una página de 63 KB con los datos adentro y fotos de unos 10 KB que se cargan a medida que se ven.
+- Después de cobrar, el stock vuelve en la misma respuesta de la venta: la siguiente se puede empezar sin esperar.
+- La importación desde la planilla cuadró con ella hasta el centavo: unidades compradas, vendidas, en stock y lo cobrado.
+
+## Tres decisiones
+
+### El precio de lista es una sugerencia
+
+En la caja los precios se negocian todo el tiempo: redondeos, precio a conocidos, descuento por llevar varias cosas. Por eso el precio que se cobró se guarda siempre, aunque coincida con el de lista, y la caja tiene atajos para los descuentos de siempre.
+
+> Tocar dos veces −10% sigue siendo −10%. El descuento se calcula contra el precio de lista, nunca contra el que está en pantalla.
+
+### Un centavo es mejor que un peso
+
+Cuando se cobra un combo a precio cerrado, la app despeja el precio de cada unidad, y no siempre divide justo: 50.000 entre 3 da 16.666,67, y tres veces eso son 50.000,01. Lo dejé así, a propósito. Redondear a pesos lo empeora, y repartir la diferencia en la última unidad deja dos productos iguales con precios distintos. Lo que se cobra, el total de la venta, siempre es exacto.
+
+### La promo se elige, no se aplica sola
+
+La promo 4x3 estaba atada al producto y se aplicaba siempre. Eso impedía cobrar una caja a precio cerrado y descontaba a pelotas que no eran promo. Ahora se elige en cada línea de la venta.
+
+## Qué sigue
+
+La marca pasó de su nombre anterior a A7 Sports y la app ya se viste con su sistema de diseño, en tema claro y oscuro. Lo próximo es medir la caja en un evento real, desde que se abre hasta que se puede vender.
