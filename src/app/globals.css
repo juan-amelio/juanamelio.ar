@@ -129,3 +129,55 @@ body {
     translate: 0 -6px;
   }
 }
+
+/*
+ * El tema de cada caso (#7). La página de un caso se viste entera con la marca
+ * de su producto: el marco pone data-caso y todo lo de adentro —encabezado,
+ * portada, el texto del MDX y la cita— lee estas variables.
+ */
+[data-caso="global-fit"] {
+  --caso-fondo: var(--color-gf-fondo);
+  --caso-superficie: #182021;
+  --caso-texto: var(--color-gf-texto);
+  --caso-texto-medio: var(--color-gf-texto-medio);
+  --caso-suave: var(--color-gf-suave);
+  --caso-acento: var(--color-gf-turquesa);
+  --caso-acento-hover: var(--color-gf-turquesa-claro);
+  --caso-sobre-acento: var(--color-gf-fondo);
+  --caso-cita: var(--color-gf-turquesa);
+  --caso-borde: rgb(0 181 181 / 0.28);
+  --caso-fuente: var(--font-geist);
+  --caso-brillo: radial-gradient(60% 40% at 80% 0%, rgb(0 181 181 / 0.16), transparent 70%);
+}
+
+[data-caso="a7-sports"] {
+  --caso-fondo: var(--color-a7-fondo);
+  --caso-superficie: var(--color-a7-superficie);
+  --caso-texto: var(--color-a7-hueso);
+  --caso-texto-medio: var(--color-a7-texto-medio);
+  --caso-suave: var(--color-a7-suave);
+  --caso-acento: var(--color-a7-lima);
+  --caso-acento-hover: var(--color-a7-lima-claro);
+  --caso-sobre-acento: var(--color-a7-fondo);
+  --caso-cita: var(--color-a7-lima);
+  --caso-borde: var(--color-a7-linea);
+  --caso-fuente: var(--font-archivo);
+  --caso-brillo: radial-gradient(60% 40% at 15% 0%, rgb(190 222 20 / 0.1), transparent 70%);
+}
+
+[data-caso="forge-studio"] {
+  --caso-fondo: var(--color-fs-fondo);
+  --caso-superficie: #ffffff;
+  --caso-texto: var(--color-fs-tinta);
+  --caso-texto-medio: var(--color-fs-gris);
+  --caso-suave: var(--color-fs-gris-suave);
+  /* Como texto o relleno de botón, el cian 700: el puro no llega a 4.5:1 sobre papel. */
+  --caso-acento: var(--color-fs-cian-texto);
+  --caso-acento-hover: var(--color-fs-cian-fuerte);
+  --caso-sobre-acento: var(--color-fs-fondo);
+  /* El magenta de Forge quiere decir "algo espera a una persona"; acá marca la cita. */
+  --caso-cita: var(--color-fs-magenta);
+  --caso-borde: var(--color-fs-borde);
+  --caso-fuente: var(--font-source-serif);
+  --caso-brillo: none;
+}

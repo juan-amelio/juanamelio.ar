@@ -49,7 +49,7 @@ export function CasoForge() {
 
 const CHEQUEOS = ["Lint", "Tipos", "Pruebas", "Build"];
 
-function TableroForge() {
+export function TableroForge() {
   return (
     <div
       role="img"
