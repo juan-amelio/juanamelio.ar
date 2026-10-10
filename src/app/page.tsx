@@ -5,6 +5,7 @@ import { Contacto, Pie } from "@/components/inicio/Contacto";
 import { Encabezado } from "@/components/inicio/Encabezado";
 import { Metodo } from "@/components/inicio/Metodo";
 import { Portada } from "@/components/inicio/Portada";
+import { SobreMi } from "@/components/inicio/SobreMi";
 
 export default function Inicio() {
   return (
@@ -15,6 +16,7 @@ export default function Inicio() {
         <CasoGlobalFit />
         <CasoA7 />
         <CasoForge />
+        <SobreMi />
         <Metodo />
         <Contacto />
       </main>
