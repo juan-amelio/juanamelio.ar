@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+/* Los tokens de la dirección C se fijan en la #6; esto es solo la base neutra. */
+:root {
+  --fondo: #e7e9eb;
+  --tinta: #121416;
+  --tinta-suave: #565c63;
+}
+
+@theme inline {
+  --color-fondo: var(--fondo);
+  --color-tinta: var(--tinta);
+  --color-tinta-suave: var(--tinta-suave);
+  --font-sans: var(--font-bricolage);
+}
+
+body {
+  background: var(--fondo);
+  color: var(--tinta);
+  font-family: var(--font-bricolage), system-ui, sans-serif;
+}
