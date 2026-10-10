@@ -48,7 +48,7 @@ export function CasoGlobalFit() {
   );
 }
 
-function TelefonoGlobalFit() {
+export function TelefonoGlobalFit() {
   return (
     <div
       role="img"

@@ -5,8 +5,8 @@
  * no esté decidido queda en null y el botón lleva a la sección de contacto.
  */
 export const contacto = {
-  email: null as string | null,
-  linkedin: null as string | null,
+  email: "juanb.amelio@gmail.com" as string | null,
+  linkedin: "https://www.linkedin.com/in/juan-b-amelio" as string | null,
   cv: null as string | null,
   github: "https://github.com/juan-amelio",
 };

@@ -52,7 +52,7 @@ const LINEAS = [
 
 const DESCUENTOS = ["Lista", "−10%", "−20%", "Al costo", "Regalo"];
 
-function CajaA7() {
+export function CajaA7() {
   return (
     <div
       role="img"
