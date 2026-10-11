@@ -2,7 +2,7 @@ import Image from "next/image";
 import { contacto } from "@/lib/contacto";
 
 /*
- * La foto de Juan, en el sobre mí y en el contacto. Mientras no haya foto
+ * La foto de Juan, en el sobre mí. Mientras no haya foto
  * (contacto.foto en null) va un monograma con los colores de los tres
  * productos, para que el lugar ya tenga su peso en la página.
  */
