@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CASOS, ORDEN, type Slug } from "@/components/casos/casos";
-import { EnlaceSeccion } from "@/components/EnlaceSeccion";
 import { ADENTRO, AFUERA } from "@/components/transiciones/Transiciones";
+import { MenuSecciones } from "./MenuSecciones";
 
 /*
  * La barra de arriba (#29): fija, translúcida y en grafito siempre, aunque la
@@ -43,20 +43,7 @@ export function Encabezado({ caso }: { caso?: Slug }) {
           </nav>
         )}
 
-        <nav aria-label="Secciones" className={`items-center gap-x-7 text-[15px] font-medium ${caso ? "hidden xl:flex" : "flex"}`}>
-          <EnlaceSeccion href="/#proyectos" transitionTypes={AFUERA} className="hidden sm:inline">
-            Proyectos
-          </EnlaceSeccion>
-          <EnlaceSeccion href="/#sobre-mi" transitionTypes={AFUERA} className="hidden sm:inline">
-            Sobre mí
-          </EnlaceSeccion>
-          <EnlaceSeccion href="/#proceso" transitionTypes={AFUERA} className="hidden md:inline">
-            Proceso
-          </EnlaceSeccion>
-          <EnlaceSeccion href="/#contacto" transitionTypes={AFUERA}>
-            Contacto
-          </EnlaceSeccion>
-        </nav>
+        <MenuSecciones className={`items-center gap-x-7 text-[15px] font-medium ${caso ? "hidden xl:flex" : "flex"}`} />
       </div>
     </header>
   );
