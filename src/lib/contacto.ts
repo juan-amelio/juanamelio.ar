@@ -8,6 +8,8 @@ export const contacto = {
   email: "juanb.amelio@gmail.com" as string | null,
   linkedin: "https://www.linkedin.com/in/juan-b-amelio" as string | null,
   cv: null as string | null,
+  /** La foto de Juan, dentro de public/ (por ejemplo "/juan.jpg"). En null, va el monograma. */
+  foto: null as string | null,
   github: "https://github.com/juan-amelio",
   /** Con código de país y sin espacios ni signos (549261…). En null, el botón no aparece. */
   whatsapp: "5492613679513" as string | null,

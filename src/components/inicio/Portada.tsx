@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { CASOS, ORDEN } from "@/components/casos/casos";
+import { EnlaceSeccion } from "@/components/EnlaceSeccion";
 import { CajaA7 } from "@/components/maquetas/A7";
 import { PantallaForge } from "@/components/maquetas/ForgeEscritorio";
 import { TelefonoGlobalFit } from "@/components/maquetas/GlobalFit";
@@ -136,10 +137,10 @@ export function Portada() {
           <p className="animate-subir mt-7 max-w-[34ch] text-xl leading-normal text-tinta-media [animation-delay:.12s]">
             Soy Juan Amelio. Las diseño, las construyo y las sostengo en producción. Estas tres se usan hoy.
           </p>
-          <a href="#trabajos" className="animate-subir group mt-10 inline-flex items-center gap-3 text-base font-semibold [animation-delay:.24s]">
+          <EnlaceSeccion href="/#proyectos" className="animate-subir group mt-10 inline-flex items-center gap-3 text-base font-semibold [animation-delay:.24s]">
             <span className="indicador" aria-hidden="true" />
             Bajá y miralas por dentro
-          </a>
+          </EnlaceSeccion>
         </div>
 
         <div className="portada-ronda flex flex-col items-center">
