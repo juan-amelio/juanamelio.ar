@@ -206,7 +206,7 @@ export function Recorrido() {
         {/* La pantalla fija: la elegida de cada caso, apiladas; se ve la del caso activo. */}
         <div className="hidden lg:block">
           <div className="sticky top-0 flex h-svh items-center justify-center pt-16">
-            <div className="relative h-[660px] w-full max-w-[600px]">
+            <div className="relative h-[690px] w-full max-w-[600px]">
               {ORDEN.map((slug) => {
                 const caso = CASOS[slug];
                 const visible = activo === slug;

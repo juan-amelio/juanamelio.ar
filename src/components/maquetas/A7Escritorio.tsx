@@ -6,12 +6,9 @@ import { Ventana } from "./Ventana";
 /* A7 Sports en escritorio, con datos de demo: la gestión (stock y compras) y
    la tienda pública. Mismos colores y tipografía que la app real. */
 
-const TONO = {
-  marco: "bg-a7-fondo font-a7 text-a7-hueso shadow-[0_0_0_1px_#3a3a40,0_40px_90px_-34px_rgba(190,222,20,.3)]",
-  barra: "bg-a7-superficie border-b border-a7-linea",
-  texto: "text-a7-suave",
-  punto: "bg-a7-superficie-alta",
-};
+const MARCO = "bg-a7-fondo font-a7 text-a7-hueso shadow-[0_0_0_1px_#4a4b50,0_40px_90px_-34px_rgba(190,222,20,.3)]";
+const LOGO = "/logos/a7-sports.svg";
+const SECCION = { stock: "Stock", compras: "Compras", resumen: "Resumen" } as const;
 
 const MENU: [string, string[]][] = [
   ["Vender", ["Caja", "Registro"]],
@@ -44,7 +41,7 @@ export function GestionA7({ vista, activo = true, alTerminar }: Animable & { vis
 
   return (
     <div ref={ref} role="img" aria-label="La gestión de A7 Sports en escritorio, con datos de demo">
-      <Ventana titulo="A7 sports · Gestión" tono={TONO}>
+      <Ventana titulo="A7 Sports · Gestión" logo={LOGO} direccion={["A7 Sports", ` · ${SECCION[actual]}`]} marco={MARCO}>
         <div className="flex h-full">
           <nav className="w-[132px] shrink-0 border-r border-a7-linea bg-a7-superficie px-2.5 py-3">
             <p className="mb-3 px-1.5 text-[13px] font-extrabold [font-stretch:115%]">
@@ -162,7 +159,7 @@ export function TiendaA7({ activo = true, alTerminar }: Animable) {
 
   return (
     <div ref={ref} role="img" aria-label="La tienda pública de A7 Sports, con datos de demo">
-      <Ventana titulo="A7 sports · Tienda" tono={TONO}>
+      <Ventana titulo="A7 Sports · Tienda" logo={LOGO} direccion={["A7 Sports", " · Tienda"]} marco={MARCO}>
         <div
           aria-hidden="true"
           className="absolute -top-2 right-0 h-24 w-20 [background:repeating-linear-gradient(-55deg,var(--color-a7-lima)_0_6px,transparent_6px_14px)]"

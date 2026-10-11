@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { Iphone } from "./Iphone";
 import { useCiclo, type Animable } from "./useCiclo";
 
 /* Más pantallas de Global Fit para la galería del caso (#27), con datos de
@@ -8,14 +9,15 @@ import { useCiclo, type Animable } from "./useCiclo";
 
 function Telefono({ etiqueta, children, refCiclo }: { etiqueta: string; children: ReactNode; refCiclo: React.Ref<HTMLDivElement> }) {
   return (
-    <div
-      ref={refCiclo}
-      role="img"
-      aria-label={etiqueta}
-      className="w-80 max-w-full rounded-[46px] bg-gf-bisel p-2.5 font-gf text-gf-texto shadow-[0_40px_90px_-30px_rgba(0,181,181,.45),0_0_0_1px_#3a4245]"
+    <Iphone
+      refCiclo={refCiclo}
+      etiqueta={etiqueta}
+      pantalla="bg-gf-fondo font-gf text-gf-texto"
+      contenido="gap-3.5 px-4.5 pt-1 pb-2"
+      brillo="shadow-[0_40px_90px_-30px_rgba(0,181,181,.45)]"
     >
-      <div className="flex min-h-155 flex-col gap-3.5 rounded-[37px] bg-gf-fondo px-4.5 pt-5.5 pb-4">{children}</div>
-    </div>
+      {children}
+    </Iphone>
   );
 }
 
