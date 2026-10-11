@@ -10,7 +10,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="es" className={`${variablesDeFuentes} h-full antialiased`}>
+    <html
+      lang="es"
+      // Al scrollear, la página encaja de sección en sección (#33). Sólo en
+      // escritorio: en el celular cada proyecto es más alto que la pantalla.
+      className={`${variablesDeFuentes} h-full antialiased lg:motion-safe:snap-y lg:motion-safe:snap-mandatory`}
+    >
       <body className="min-h-full flex flex-col">
         {children}
         <Redes />

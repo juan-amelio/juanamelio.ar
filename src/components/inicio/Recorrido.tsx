@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { CASOS, MAX_ANCHO, ORDEN, type Dispositivo, type Slug } from "@/components/casos/casos";
 import { Icono, IconoDispositivo } from "@/components/casos/IconosFuncion";
@@ -23,6 +24,15 @@ const DISPOSITIVOS: Dispositivo[] = ["celular", "escritorio"];
 
 type Eleccion = { dispositivo: Dispositivo; indice: number };
 
+/* Cuánto se queda quieta una pantalla terminada antes de pasar a la siguiente. */
+const PAUSA_MS = 1600;
+
+/* Todas las funciones de un caso en el orden en que rotan: las del celular y
+   después las del escritorio, así la rotación también muestra el selector. */
+function enOrden(slug: Slug): Eleccion[] {
+  return DISPOSITIVOS.flatMap((dispositivo) => CASOS[slug].funciones[dispositivo].map((_, indice) => ({ dispositivo, indice })));
+}
+
 /* Cada caso arranca en el primer dispositivo que tenga pantallas. */
 const INICIAL = Object.fromEntries(
   ORDEN.map((slug) => [slug, { dispositivo: CASOS[slug].funciones.celular.length ? "celular" : "escritorio", indice: 0 }]),
@@ -36,8 +46,9 @@ const INICIAL = Object.fromEntries(
  *
  * Adentro de cada caso, qué logra la app: un selector Celular / Escritorio
  * (lo que se hace desde el teléfono y lo que se hace desde el panel) y la
- * lista de funciones. Se cambia tocando; el scroll sólo pasa de un caso al
- * otro.
+ * lista de funciones. Rotan solas (#33): cuando la animación de una termina y
+ * pasa un momento, se marca la siguiente. Tocar el selector o la lista de un
+ * caso detiene su rotación: desde ahí manda la persona.
  *
  * En el celular no hay columna fija: cada caso lleva su pantalla abajo de la
  * lista, y el fondo cambia igual.
@@ -45,7 +56,9 @@ const INICIAL = Object.fromEntries(
 export function Recorrido() {
   const [activo, setActivo] = useState<Slug>("global-fit");
   const [eleccion, setEleccion] = useState(INICIAL);
+  const [tocados, setTocados] = useState<Partial<Record<Slug, true>>>({});
   const pasos = useRef<Partial<Record<Slug, HTMLElement | null>>>({});
+  const [terminada, setTerminada] = useState<{ slug: Slug; en: Eleccion } | null>(null);
 
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -60,8 +73,29 @@ export function Recorrido() {
     return () => obs.disconnect();
   }, []);
 
-  const elegir = (slug: Slug, cambio: Partial<Eleccion>) =>
+  const elegir = (slug: Slug, cambio: Partial<Eleccion>) => {
+    setTocados((t) => ({ ...t, [slug]: true }));
     setEleccion((e) => ({ ...e, [slug]: { ...e[slug], ...cambio } }));
+  };
+
+  /* La maqueta avisa que terminó; tras la pausa se marca la siguiente del mismo
+     caso. Si en el medio la persona eligió otra, la elección ya no es la misma
+     y no se salta. */
+  const alTerminar = (slug: Slug) => (tocados[slug] ? undefined : () => setTerminada({ slug, en: eleccion[slug] }));
+
+  useEffect(() => {
+    if (!terminada) return;
+    const { slug, en } = terminada;
+    const t = setTimeout(() => {
+      setEleccion((e) => {
+        if (e[slug] !== en) return e;
+        const orden = enOrden(slug);
+        const ahora = orden.findIndex((o) => o.dispositivo === en.dispositivo && o.indice === en.indice);
+        return { ...e, [slug]: orden[(ahora + 1) % orden.length] };
+      });
+    }, PAUSA_MS);
+    return () => clearTimeout(t);
+  }, [terminada]);
 
   return (
     <section
@@ -85,11 +119,12 @@ export function Recorrido() {
                 ref={(el) => {
                   pasos.current[slug] = el;
                 }}
-                className={`${FUENTE[slug]} flex min-h-svh flex-col justify-center py-20 transition-opacity duration-500 lg:pt-24 lg:pb-12 ${
+                className={`${FUENTE[slug]} flex min-h-svh snap-start scroll-mt-0! flex-col justify-center py-20 transition-opacity duration-500 lg:pt-20 lg:pb-8 ${
                   activo === slug ? "opacity-100" : "lg:opacity-30"
                 }`}
               >
-                <p className="text-[22px]">
+                <p className="flex items-center gap-3.5 text-[22px]">
+                  <Image src={caso.logo} alt="" width={44} height={44} className="size-11 rounded-xl object-contain" />
                   <Marca caso={slug} />
                 </p>
                 <h2 className="mt-4 max-w-[16ch] text-[clamp(32px,3.6vw,52px)] leading-[1.02] font-extrabold tracking-[-0.03em]">
@@ -159,7 +194,7 @@ export function Recorrido() {
                 <div className="mt-6 lg:hidden">
                   <p className="max-w-[52ch] text-[15px] leading-relaxed text-(--caso-texto-medio)">{pantallas[indice].texto}</p>
                   <div key={`${dispositivo}-${indice}`} className={`entrar mx-auto mt-8 w-full ${MAX_ANCHO[dispositivo]}`}>
-                    {pantallas[indice].maqueta(true)}
+                    {pantallas[indice].maqueta(true, alTerminar(slug))}
                   </div>
                   <p className="mt-3 text-center text-[13px] text-(--caso-suave)">Datos de demo</p>
                 </div>
@@ -200,7 +235,7 @@ export function Recorrido() {
                               elegida ? "opacity-100 [transform:none]" : "pointer-events-none opacity-0 [transform:translateY(24px)_scale(.97)]"
                             }`}
                           >
-                            <div className={`w-full ${MAX_ANCHO[d]}`}>{p.maqueta(visible && elegida)}</div>
+                            <div className={`w-full ${MAX_ANCHO[d]}`}>{p.maqueta(visible && elegida, alTerminar(slug))}</div>
                           </div>
                         );
                       }),

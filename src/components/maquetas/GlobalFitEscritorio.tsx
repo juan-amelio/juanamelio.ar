@@ -1,6 +1,6 @@
 "use client";
 
-import { useCiclo } from "./useCiclo";
+import { useCiclo, type Animable } from "./useCiclo";
 import { Ventana } from "./Ventana";
 
 /* El panel del dueño de Global Fit en escritorio (#32), con datos de demo.
@@ -23,8 +23,8 @@ const EN_MENU: Record<Vista, (typeof MENU)[number]> = {
   metricas: "Métricas",
 };
 
-export function PanelGF({ vista, activo = true }: { vista: Vista; activo?: boolean }) {
-  const { ref, paso } = useCiclo(6, 1200, activo);
+export function PanelGF({ vista, activo = true, alTerminar }: Animable & { vista: Vista }) {
+  const { ref, paso } = useCiclo(6, 1200, activo, alTerminar);
   return (
     <div ref={ref} role="img" aria-label="El panel del dueño de Global Fit en escritorio, con datos de demo">
       <Ventana titulo="Global Fit · Admin" tono={TONO}>

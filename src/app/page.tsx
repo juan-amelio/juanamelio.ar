@@ -15,9 +15,13 @@ export default function Inicio() {
         <Recorrido />
         <SobreMi />
         <Metodo />
-        <Contacto />
+        {/* El contacto y el pie son la última pantalla: así el encaje no deja
+            el pie colgando abajo. */}
+        <div className="flex flex-col snap-start lg:min-h-svh">
+          <Contacto />
+          <Pie />
+        </div>
       </main>
-      <Pie />
     </>
   );
 }

@@ -45,12 +45,17 @@ function irA(destino: HTMLElement) {
     return;
   }
 
+  // Con el encaje prendido, cada paso del deslizamiento se volvería a encajar.
+  const html = document.documentElement;
+  html.style.scrollSnapType = "none";
+
   const distancia = hasta - desde;
   const duracion = Math.min(1200, Math.max(600, Math.abs(distancia) * 0.25));
   const inicio = performance.now();
   let raf = 0;
   const soltar = () => {
     cancelAnimationFrame(raf);
+    html.style.scrollSnapType = "";
     window.removeEventListener("wheel", soltar);
     window.removeEventListener("touchstart", soltar);
   };

@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useCiclo } from "./useCiclo";
+import { useCiclo, type Animable } from "./useCiclo";
 
 /* Más pantallas de Global Fit para la galería del caso (#27), con datos de
    demo y el mismo marco que el inicio del socio. */
@@ -27,8 +27,8 @@ const CLASES = [
   { h: "19:00", n: "Movilidad", p: "Ana", lugares: 4 },
 ];
 
-export function ReservarGF({ activo = true }: { activo?: boolean }) {
-  const { ref, paso } = useCiclo(5, 1300, activo);
+export function ReservarGF({ activo = true, alTerminar }: Animable) {
+  const { ref, paso } = useCiclo(5, 1300, activo, alTerminar);
   const dia = paso >= 1 ? 2 : 1;
   const reservada = paso >= 3;
   return (
@@ -94,8 +94,8 @@ const ALUMNOS = [
   { n: "Lucía F.", dolor: false },
 ];
 
-export function AsistenciaGF({ activo = true }: { activo?: boolean }) {
-  const { ref, paso } = useCiclo(7, 900, activo);
+export function AsistenciaGF({ activo = true, alTerminar }: Animable) {
+  const { ref, paso } = useCiclo(7, 900, activo, alTerminar);
   const presentes = Math.min(paso, ALUMNOS.length);
   return (
     <Telefono refCiclo={ref} etiqueta="Global Fit: el profesor toma asistencia y ve quién reportó dolor, con datos de demo">
@@ -139,8 +139,8 @@ export function AsistenciaGF({ activo = true }: { activo?: boolean }) {
 
 const ZONAS = ["Piernas", "Glúteos", "Core", "Espalda", "Pecho", "Hombros", "Brazos", "Cardio"];
 
-export function EntrenoGF({ activo = true }: { activo?: boolean }) {
-  const { ref, paso } = useCiclo(6, 1000, activo);
+export function EntrenoGF({ activo = true, alTerminar }: Animable) {
+  const { ref, paso } = useCiclo(6, 1000, activo, alTerminar);
   const marcadas = ["Piernas", "Core", "Cardio"].slice(0, Math.max(0, paso - 1));
   return (
     <Telefono refCiclo={ref} etiqueta="Global Fit: el socio anota qué trabajó en la clase, con datos de demo">
@@ -197,8 +197,8 @@ const PAGOS = [
   { n: "Tomás G.", plan: "Libre" },
 ];
 
-export function PagosGF({ activo = true }: { activo?: boolean }) {
-  const { ref, paso } = useCiclo(6, 1000, activo);
+export function PagosGF({ activo = true, alTerminar }: Animable) {
+  const { ref, paso } = useCiclo(6, 1000, activo, alTerminar);
   const confirmados = Math.max(0, Math.min(paso - 1, PAGOS.length));
   return (
     <Telefono refCiclo={ref} etiqueta="Global Fit: el dueño confirma los pagos que avisaron los socios, con datos de demo">

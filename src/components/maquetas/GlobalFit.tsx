@@ -1,11 +1,11 @@
 "use client";
 
-import { useCiclo } from "./useCiclo";
+import { useCiclo, type Animable } from "./useCiclo";
 
 /* El inicio del socio en Global Fit, con datos de demo. Vivo: el socio
    reserva, el cupo baja y la semana se completa. */
-export function TelefonoGlobalFit({ activo = true }: { activo?: boolean }) {
-  const { ref, paso } = useCiclo(4, 1700, activo);
+export function TelefonoGlobalFit({ activo = true, alTerminar }: Animable) {
+  const { ref, paso } = useCiclo(4, 1700, activo, alTerminar);
   const reservada = paso >= 2;
   const lugares = reservada ? 3 : 4;
   const hechas = reservada ? 4 : 3;

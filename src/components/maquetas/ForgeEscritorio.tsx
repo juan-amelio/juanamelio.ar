@@ -1,6 +1,6 @@
 "use client";
 
-import { useCiclo } from "./useCiclo";
+import { useCiclo, type Animable } from "./useCiclo";
 import { Ventana } from "./Ventana";
 
 /*
@@ -31,8 +31,8 @@ const TONO = {
 type Vista = "inicio" | "tablero" | "calendario";
 const ORDEN: Vista[] = ["inicio", "tablero", "calendario"];
 
-export function PantallaForge({ vista, activo = true }: { vista?: Vista; activo?: boolean }) {
-  const { ref, paso } = useCiclo(9, 1250, activo);
+export function PantallaForge({ vista, activo = true, alTerminar }: Animable & { vista?: Vista }) {
+  const { ref, paso } = useCiclo(vista ? 3 : 9, 1250, activo, alTerminar); // con vista fija, una sola vuelta
   const actual = vista ?? ORDEN[Math.floor(paso / 3)];
   const sub = paso % 3; // dentro de cada vista: lo que se mueve
 

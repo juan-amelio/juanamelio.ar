@@ -1,13 +1,13 @@
 "use client";
 
-import { useCiclo } from "./useCiclo";
+import { useCiclo, type Animable } from "./useCiclo";
 
 const CHEQUEOS = ["Lint", "Tipos", "Pruebas", "Build"];
 
 /* Una tarjeta de Forge Studio con datos de demo. Viva: pasan los chequeos,
    la aprueba una persona y recién ahí llega a producción. */
-export function TableroForge({ activo = true }: { activo?: boolean }) {
-  const { ref, paso } = useCiclo(7, 1100, activo);
+export function TableroForge({ activo = true, alTerminar }: Animable) {
+  const { ref, paso } = useCiclo(7, 1100, activo, alTerminar);
   const chequeos = Math.min(paso, 4);
   const aprobada = paso >= 5;
   const enProduccion = paso >= 6;
