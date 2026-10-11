@@ -285,20 +285,15 @@ body {
   transition: filter 0.3s ease, transform 0.3s ease;
 }
 .atras:hover,
-.atras/* Con la barra fija, un ancla no puede quedar tapada por ella. */
-[id] {
-  scroll-margin-top: 80px;
+.atras:focus-visible {
+  filter: brightness(0.9);
+  transform: translateY(-10px);
 }
 
 /* La barra no participa de la transición entre páginas: queda quieta arriba. */
 ::view-transition-group(encabezado) {
   animation: none;
   z-index: 20;
-}
-
-:focus-visible {
-  filter: brightness(0.9);
-  transform: translateY(-10px);
 }
 
 /* La flecha de "bajá": una raya con un punto que cae. */

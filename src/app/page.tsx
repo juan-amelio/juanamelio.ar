@@ -9,8 +9,10 @@ import { Pagina } from "@/components/transiciones/Transiciones";
 export default function Inicio() {
   return (
     <Pagina>
+      {/* Afuera de la portada: ella lleva isolate y la barra quedaba debajo del recorrido. */}
+      <Encabezado />
       <main>
-        <Portada encabezado={<Encabezado />} />
+        <Portada />
         <Recorrido />
         <SobreMi />
         <Metodo />

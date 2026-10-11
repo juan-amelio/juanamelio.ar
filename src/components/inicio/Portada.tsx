@@ -32,7 +32,7 @@ const GIRO_SOLO_MS = 5500;
  * Además, como antes: --mx y --my (el mouse) inclinan la ronda y mueven la
  * luz, y --salida (cuánto se scrolleó) la hace bajar y desvanecerse.
  */
-export function Portada({ encabezado }: { encabezado: ReactNode }) {
+export function Portada() {
   const ref = useRef<HTMLElement>(null);
   const [angulo, setAngulo] = useState(0);
   const [tocado, setTocado] = useState(false);
@@ -128,7 +128,6 @@ export function Portada({ encabezado }: { encabezado: ReactNode }) {
 
   return (
     <section ref={ref} className="portada relative isolate overflow-hidden">
-      {encabezado}
       <div className="mx-auto grid min-h-svh max-w-7xl items-center gap-x-12 gap-y-6 px-4 pt-24 pb-16 sm:px-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:pb-20">
         <div className="portada-texto relative z-10">
           <h1 className="animate-subir max-w-[11ch] text-[clamp(44px,7.2vw,112px)] leading-[0.94] font-extrabold tracking-[-0.04em]">
