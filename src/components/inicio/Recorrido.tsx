@@ -2,8 +2,16 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { CASOS, ORDEN, type Slug } from "@/components/casos/casos";
+import { CASOS, MAX_ANCHO, ORDEN, type Slug } from "@/components/casos/casos";
 import { Marca } from "@/components/casos/Marca";
+
+/* Forge va en su tema oscuro real: después de dos marcas negras, pasar al
+   papel era un salto brusco (#26). Su página de caso sigue en papel. */
+const TEMA: Record<Slug, string> = {
+  "global-fit": "global-fit",
+  "a7-sports": "a7-sports",
+  "forge-studio": "forge-oscuro",
+};
 
 const FUENTE: Record<Slug, string> = {
   "global-fit": "font-gf",
@@ -41,7 +49,7 @@ export function Recorrido() {
   return (
     <section
       id="trabajos"
-      data-caso={activo}
+      data-caso={TEMA[activo]}
       aria-label="Trabajos"
       className="recorrido relative bg-(--caso-fondo) text-(--caso-texto) transition-[background-color,color] duration-700 ease-out"
     >
@@ -86,7 +94,7 @@ export function Recorrido() {
                 >
                   Ver el caso de {caso.nombre}
                 </Link>
-                <div className={`mx-auto mt-14 w-full lg:hidden ${caso.maquetaAncha ? "max-w-140" : "max-w-80"}`}>
+                <div className={`mx-auto mt-14 w-full lg:hidden ${MAX_ANCHO[caso.ancho]}`}>
                   {caso.maqueta}
                 </div>
               </article>
@@ -95,12 +103,13 @@ export function Recorrido() {
         </div>
 
         {/* La pantalla fija: las tres apiladas, se ve la del caso activo. */}
-        <div className="hidden lg:block" aria-hidden="true">
+        <div className="hidden lg:block">
           <div className="sticky top-0 flex h-svh items-center justify-center">
-            <div className="relative h-[680px] w-full max-w-[560px]">
+            <div className="relative h-[700px] w-full max-w-[680px]">
               {ORDEN.map((slug) => (
                 <div
                   key={slug}
+                  inert={activo !== slug}
                   className={`absolute inset-0 flex items-center justify-center transition-[opacity,transform] duration-700 ease-[cubic-bezier(.2,.7,.2,1)] ${
                     activo === slug
                       ? "opacity-100 [transform:none]"
@@ -111,11 +120,11 @@ export function Recorrido() {
                         }`
                   }`}
                 >
-                  <div className={CASOS[slug].maquetaAncha ? "w-full" : ""}>{CASOS[slug].maqueta}</div>
+                  <div className={`w-full ${MAX_ANCHO[CASOS[slug].ancho]}`}>{CASOS[slug].maqueta}</div>
                 </div>
               ))}
             </div>
-            <p className="absolute bottom-8 text-[13px] text-(--caso-suave)">Datos de demo</p>
+            <p className="absolute bottom-3 text-[13px] text-(--caso-suave)">Datos de demo</p>
           </div>
         </div>
       </div>

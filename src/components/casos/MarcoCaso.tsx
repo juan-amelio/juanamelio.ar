@@ -2,12 +2,20 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { Contacto, Pie } from "@/components/inicio/Contacto";
 import { Encabezado } from "@/components/inicio/Encabezado";
-import { CASOS, type Slug } from "./casos";
+import { CASOS, type Ancho, type Slug } from "./casos";
+import { Galeria } from "./Galeria";
 import { Marca } from "./Marca";
 
 /* La página de un caso, vestida entera con la marca de su producto (#7).
    Arriba la portada con la maqueta, en el medio el relato del MDX, y al final
    el caso siguiente, ya en SU marca: el cambio de color es la transición. */
+/* La columna de la maqueta en la portada del caso, según qué tan ancha es. */
+const COLUMNA: Record<Ancho, string> = {
+  telefono: "flex-[0_1_330px]",
+  ventana: "w-full max-w-140 flex-[1_1_440px]",
+  dispositivos: "w-full max-w-[680px] flex-[1_1_520px]",
+};
+
 export function MarcoCaso({ slug, children }: { slug: Slug; children: ReactNode }) {
   const caso = CASOS[slug];
   return (
@@ -35,11 +43,13 @@ export function MarcoCaso({ slug, children }: { slug: Slug; children: ReactNode 
               ))}
             </dl>
           </div>
-          <div className={`mx-auto min-w-0 ${caso.maquetaAncha ? "w-full max-w-140 flex-[1_1_440px]" : "flex-[0_1_330px]"}`}>
+          <div className={`mx-auto min-w-0 ${COLUMNA[caso.ancho]}`}>
             {caso.maqueta}
             <p className="mt-3.5 text-center text-[13px] text-(--caso-suave)">Datos de demo</p>
           </div>
         </section>
+
+        <Galeria pantallas={caso.galeria} />
 
         <article className="mx-auto w-full max-w-3xl px-4 pb-24 sm:pb-32">{children}</article>
 

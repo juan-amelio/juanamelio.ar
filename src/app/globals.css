@@ -81,6 +81,13 @@
   --font-fs: var(--font-source-serif);
 }
 
+/* Ninguna maqueta debería desbordar, pero si una lo hace un instante (antes de
+   medirse), que no aparezca scroll horizontal en el celular. */
+html,
+body {
+  overflow-x: clip;
+}
+
 body {
   background: var(--color-fondo);
   color: var(--color-tinta);
@@ -164,6 +171,33 @@ body {
   --caso-borde: var(--color-fs-borde);
   --caso-fuente: var(--font-source-serif);
   --caso-brillo: none;
+}
+
+/* Forge en su tema oscuro real (marca.css de forge-studio): la tinta como piso,
+   el papel como texto, las tintas un escalón más claras. El botón primario
+   conserva el cian de imprenta con texto papel, igual que en la app. */
+[data-caso="forge-oscuro"] {
+  --caso-fondo: #1a1918;
+  --caso-superficie: #242221;
+  --caso-texto: #f3f2f2;
+  --caso-texto-medio: #d0cccc;
+  --caso-suave: #a9a5a5;
+  --caso-acento: var(--color-fs-cian);
+  --caso-acento-hover: var(--color-fs-cian-texto);
+  --caso-sobre-acento: #f3f2f2;
+  --caso-cita: #ff458e;
+  --caso-borde: #403d3c;
+  --caso-fuente: var(--font-source-serif);
+  --caso-brillo: radial-gradient(60% 40% at 80% 0%, rgb(98 197 238 / 0.1), transparent 70%);
+}
+
+/* La barra que cuenta cuánto falta para la próxima pantalla de la galería. */
+.avance {
+  animation: avance linear both;
+}
+@keyframes avance {
+  from { width: 0; }
+  to { width: 100%; }
 }
 
 /*

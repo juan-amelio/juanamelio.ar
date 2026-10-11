@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { CASOS, ORDEN } from "@/components/casos/casos";
 import { CajaA7 } from "@/components/maquetas/A7";
-import { TableroForge } from "@/components/maquetas/Forge";
+import { PantallaForge } from "@/components/maquetas/ForgeEscritorio";
 import { TelefonoGlobalFit } from "@/components/maquetas/GlobalFit";
 
 /* Cada pantalla en la ronda, con su tamaño. La ventana de Forge es más ancha y
@@ -13,7 +13,7 @@ import { TelefonoGlobalFit } from "@/components/maquetas/GlobalFit";
 const PANTALLAS: { maqueta: ReactNode; ancho: string; escala: string }[] = [
   { maqueta: <TelefonoGlobalFit />, ancho: "w-80", escala: "[--escala:.5] sm:[--escala:.72]" },
   { maqueta: <CajaA7 />, ancho: "w-80", escala: "[--escala:.5] sm:[--escala:.72]" },
-  { maqueta: <TableroForge />, ancho: "w-[560px] [--arriba:80px] sm:[--arriba:110px]", escala: "[--escala:.34] sm:[--escala:.66]" },
+  { maqueta: <PantallaForge />, ancho: "w-[560px] [--arriba:80px] sm:[--arriba:110px]", escala: "[--escala:.34] sm:[--escala:.66]" },
 ];
 
 const PASO = 360 / ORDEN.length;
@@ -169,7 +169,7 @@ export function Portada({ encabezado }: { encabezado: ReactNode }) {
           </div>
 
           {/* La tarjeta del proyecto que está adelante, vestida con su marca. */}
-          <div data-caso={caso.slug} className="relative z-10 w-full max-w-[460px]">
+          <div data-caso={caso.slug === "forge-studio" ? "forge-oscuro" : caso.slug} className="relative z-10 w-full max-w-[460px]">
             <div
               key={caso.slug}
               aria-live="polite"
