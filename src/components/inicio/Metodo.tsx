@@ -33,7 +33,7 @@ const PASOS = [
 
 export function Metodo() {
   return (
-    <section id="proceso" className="mx-auto w-full max-w-7xl px-4 pt-24 sm:px-14 sm:pt-40">
+    <section id="proceso" className="snap-start mx-auto w-full max-w-7xl px-4 pt-24 sm:px-14 sm:pt-40">
       <h2 className="text-[clamp(32px,4.4vw,64px)] leading-none font-extrabold tracking-[-0.035em]">Proceso</h2>
       <p className="mt-6 max-w-[52ch] text-[19px] leading-relaxed text-tinta-media">
         Del primer mensaje a la app funcionando, y después también. Del otro lado está siempre la misma persona.

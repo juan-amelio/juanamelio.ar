@@ -20,7 +20,7 @@ export function Contacto() {
   ].filter(Boolean) as Canal[];
 
   return (
-    <section id="contacto" className="mx-auto w-full max-w-7xl px-4 pt-24 sm:px-14 sm:pt-40">
+    <section id="contacto" className="snap-start mx-auto w-full max-w-7xl px-4 pt-24 sm:px-14 sm:pt-40">
       <div className="relative isolate flex flex-col items-center overflow-hidden rounded-[32px] bg-superficie px-6 py-14 text-center shadow-[inset_0_0_0_1px_var(--color-borde-oscuro)] sm:px-16 sm:py-20">
         <div
           aria-hidden="true"
@@ -71,7 +71,7 @@ export function Contacto() {
 
 export function Pie() {
   return (
-    <footer className="mx-auto flex w-full max-w-7xl flex-wrap justify-between gap-x-6 gap-y-2 px-4 pt-12 pb-14 text-[15px] text-tinta-suave sm:px-14">
+    <footer className="snap-end mx-auto flex w-full max-w-7xl flex-wrap justify-between gap-x-6 gap-y-2 px-4 pt-12 pb-14 text-[15px] text-tinta-suave sm:px-14">
       <span>juanamelio.ar</span>
       <span>Hecho por mí, con el mismo método que mis proyectos.</span>
     </footer>

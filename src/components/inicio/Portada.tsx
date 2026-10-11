@@ -126,7 +126,7 @@ export function Portada() {
   }, []);
 
   return (
-    <section ref={ref} id="inicio" className="portada relative isolate overflow-hidden">
+    <section ref={ref} id="inicio" className="portada relative isolate overflow-hidden lg:snap-start lg:scroll-mt-0!">
       <div className="mx-auto grid min-h-svh max-w-7xl items-center gap-x-12 gap-y-6 px-4 pt-24 pb-16 sm:px-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:pb-20">
         <div className="portada-texto relative z-10">
           <h1 className="animate-subir max-w-[11ch] text-[clamp(44px,7.2vw,112px)] leading-[0.94] font-extrabold tracking-[-0.04em]">

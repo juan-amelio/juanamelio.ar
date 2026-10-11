@@ -12,7 +12,7 @@ const DATOS: [string, string][] = [
 
 export function SobreMi() {
   return (
-    <section id="sobre-mi" className="mx-auto w-full max-w-7xl px-4 pt-24 sm:px-14 sm:pt-40">
+    <section id="sobre-mi" className="snap-start mx-auto w-full max-w-7xl px-4 pt-24 sm:px-14 sm:pt-40">
       {/* El texto y la foto, arriba a la derecha (en el celular, la foto primero).
           Los datos van debajo, a todo el ancho, para que las columnas queden parejas. */}
       <div className="grid gap-x-20 gap-y-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,340px)]">

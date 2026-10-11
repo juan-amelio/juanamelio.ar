@@ -1,6 +1,6 @@
 "use client";
 
-import { useCiclo } from "./useCiclo";
+import { useCiclo, type Animable } from "./useCiclo";
 import { Ventana } from "./Ventana";
 
 /* A7 Sports en escritorio, con datos de demo: la gestión (stock y compras) y
@@ -35,9 +35,9 @@ const COMPRAS = [
   { f: "30/08", c: "0001-00000151", t: "$94.700", u: 10 },
 ];
 
-export function GestionA7({ vista, activo = true }: { vista?: "stock" | "compras" | "resumen"; activo?: boolean }) {
+export function GestionA7({ vista, activo = true, alTerminar }: Animable & { vista?: "stock" | "compras" | "resumen" }) {
   // Sin vista fija, alterna: una venta descuenta stock, después entra una compra.
-  const { ref, paso } = useCiclo(6, 1300, activo);
+  const { ref, paso } = useCiclo(vista ? 3 : 6, 1300, activo, alTerminar); // con vista fija, una sola vuelta
   const actual = vista ?? (paso < 3 ? "stock" : "compras");
   const vendio = vista === "stock" ? paso % 3 >= 1 : actual === "stock" && paso >= 1;
   const entro = vista === "compras" ? paso % 3 >= 1 : actual === "compras" && paso >= 4;
@@ -155,8 +155,8 @@ const PRODUCTOS = {
   mujer: ["Calza larga", "Musculosa", "Pollera short", "Buzo dama", "Remera dama", "Vestido"],
 };
 
-export function TiendaA7({ activo = true }: { activo?: boolean }) {
-  const { ref, paso } = useCiclo(4, 1600, activo);
+export function TiendaA7({ activo = true, alTerminar }: Animable) {
+  const { ref, paso } = useCiclo(4, 1600, activo, alTerminar);
   const mujer = paso >= 2;
   const lista = mujer ? PRODUCTOS.mujer : PRODUCTOS.todo;
 

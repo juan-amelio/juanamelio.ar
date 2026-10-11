@@ -1,6 +1,6 @@
 "use client";
 
-import { useCiclo, useContador } from "./useCiclo";
+import { useCiclo, useContador, type Animable } from "./useCiclo";
 
 const LINEAS = [
   { producto: "Paleta de control", total: 180000, detalle: "1 unidad" },
@@ -13,8 +13,8 @@ const pesos = (n: number) => `$ ${n.toLocaleString("es-AR")}`;
 
 /* La caja de A7 Sports con datos de demo. Viva: entran las líneas de una
    venta y el total sube contando. */
-export function CajaA7({ activo = true }: { activo?: boolean }) {
-  const { ref, paso } = useCiclo(4, 1500, activo);
+export function CajaA7({ activo = true, alTerminar }: Animable) {
+  const { ref, paso } = useCiclo(4, 1500, activo, alTerminar);
   const cuantas = Math.min(paso + 1, LINEAS.length);
   const total = useContador(LINEAS.slice(0, cuantas).reduce((s, l) => s + l.total, 0));
 
