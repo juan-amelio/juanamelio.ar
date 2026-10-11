@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { CASOS, MAX_ANCHO, ORDEN, type Dispositivo, type Slug } from "@/components/casos/casos";
 import { Icono, IconoDispositivo } from "@/components/casos/IconosFuncion";
@@ -118,11 +119,12 @@ export function Recorrido() {
                 ref={(el) => {
                   pasos.current[slug] = el;
                 }}
-                className={`${FUENTE[slug]} flex min-h-svh snap-start scroll-mt-0! flex-col justify-center py-20 transition-opacity duration-500 lg:pt-24 lg:pb-12 ${
+                className={`${FUENTE[slug]} flex min-h-svh snap-start scroll-mt-0! flex-col justify-center py-20 transition-opacity duration-500 lg:pt-20 lg:pb-8 ${
                   activo === slug ? "opacity-100" : "lg:opacity-30"
                 }`}
               >
-                <p className="text-[22px]">
+                <p className="flex items-center gap-3.5 text-[22px]">
+                  <Image src={caso.logo} alt="" width={44} height={44} className="size-11 rounded-xl object-contain" />
                   <Marca caso={slug} />
                 </p>
                 <h2 className="mt-4 max-w-[16ch] text-[clamp(32px,3.6vw,52px)] leading-[1.02] font-extrabold tracking-[-0.03em]">

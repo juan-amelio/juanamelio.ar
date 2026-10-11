@@ -33,13 +33,13 @@ const PASOS = [
 
 export function Metodo() {
   return (
-    <section id="proceso" className="snap-start mx-auto w-full max-w-7xl px-4 pt-24 sm:px-14 sm:pt-40">
+    <section id="proceso" className="mx-auto w-full max-w-7xl snap-start px-4 pt-24 sm:px-14 sm:pt-40 lg:flex lg:min-h-svh lg:flex-col lg:justify-center lg:scroll-mt-0! lg:pt-20 lg:pb-10">
       <h2 className="text-[clamp(32px,4.4vw,64px)] leading-none font-extrabold tracking-[-0.035em]">Proceso</h2>
       <p className="mt-6 max-w-[52ch] text-[19px] leading-relaxed text-tinta-media">
         Del primer mensaje a la app funcionando, y después también. Del otro lado está siempre la misma persona.
       </p>
 
-      <ol className="relative mt-14 grid gap-10 lg:grid-cols-5 lg:gap-6">
+      <ol className="relative mt-14 grid lg:mt-12 gap-10 lg:grid-cols-5 lg:gap-6">
         {/* La línea que une los pasos: horizontal en escritorio, vertical en el celular. */}
         <span
           aria-hidden="true"
@@ -61,7 +61,7 @@ export function Metodo() {
         ))}
       </ol>
 
-      <p className="mt-16 max-w-[60ch] text-[17px] leading-relaxed text-tinta-suave">
+      <p className="mt-16 max-w-[60ch] lg:mt-12 text-[17px] leading-relaxed text-tinta-suave">
         Trabajo con IA todos los días, con candados: no puede escribir en la rama principal ni saltarse la revisión. La
         velocidad es de la herramienta; la responsabilidad sigue siendo mía.
       </p>

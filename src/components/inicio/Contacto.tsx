@@ -20,8 +20,8 @@ export function Contacto() {
   ].filter(Boolean) as Canal[];
 
   return (
-    <section id="contacto" className="snap-start mx-auto w-full max-w-7xl px-4 pt-24 sm:px-14 sm:pt-40">
-      <div className="relative isolate flex flex-col items-center overflow-hidden rounded-[32px] bg-superficie px-6 py-14 text-center shadow-[inset_0_0_0_1px_var(--color-borde-oscuro)] sm:px-16 sm:py-20">
+    <section id="contacto" className="mx-auto w-full max-w-7xl px-4 pt-24 sm:px-14 sm:pt-40 lg:flex lg:flex-1 lg:flex-col lg:justify-center lg:scroll-mt-0! lg:pt-20">
+      <div className="relative isolate flex flex-col items-center overflow-hidden rounded-[32px] bg-superficie px-6 py-14 text-center shadow-[inset_0_0_0_1px_var(--color-borde-oscuro)] sm:px-16 sm:py-20 lg:py-12">
         <div
           aria-hidden="true"
           className="absolute inset-0 -z-10 bg-[radial-gradient(60%_80%_at_0%_0%,rgb(0_181_181/.16),transparent_70%),radial-gradient(50%_70%_at_100%_100%,rgb(190_222_20/.12),transparent_70%),radial-gradient(40%_50%_at_100%_0%,rgb(214_0_108/.10),transparent_70%)]"
@@ -38,14 +38,14 @@ export function Contacto() {
           <HoraMendoza />
         </div>
 
-        <Foto tamanos="128px" className="mt-12 size-24 rounded-full sm:size-32" />
-        <h2 className="mt-8 text-[clamp(48px,8vw,120px)] leading-[0.92] font-extrabold tracking-[-0.045em]">Hablemos.</h2>
+        <Foto tamanos="128px" className="mt-12 size-24 rounded-full sm:size-32 lg:mt-8 lg:size-28" />
+        <h2 className="mt-8 text-[clamp(48px,8vw,120px)] lg:mt-6 lg:text-[clamp(48px,7vw,104px)] leading-[0.92] font-extrabold tracking-[-0.045em]">Hablemos.</h2>
         <p className="mt-6 max-w-[44ch] text-[19px] leading-normal text-tinta-media">
           Si buscás a alguien para tu equipo o tenés una idea que querés ver funcionando, escribime por donde te quede
           más cómodo.
         </p>
 
-        <ul className="mt-10 flex flex-wrap justify-center gap-4 sm:gap-5">
+        <ul className="mt-10 flex lg:mt-8 flex-wrap justify-center gap-4 sm:gap-5">
           {canales.map(({ href, nombre, Icono, color }) => (
             <li key={nombre}>
               <a
@@ -71,7 +71,7 @@ export function Contacto() {
 
 export function Pie() {
   return (
-    <footer className="snap-end mx-auto flex w-full max-w-7xl flex-wrap justify-between gap-x-6 gap-y-2 px-4 pt-12 pb-14 text-[15px] text-tinta-suave sm:px-14">
+    <footer className="mx-auto flex w-full max-w-7xl flex-wrap justify-between gap-x-6 gap-y-2 px-4 pt-12 pb-14 text-[15px] text-tinta-suave sm:px-14 lg:pt-8 lg:pb-8">
       <span>juanamelio.ar</span>
       <span>Hecho por mí, con el mismo método que mis proyectos.</span>
     </footer>
