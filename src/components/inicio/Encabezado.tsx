@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CASOS, ORDEN, type Slug } from "@/components/casos/casos";
+import { EnlaceSeccion } from "@/components/EnlaceSeccion";
 import { ADENTRO, AFUERA } from "@/components/transiciones/Transiciones";
 
 /*
@@ -43,18 +44,18 @@ export function Encabezado({ caso }: { caso?: Slug }) {
         )}
 
         <nav aria-label="Secciones" className={`items-center gap-x-7 text-[15px] font-medium ${caso ? "hidden xl:flex" : "flex"}`}>
-          <Link href="/#trabajos" transitionTypes={AFUERA} className="hidden sm:inline">
-            Trabajos
-          </Link>
-          <Link href="/#sobre-mi" transitionTypes={AFUERA} className="hidden sm:inline">
+          <EnlaceSeccion href="/#proyectos" transitionTypes={AFUERA} className="hidden sm:inline">
+            Proyectos
+          </EnlaceSeccion>
+          <EnlaceSeccion href="/#sobre-mi" transitionTypes={AFUERA} className="hidden sm:inline">
             Sobre mí
-          </Link>
-          <Link href="/#metodo" transitionTypes={AFUERA} className="hidden md:inline">
-            Cómo trabajo
-          </Link>
-          <Link href="/#contacto" transitionTypes={AFUERA}>
+          </EnlaceSeccion>
+          <EnlaceSeccion href="/#proceso" transitionTypes={AFUERA} className="hidden md:inline">
+            Proceso
+          </EnlaceSeccion>
+          <EnlaceSeccion href="/#contacto" transitionTypes={AFUERA}>
             Contacto
-          </Link>
+          </EnlaceSeccion>
         </nav>
       </div>
     </header>

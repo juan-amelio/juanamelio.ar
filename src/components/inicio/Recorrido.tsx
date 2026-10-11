@@ -59,9 +59,9 @@ export function Recorrido() {
 
   return (
     <section
-      id="trabajos"
+      id="proyectos"
       data-caso={TEMA[activo]}
-      aria-label="Trabajos"
+      aria-label="Proyectos"
       className="recorrido relative bg-(--caso-fondo) text-(--caso-texto) transition-[background-color,color] duration-700 ease-out"
     >
       <div className="mx-auto grid max-w-7xl px-4 sm:px-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-x-20">
