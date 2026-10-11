@@ -7,6 +7,7 @@ import { CASOS, ORDEN } from "@/components/casos/casos";
 import { CajaA7 } from "@/components/maquetas/A7";
 import { PantallaForge } from "@/components/maquetas/ForgeEscritorio";
 import { TelefonoGlobalFit } from "@/components/maquetas/GlobalFit";
+import { ADENTRO } from "@/components/transiciones/Transiciones";
 
 /* Cada pantalla en la ronda, con su tamaño. La ventana de Forge es más ancha y
    más baja que los teléfonos: va más abajo para quedar centrada con ellos. */
@@ -182,6 +183,7 @@ export function Portada({ encabezado }: { encabezado: ReactNode }) {
               </div>
               <Link
                 href={`/casos/${caso.slug}`}
+                transitionTypes={ADENTRO}
                 className="shrink-0 rounded-full bg-(--caso-acento) px-4 py-2.5 text-sm font-bold text-(--caso-sobre-acento) hover:bg-(--caso-acento-hover)"
               >
                 Ver el proyecto

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { CASOS, MAX_ANCHO, ORDEN, type Slug } from "@/components/casos/casos";
 import { Marca } from "@/components/casos/Marca";
+import { ADENTRO, MaquetaQueViaja } from "@/components/transiciones/Transiciones";
 
 /* Forge va en su tema oscuro real: después de dos marcas negras, pasar al
    papel era un salto brusco (#26). Su página de caso sigue en papel. */
@@ -31,6 +32,16 @@ const FUENTE: Record<Slug, string> = {
  */
 export function Recorrido() {
   const [activo, setActivo] = useState<Slug>("global-fit");
+  // Qué pantalla viaja al caso: la fija (escritorio) o la de abajo del texto
+  // (celular). Nunca las dos: dos con el mismo nombre cortan la transición.
+  const [escritorio, setEscritorio] = useState<boolean | null>(null);
+  useEffect(() => {
+    const consulta = window.matchMedia("(min-width: 1024px)");
+    const aplicar = () => setEscritorio(consulta.matches);
+    aplicar();
+    consulta.addEventListener("change", aplicar);
+    return () => consulta.removeEventListener("change", aplicar);
+  }, []);
   const pasos = useRef<Partial<Record<Slug, HTMLElement | null>>>({});
 
   useEffect(() => {
@@ -90,12 +101,13 @@ export function Recorrido() {
                 </dl>
                 <Link
                   href={`/casos/${slug}`}
+                  transitionTypes={ADENTRO}
                   className="boton mt-9 self-start bg-(--caso-acento) text-(--caso-sobre-acento) transition-colors duration-700 hover:bg-(--caso-acento-hover)"
                 >
                   Ver el caso de {caso.nombre}
                 </Link>
                 <div className={`mx-auto mt-14 w-full lg:hidden ${MAX_ANCHO[caso.ancho]}`}>
-                  {caso.maqueta}
+                  {escritorio === false ? <MaquetaQueViaja caso={slug}>{caso.maqueta}</MaquetaQueViaja> : caso.maqueta}
                 </div>
               </article>
             );
@@ -120,7 +132,13 @@ export function Recorrido() {
                         }`
                   }`}
                 >
-                  <div className={`w-full ${MAX_ANCHO[CASOS[slug].ancho]}`}>{CASOS[slug].maqueta}</div>
+                  <div className={`w-full ${MAX_ANCHO[CASOS[slug].ancho]}`}>
+                    {escritorio === true && activo === slug ? (
+                      <MaquetaQueViaja caso={slug}>{CASOS[slug].maqueta}</MaquetaQueViaja>
+                    ) : (
+                      CASOS[slug].maqueta
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
