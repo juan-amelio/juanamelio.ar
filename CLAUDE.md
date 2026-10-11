@@ -23,13 +23,18 @@ El repo es **público**. Nada que no se pueda leer en internet entra acá: ni
 - **Dirección visual: la C · En vivo**, elegida el 10/10/2026. El sitio habla con
   Bricolage Grotesque sobre **grafito oscuro** (desde la #23), y **cada caso se
   viste con la marca real de su producto** en su sección: Global Fit (negro + turquesa, Geist), A7 Sports
-  (negro + lima, Archivo) y Forge Studio (gris claro, Source Serif 4 y los
-  colores de imprenta). El prototipo está en
+  (negro + lima, Archivo) y Forge Studio (su tema oscuro real, Source Serif 4 y
+  los colores de imprenta). El prototipo está en
   https://claude.ai/artifact/EMLjqPagbSz9YcC64oPbv3 (`EnVivo.dc.html`).
 - **La portada son las tres apps vivas** (#23): flotan en perspectiva, se mueven
   solas y siguen al mouse; al bajar, una escena fija cambia el fondo a la marca
   de cada caso. Sin botones de contacto en la portada: eso va al menú y al final.
   Todo movimiento respeta «reducir movimiento».
+- **Una sola página** (#32, 11/10/2026): no hay páginas de caso ni relato. Cada
+  proyecto muestra en el inicio qué hace, con un selector **Celular /
+  Escritorio** (lo que se usa desde el teléfono y lo que se usa desde el
+  panel) y la lista de funciones; se cambia tocando, el scroll sólo pasa de un
+  proyecto al otro. Forge Studio no tiene versión de celular.
 - **A7 Sports se llama siempre así**, nunca X-Trust.
 - **Capturas y videos, siempre con datos de demo.** Global Fit guarda fichas de
   salud (Ley 25.326) y A7 Sports nombres de clientes. Al gimnasio se lo puede
@@ -42,8 +47,9 @@ El repo es **público**. Nada que no se pueda leer en internet entra acá: ni
 | Dónde | Qué |
 |---|---|
 | `src/app/page.tsx` | El inicio |
-| `src/app/casos/<caso>/page.mdx` | Cada caso, en MDX |
-| `src/mdx-components.tsx` | Los componentes que usa el MDX (obligatorio con App Router) |
+| `src/components/casos/casos.tsx` | Los datos de cada proyecto y sus funciones, por celular y escritorio |
+| `src/components/inicio/Recorrido.tsx` | La escena de los proyectos, con el selector y la lista de funciones |
+| `src/components/maquetas/` | Las pantallas de cada app, dibujadas y con datos de demo |
 | `src/app/globals.css` | Tokens del sitio (se fijan en la #6) |
 
 ## Gotchas

@@ -5,12 +5,12 @@ import { usePathname } from "next/navigation";
 import type { ComponentProps, MouseEvent } from "react";
 
 /*
- * Un enlace a una sección del inicio ("/#proceso"). Si ya se está en el
- * inicio, la página se desliza hasta la sección en vez de saltar; desde un
- * caso, navega como cualquier Link.
+ * Un enlace a una sección del inicio ("/#proceso"): la página se desliza
+ * hasta la sección en vez de saltar. Desde otra ruta (un 404, por ejemplo)
+ * navega como cualquier Link.
  *
- * No alcanza con scroll-behavior: smooth en el CSS: Next envuelve la
- * navegación en una transición de vista y el deslizamiento se cancela.
+ * El deslizamiento es propio, y no scroll-behavior: smooth, para controlar
+ * la curva y el tiempo y para devolver el control si la persona toca la rueda.
  */
 export function EnlaceSeccion({ href, onClick, ...resto }: ComponentProps<typeof Link> & { href: `/#${string}` }) {
   const ruta = usePathname();

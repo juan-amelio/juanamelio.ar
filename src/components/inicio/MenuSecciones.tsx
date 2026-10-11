@@ -3,7 +3,6 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { EnlaceSeccion } from "@/components/EnlaceSeccion";
-import { AFUERA } from "@/components/transiciones/Transiciones";
 
 const SECCIONES = [
   { id: "proyectos", nombre: "Proyectos", visible: "hidden sm:inline-block" },
@@ -14,7 +13,7 @@ const SECCIONES = [
 
 /*
  * Las secciones del inicio en la barra, con la que se está mirando marcada,
- * para saber siempre dónde se está parado. En un caso no se marca ninguna.
+ * para saber siempre dónde se está parado.
  */
 export function MenuSecciones({ className }: { className: string }) {
   const actual = useSeccionActual();
@@ -27,7 +26,6 @@ export function MenuSecciones({ className }: { className: string }) {
           <EnlaceSeccion
             key={id}
             href={`/#${id}`}
-            transitionTypes={AFUERA}
             aria-current={activa ? "location" : undefined}
             className={`relative py-1.5 transition-colors duration-300 after:absolute after:inset-x-0 after:-bottom-0.5 after:h-0.5 after:origin-center after:rounded-full after:bg-current after:transition-transform after:duration-300 ${
               activa ? "text-tinta after:scale-x-100" : "text-tinta-media after:scale-x-0 hover:text-tinta"
@@ -43,8 +41,8 @@ export function MenuSecciones({ className }: { className: string }) {
 
 /* La sección activa es la última cuyo comienzo ya pasó el 40 % de la pantalla.
    Al llegar al final de la página gana la última, aunque no alcance esa
-   línea: el contacto es corto y si no nunca se marcaría. En la portada, o
-   fuera del inicio, ninguna. */
+   línea: el contacto es corto y si no nunca se marcaría. En la portada,
+   ninguna. */
 function useSeccionActual() {
   const ruta = usePathname();
   const [actual, setActual] = useState<string | null>(null);

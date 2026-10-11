@@ -4,11 +4,10 @@ import { Metodo } from "@/components/inicio/Metodo";
 import { Portada } from "@/components/inicio/Portada";
 import { Recorrido } from "@/components/inicio/Recorrido";
 import { SobreMi } from "@/components/inicio/SobreMi";
-import { Pagina } from "@/components/transiciones/Transiciones";
 
 export default function Inicio() {
   return (
-    <Pagina>
+    <>
       {/* Afuera de la portada: ella lleva isolate y la barra quedaba debajo del recorrido. */}
       <Encabezado />
       <main>
@@ -19,6 +18,6 @@ export default function Inicio() {
         <Contacto />
       </main>
       <Pie />
-    </Pagina>
+    </>
   );
 }

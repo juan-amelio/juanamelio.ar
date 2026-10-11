@@ -1,14 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { CASOS, ORDEN } from "@/components/casos/casos";
 import { EnlaceSeccion } from "@/components/EnlaceSeccion";
 import { CajaA7 } from "@/components/maquetas/A7";
 import { PantallaForge } from "@/components/maquetas/ForgeEscritorio";
 import { TelefonoGlobalFit } from "@/components/maquetas/GlobalFit";
-import { ADENTRO } from "@/components/transiciones/Transiciones";
 
 /* Cada pantalla en la ronda, con su tamaño. La ventana de Forge es más ancha y
    más baja que los teléfonos: va más abajo para quedar centrada con ellos. */
@@ -128,7 +126,7 @@ export function Portada() {
   }, []);
 
   return (
-    <section ref={ref} className="portada relative isolate overflow-hidden">
+    <section ref={ref} id="inicio" className="portada relative isolate overflow-hidden">
       <div className="mx-auto grid min-h-svh max-w-7xl items-center gap-x-12 gap-y-6 px-4 pt-24 pb-16 sm:px-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:pb-20">
         <div className="portada-texto relative z-10">
           <h1 className="animate-subir max-w-[11ch] text-[clamp(44px,7.2vw,112px)] leading-[0.94] font-extrabold tracking-[-0.04em]">
@@ -215,13 +213,12 @@ export function Portada() {
                 <p className="text-lg leading-tight font-bold">{caso.nombre}</p>
                 <p className="mt-0.5 text-sm leading-snug text-(--caso-suave)">{caso.corto}</p>
               </div>
-              <Link
-                href={`/casos/${caso.slug}`}
-                transitionTypes={ADENTRO}
+              <EnlaceSeccion
+                href={`/#${caso.slug}`}
                 className="shrink-0 rounded-full bg-(--caso-acento) px-4 py-2.5 text-sm font-bold text-(--caso-sobre-acento) hover:bg-(--caso-acento-hover)"
               >
                 Ver el proyecto
-              </Link>
+              </EnlaceSeccion>
             </div>
             <div className="mt-3 flex justify-center gap-1">
               {ORDEN.map((slug, i) => (
