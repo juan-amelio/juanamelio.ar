@@ -1,4 +1,4 @@
-/* Los íconos de cada cosa que hace una app, en la galería de su caso (#29).
+/* Los íconos de cada cosa que hace una app, en el selector de cada proyecto (#29, #32).
    Trazo fino, currentColor: toman el color del tema del caso. */
 const TRAZOS = {
   reservar: "M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zM3 10h18M8 3v4M16 3v4M9 15l2 2 4-4",
@@ -14,6 +14,7 @@ const TRAZOS = {
   inicio: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2",
   tablero: "M4 4h4v16H4zM10 4h4v10h-4zM16 4h4v7h-4z",
   revision: "M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM21 21l-5-5M8 11l2 2 4-4",
+  socios: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75",
   calendario: "M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zM3 10h18M8 3v4M16 3v4M7 14h2M11 14h2M15 14h2M7 18h2M11 18h2",
 } as const;
 
