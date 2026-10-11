@@ -35,7 +35,7 @@ const COMPRAS = [
   { f: "30/08", c: "0001-00000151", t: "$94.700", u: 10 },
 ];
 
-export function GestionA7({ vista, activo = true }: { vista?: "stock" | "compras"; activo?: boolean }) {
+export function GestionA7({ vista, activo = true }: { vista?: "stock" | "compras" | "resumen"; activo?: boolean }) {
   // Sin vista fija, alterna: una venta descuenta stock, después entra una compra.
   const { ref, paso } = useCiclo(6, 1300, activo);
   const actual = vista ?? (paso < 3 ? "stock" : "compras");
@@ -68,7 +68,9 @@ export function GestionA7({ vista, activo = true }: { vista?: "stock" | "compras
             ))}
           </nav>
           <div className="min-w-0 flex-1 p-4">
-            {actual === "stock" ? (
+            {actual === "resumen" ? (
+              <Resumen paso={paso} />
+            ) : actual === "stock" ? (
               <div key="stock" className="entrar">
                 <div className="flex items-center justify-between">
                   <p className="text-lg font-extrabold">Stock</p>
@@ -212,6 +214,43 @@ export function TiendaA7({ activo = true }: { activo?: boolean }) {
           Consultar por WhatsApp
         </span>
       </Ventana>
+    </div>
+  );
+}
+
+/* El resumen del mes: lo que se vendió, por semana y por dónde. Datos de demo. */
+function Resumen({ paso }: { paso: number }) {
+  const semanas = [38, 52, 44, 71];
+  const crecio = paso % 3 >= 1;
+  return (
+    <div className="entrar">
+      <p className="text-lg font-extrabold">Resumen</p>
+      <div className="mt-3 grid grid-cols-3 gap-2">
+        {[
+          ["Ventas del mes", crecio ? "42" : "41"],
+          ["Unidades", crecio ? "99" : "96"],
+          ["En eventos", "38%"],
+        ].map(([e, v]) => (
+          <div key={e} className="rounded-lg bg-a7-superficie p-2.5">
+            <p className="text-[9px] text-a7-suave">{e}</p>
+            <p key={v} className="entrar mt-1 text-xl font-extrabold tabular-nums [font-stretch:110%]">{v}</p>
+          </div>
+        ))}
+      </div>
+      <div className="mt-3 rounded-lg bg-a7-superficie p-3">
+        <p className="text-[9px] text-a7-suave">Ventas por semana</p>
+        <div className="mt-2 flex h-[120px] items-end gap-3">
+          {semanas.map((v, i) => (
+            <div key={i} className="flex flex-1 flex-col items-center gap-1">
+              <span
+                className={`w-full rounded-t-md transition-all duration-500 ${i === semanas.length - 1 ? "bg-a7-lima" : "bg-a7-superficie-alta"}`}
+                style={{ height: `${(i === semanas.length - 1 && crecio ? v + 6 : v) * 1.4}px` }}
+              />
+              <span className="text-[8.5px] text-a7-suave">Sem {i + 1}</span>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

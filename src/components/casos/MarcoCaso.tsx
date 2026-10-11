@@ -26,9 +26,9 @@ export function MarcoCaso({ slug, children }: { slug: Slug; children: ReactNode 
       data-caso={slug}
       className="flex flex-1 flex-col bg-(--caso-fondo) font-(family-name:--caso-fuente) text-(--caso-texto) [background-image:var(--caso-brillo)] bg-no-repeat"
     >
-      <Encabezado />
+      <Encabezado caso={slug} />
       <main className="flex-1">
-        <section className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-20 gap-y-14 px-4 pt-6 pb-20 sm:px-14 sm:pt-12 sm:pb-28">
+        <section className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-20 gap-y-14 px-4 pt-24 pb-20 sm:px-14 sm:pt-32 sm:pb-28">
           <div className="min-w-0 flex-[1_1_480px]">
             <p className="text-[22px]">
               <Marca caso={slug} />
@@ -37,14 +37,21 @@ export function MarcoCaso({ slug, children }: { slug: Slug; children: ReactNode 
               {caso.titular}
             </h1>
             <p className="mt-6 max-w-[52ch] text-xl leading-relaxed text-(--caso-texto-medio)">{caso.bajada}</p>
-            <dl className="mt-10 grid gap-x-10 gap-y-5 border-t border-(--caso-borde) pt-8 sm:grid-cols-[auto_1fr]">
-              {caso.datos.map(([etiqueta, valor]) => (
-                <div key={etiqueta} className="contents">
-                  <dt className="text-[15px] text-(--caso-suave) sm:pt-0.5">{etiqueta}</dt>
-                  <dd className="-mt-4 text-[17px] leading-snug font-semibold sm:mt-0">{valor}</dd>
+            <dl className="mt-10 grid grid-cols-2 gap-x-6 gap-y-6 border-t border-(--caso-borde) pt-8 sm:grid-cols-4">
+              {caso.numeros.map((n) => (
+                <div key={n.etiqueta}>
+                  <dd className="text-[clamp(32px,3.4vw,44px)] leading-none font-extrabold tracking-[-0.02em] tabular-nums">{n.valor}</dd>
+                  <dt className="mt-2 text-[14px] leading-snug text-(--caso-suave)">{n.etiqueta}</dt>
                 </div>
               ))}
             </dl>
+            <p className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] text-(--caso-suave)">
+              <span className="flex items-center gap-1.5">
+                <span aria-hidden="true" className="size-1.5 rounded-full bg-(--caso-suave)" />
+                {caso.numerosAl}
+              </span>
+              <span>{caso.hechoCon}</span>
+            </p>
           </div>
           <div className={`mx-auto min-w-0 ${COLUMNA[caso.ancho]}`}>
             <MaquetaQueViaja caso={slug}>{caso.maqueta}</MaquetaQueViaja>
