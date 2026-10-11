@@ -12,8 +12,10 @@ export default function Inicio() {
       <Encabezado />
       <main>
         <Portada />
-        <Recorrido />
+        {/* Primero la persona y después los proyectos (#36): desde la portada se
+            puede ir directo a uno, y el que baja conoce a quién los hizo. */}
         <SobreMi />
+        <Recorrido />
         <Metodo />
         {/* El contacto y el pie son la última pantalla: así el encaje no deja
             el pie colgando abajo. */}
