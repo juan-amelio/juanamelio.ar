@@ -21,14 +21,10 @@ const C = {
   magenta: "text-[#ff90b1]",
 };
 
-const TONO = {
-  marco: `${C.fondo} ${C.tinta} font-fs shadow-[0_0_0_1px_#403d3c,0_40px_90px_-30px_rgba(0,0,0,.7)]`,
-  barra: `${C.panel} border-b border-[#403d3c]`,
-  texto: C.suave,
-  punto: "bg-[#403d3c]",
-};
+const MARCO = `${C.fondo} ${C.tinta} font-fs shadow-[0_0_0_1px_#4a4b50,0_40px_90px_-30px_rgba(0,0,0,.7)]`;
 
 type Vista = "inicio" | "tablero" | "calendario";
+const SECCION: Record<Vista, string> = { inicio: "Inicio", tablero: "Tablero", calendario: "Calendario" };
 const ORDEN: Vista[] = ["inicio", "tablero", "calendario"];
 
 export function PantallaForge({ vista, activo = true, alTerminar }: Animable & { vista?: Vista }) {
@@ -38,7 +34,7 @@ export function PantallaForge({ vista, activo = true, alTerminar }: Animable & {
 
   return (
     <div ref={ref} role="img" aria-label="Forge Studio: el inicio, el tablero y el calendario, con datos de demo">
-      <Ventana titulo="ADJ Forge" tono={TONO}>
+      <Ventana titulo="ADJ Forge" logo="/logos/forge-studio.svg" direccion={["ADJ Forge", ` · ${SECCION[actual]}`]} marco={MARCO}>
         <div className="flex h-full">
           <nav className={`flex w-11 shrink-0 flex-col items-center gap-3 border-r ${C.borde} ${C.panel} pt-3`}>
             {/* eslint-disable-next-line @next/next/no-img-element */}

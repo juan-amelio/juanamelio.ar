@@ -1,5 +1,6 @@
 "use client";
 
+import { Iphone } from "./Iphone";
 import { useCiclo, type Animable } from "./useCiclo";
 
 /* El inicio del socio en Global Fit, con datos de demo. Vivo: el socio
@@ -11,13 +12,13 @@ export function TelefonoGlobalFit({ activo = true, alTerminar }: Animable) {
   const hechas = reservada ? 4 : 3;
 
   return (
-    <div
-      ref={ref}
-      role="img"
-      aria-label="Pantalla de inicio de un socio en la app de Global Fit, con datos de demo"
-      className="w-80 max-w-full rounded-[46px] bg-gf-bisel p-2.5 font-gf text-gf-texto shadow-[0_40px_90px_-30px_rgba(0,181,181,.45),0_0_0_1px_#3a4245]"
+    <Iphone
+      refCiclo={ref}
+      etiqueta="Pantalla de inicio de un socio en la app de Global Fit, con datos de demo"
+      pantalla="bg-gf-fondo font-gf text-gf-texto"
+      contenido="gap-4 px-4.5 pt-1 pb-1.5"
+      brillo="shadow-[0_40px_90px_-30px_rgba(0,181,181,.45)]"
     >
-      <div className="flex min-h-155 flex-col gap-4 rounded-[37px] bg-gf-fondo px-4.5 pt-5.5 pb-3.5">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-[13px] text-gf-suave">Martes 14 de octubre</p>
@@ -73,8 +74,7 @@ export function TelefonoGlobalFit({ activo = true, alTerminar }: Animable) {
           <Pestana nombre="Pagos" d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zM2 10h20" />
           <Pestana nombre="Perfil" d="M8 8a4 4 0 1 0 8 0a4 4 0 1 0-8 0M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6" />
         </div>
-      </div>
-    </div>
+    </Iphone>
   );
 }
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { Iphone } from "./Iphone";
 import { useCiclo, useContador, type Animable } from "./useCiclo";
 
 const LINEAS = [
@@ -19,13 +20,13 @@ export function CajaA7({ activo = true, alTerminar }: Animable) {
   const total = useContador(LINEAS.slice(0, cuantas).reduce((s, l) => s + l.total, 0));
 
   return (
-    <div
-      ref={ref}
-      role="img"
-      aria-label="La caja de A7 Sports con una venta en curso, con datos de demo"
-      className="w-80 max-w-full rounded-[46px] bg-a7-superficie-alta p-2.5 font-a7 text-a7-hueso shadow-[0_40px_90px_-34px_rgba(190,222,20,.35),0_0_0_1px_#3a3a40]"
+    <Iphone
+      refCiclo={ref}
+      etiqueta="La caja de A7 Sports con una venta en curso, con datos de demo"
+      pantalla="bg-a7-fondo font-a7 text-a7-hueso"
+      contenido="gap-2.5 px-4 pt-1 pb-2"
+      brillo="shadow-[0_40px_90px_-34px_rgba(190,222,20,.35)]"
     >
-      <div className="flex min-h-155 flex-col gap-2.5 rounded-[37px] bg-a7-fondo px-4 pt-5.5 pb-4">
         <div className="flex items-center justify-between px-1 pb-1.5">
           <p className="text-2xl font-extrabold [font-stretch:112%]">Caja</p>
           <span className="rounded-full border border-a7-control px-3 py-1.5 text-xs text-a7-suave">Local</span>
@@ -59,7 +60,6 @@ export function CajaA7({ activo = true, alTerminar }: Animable) {
           <span className="font-extrabold">Cobrar</span>
           <span className="text-[26px] font-extrabold tracking-[-0.5px] tabular-nums [font-stretch:112%]">{pesos(total)}</span>
         </div>
-      </div>
-    </div>
+    </Iphone>
   );
 }

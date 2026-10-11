@@ -7,15 +7,17 @@ import { Ventana } from "./Ventana";
    Copia la forma del panel real (gym-app/src/app/admin): el menú arriba,
    la cola de lo que pide atención, los socios, la plantilla y las métricas. */
 
-const TONO = {
-  marco: "bg-gf-fondo font-gf text-gf-texto shadow-[0_0_0_1px_#3a4245,0_40px_90px_-34px_rgba(0,181,181,.4)]",
-  barra: "bg-gf-tarjeta border-b border-gf-bisel",
-  texto: "text-gf-suave",
-  punto: "bg-gf-bisel",
-};
+const MARCO = "bg-gf-fondo font-gf text-gf-texto shadow-[0_0_0_1px_#4a4b50,0_40px_90px_-34px_rgba(0,181,181,.4)]";
 
 const MENU = ["Inicio", "Socios", "Plantilla", "Calendario", "Métricas"] as const;
 type Vista = "inicio" | "socios" | "plantilla" | "metricas";
+/* Las rutas reales del panel (gym-app/src/app/admin). */
+const RUTA: Record<Vista, string> = {
+  inicio: "/admin",
+  socios: "/admin/socios",
+  plantilla: "/admin/clases",
+  metricas: "/admin/estadisticas",
+};
 const EN_MENU: Record<Vista, (typeof MENU)[number]> = {
   inicio: "Inicio",
   socios: "Socios",
@@ -27,7 +29,7 @@ export function PanelGF({ vista, activo = true, alTerminar }: Animable & { vista
   const { ref, paso } = useCiclo(6, 1200, activo, alTerminar);
   return (
     <div ref={ref} role="img" aria-label="El panel del dueño de Global Fit en escritorio, con datos de demo">
-      <Ventana titulo="Global Fit · Admin" tono={TONO}>
+      <Ventana titulo="Global Fit · Admin" logo="/logos/global-fit.png" direccion={["globalfit.ar", RUTA[vista]]} marco={MARCO}>
         <div className="flex h-full flex-col">
           <div className="flex items-center gap-5 border-b border-gf-bisel px-4 py-2.5">
             <span className="flex items-center gap-1.5 text-[12px] font-bold">
