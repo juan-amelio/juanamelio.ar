@@ -17,6 +17,8 @@ export type Caso = {
   corto: string;
   /** El logo real del producto, copiado de su repo a public/logos. */
   logo: string;
+  /** La versión para fondo claro, si la marca tiene una distinta. */
+  logoClaro?: string;
   titular: string;
   bajada: string;
   /** Lo que muestra que la app está viva: números reales de producción. */
@@ -130,6 +132,7 @@ export const CASOS: Record<Slug, Caso> = {
     nombre: "A7 Sports",
     corto: "Ventas, stock y caja de una tienda de pádel",
     logo: "/logos/a7-sports.svg",
+    logoClaro: "/logos/a7-sports-claro.svg",
     titular: "De la planilla a la caja.",
     bajada:
       "Ventas, stock, caja y una tienda pública para un emprendimiento familiar de pádel. La usan cinco personas desde el celular, en el local y en los eventos.",

@@ -26,6 +26,13 @@ El repo es **público**. Nada que no se pueda leer en internet entra acá: ni
   (negro + lima, Archivo) y Forge Studio (su tema oscuro real, Source Serif 4 y
   los colores de imprenta). El prototipo está en
   https://claude.ai/artifact/EMLjqPagbSz9YcC64oPbv3 (`EnVivo.dc.html`).
+- **Modo claro** (12/10/2026): botón en la barra; hasta que la persona elige,
+  sigue al sistema. Cambia el sitio y el fondo de cada caso (con el tema claro
+  real de cada marca), **nunca las pantallas de las apps**: las maquetas leen
+  sólo `--color-gf-*`, `-a7-*` y `-fs-*`, que no cambian con el tema. Si algún
+  día una maqueta va en claro, se decide caso por caso. El tema lo pone el
+  script del `<head>` en `layout.tsx` (`data-tema` en el `<html>`) y se guarda
+  en `localStorage`, para que la página siga siendo estática.
 - **La portada son las tres apps vivas** (#23): flotan en perspectiva, se mueven
   solas y siguen al mouse; al bajar, una escena fija cambia el fondo a la marca
   de cada caso. Sin botones de contacto en la portada: eso va al menú y al final.
