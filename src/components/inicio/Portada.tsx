@@ -172,7 +172,7 @@ export function Portada() {
               }
             }}
           >
-            {/* En claro, el color de la app que está adelante, detrás de la ronda. */}
+            {/* El color de la app que está adelante, detrás de la ronda. */}
             <Halos activo={caso.slug} className="-inset-x-16 -inset-y-12" />
             <div className="anillo" style={{ "--angulo": `${angulo}deg` } as CSSProperties}>
               {PANTALLAS.map((p, i) => {

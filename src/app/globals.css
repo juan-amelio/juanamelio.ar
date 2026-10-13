@@ -184,7 +184,7 @@ body {
   --caso-cita: var(--color-gf-turquesa);
   --caso-borde: rgb(0 181 181 / 0.28);
   --caso-fuente: var(--font-geist);
-  --caso-brillo: radial-gradient(60% 40% at 80% 0%, rgb(0 181 181 / 0.16), transparent 70%);
+  --caso-brillo: radial-gradient(closest-side, rgb(0 181 181 / 0.34), rgb(0 181 181 / 0.12) 60%, transparent);
 }
 
 [data-caso="a7-sports"] {
@@ -199,7 +199,7 @@ body {
   --caso-cita: var(--color-a7-lima);
   --caso-borde: var(--color-a7-linea);
   --caso-fuente: var(--font-archivo);
-  --caso-brillo: radial-gradient(60% 40% at 15% 0%, rgb(190 222 20 / 0.1), transparent 70%);
+  --caso-brillo: radial-gradient(closest-side, rgb(190 222 20 / 0.26), rgb(190 222 20 / 0.09) 60%, transparent);
 }
 
 /* Forge, en el oscuro, va en su tema oscuro real (marca.css de forge-studio): la tinta como piso,
@@ -217,7 +217,10 @@ body {
   --caso-cita: #ff458e;
   --caso-borde: #403d3c;
   --caso-fuente: var(--font-source-serif);
-  --caso-brillo: radial-gradient(60% 40% at 80% 0%, rgb(98 197 238 / 0.1), transparent 70%);
+  --caso-brillo:
+    radial-gradient(closest-side at 30% 42%, rgb(98 197 238 / 0.4), transparent),
+    radial-gradient(closest-side at 72% 66%, rgb(255 69 142 / 0.3), transparent),
+    radial-gradient(closest-side at 70% 26%, rgb(237 187 0 / 0.28), transparent);
 }
 
 [data-tema="claro"] [data-caso="global-fit"] {
@@ -298,9 +301,10 @@ body {
   --brillo-fs: rgb(214 0 108 / 0.13);
 }
 
-/* El color de la marca detrás de la pantalla de cada caso, sólo en claro: en
-   el oscuro lo pone el fondo de la escena, en el claro los tres fondos son
-   casi blancos y hace falta. Lee --caso-brillo del data-caso que lleva. */
+/* El color de la marca detrás de la pantalla de cada caso, en los dos temas:
+   sin él los teléfonos negros se pierden en el fondo oscuro, y en el claro el
+   fondo queda vacío. En el claro va más cargado (ver los temas de cada caso).
+   Lee --caso-brillo del data-caso que lleva. */
 .halo {
   background: var(--caso-brillo);
 }

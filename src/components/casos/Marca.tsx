@@ -41,7 +41,7 @@ export function Logo({ caso, alt, tamano, className = "" }: { caso: Slug; alt: s
   );
 }
 
-/** El color de cada marca detrás de su pantalla, sólo en claro (ver .halo en
+/** El color de cada marca detrás de su pantalla (ver .halo en
     globals.css): una capa por caso, y se ve la del activo, para que al cambiar
     de caso el color se funda en vez de saltar. Las ubica quien las usa. */
 export function Halos({ activo, className }: { activo: Slug; className: string }) {
@@ -50,7 +50,7 @@ export function Halos({ activo, className }: { activo: Slug; className: string }
       key={slug}
       aria-hidden="true"
       data-caso={slug}
-      className={`halo pointer-events-none absolute hidden transition-opacity duration-700 claro:block ${
+      className={`halo pointer-events-none absolute transition-opacity duration-700 ${
         activo === slug ? "opacity-100" : "opacity-0"
       } ${className}`}
     />

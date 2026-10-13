@@ -142,7 +142,7 @@ export function Recorrido() {
                 }`}
               >
                 <p className="flex items-center gap-3.5 text-[22px] apretado:text-[19px]">
-                  <Logo caso={slug} alt="" tamano={44} className="size-11 apretado:size-9" />
+                  <Logo caso={slug} alt="" tamano={56} className="size-14 apretado:size-11" />
                   <Marca caso={slug} />
                 </p>
                 <h2 className="mt-4 max-w-[16ch] text-[clamp(32px,3.6vw,52px)] leading-[1.02] font-extrabold tracking-[-0.03em] apretado:mt-3 apretado:text-[clamp(28px,2.9vw,40px)]">
@@ -213,7 +213,7 @@ export function Recorrido() {
                 <div className="mt-6 lg:hidden">
                   <p className="max-w-[52ch] text-[15px] leading-relaxed text-(--caso-texto-medio)">{pantallas[indice].texto}</p>
                   <div className="relative isolate mt-8">
-                    <div aria-hidden="true" data-caso={slug} className="halo pointer-events-none absolute -inset-x-10 -inset-y-16 -z-10 hidden claro:block" />
+                    <div aria-hidden="true" data-caso={slug} className="halo pointer-events-none absolute -inset-x-10 -inset-y-16 -z-10" />
                     <div key={`${dispositivo}-${indice}`} className={`entrar mx-auto w-full ${MAX_ANCHO[dispositivo]}`}>
                       {pantallas[indice].maqueta(true, alTerminar(slug))}
                     </div>
