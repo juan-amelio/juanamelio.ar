@@ -1,18 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { CASOS, MAX_ANCHO, ORDEN, type Dispositivo, type Slug } from "@/components/casos/casos";
 import { Icono, IconoDispositivo, IconoFlecha } from "@/components/casos/IconosFuncion";
-import { Marca } from "@/components/casos/Marca";
-
-/* Forge va en su tema oscuro real: después de dos marcas negras, pasar al
-   papel era un salto brusco (#26). */
-const TEMA: Record<Slug, string> = {
-  "global-fit": "global-fit",
-  "a7-sports": "a7-sports",
-  "forge-studio": "forge-oscuro",
-};
+import { Halos, Logo, Marca } from "@/components/casos/Marca";
 
 const FUENTE: Record<Slug, string> = {
   "global-fit": "font-gf",
@@ -127,7 +118,7 @@ export function Recorrido() {
   return (
     <section
       id="proyectos"
-      data-caso={TEMA[activo]}
+      data-caso={activo}
       aria-label="Proyectos"
       className="recorrido relative bg-(--caso-fondo) text-(--caso-texto) transition-[background-color,color] duration-700 ease-out"
     >
@@ -151,7 +142,7 @@ export function Recorrido() {
                 }`}
               >
                 <p className="flex items-center gap-3.5 text-[22px] apretado:text-[19px]">
-                  <Image src={caso.logo} alt="" width={44} height={44} className="size-11 rounded-xl object-contain apretado:size-9" />
+                  <Logo caso={slug} alt="" tamano={56} className="size-14 apretado:size-11" />
                   <Marca caso={slug} />
                 </p>
                 <h2 className="mt-4 max-w-[16ch] text-[clamp(32px,3.6vw,52px)] leading-[1.02] font-extrabold tracking-[-0.03em] apretado:mt-3 apretado:text-[clamp(28px,2.9vw,40px)]">
@@ -221,8 +212,11 @@ export function Recorrido() {
                 {/* En el celular, la pantalla elegida va acá abajo. */}
                 <div className="mt-6 lg:hidden">
                   <p className="max-w-[52ch] text-[15px] leading-relaxed text-(--caso-texto-medio)">{pantallas[indice].texto}</p>
-                  <div key={`${dispositivo}-${indice}`} className={`entrar mx-auto mt-8 w-full ${MAX_ANCHO[dispositivo]}`}>
-                    {pantallas[indice].maqueta(true, alTerminar(slug))}
+                  <div className="relative isolate mt-8">
+                    <div aria-hidden="true" data-caso={slug} className="halo pointer-events-none absolute -inset-x-10 -inset-y-16 -z-10" />
+                    <div key={`${dispositivo}-${indice}`} className={`entrar mx-auto w-full ${MAX_ANCHO[dispositivo]}`}>
+                      {pantallas[indice].maqueta(true, alTerminar(slug))}
+                    </div>
                   </div>
                   {/* Juntas al centro: en la punta derecha las tapa el botón de WhatsApp. */}
                   <div className="mt-4 flex items-center justify-center gap-6">
@@ -240,6 +234,9 @@ export function Recorrido() {
         <div className="hidden lg:block">
           <div className="sticky top-0 flex h-svh items-center justify-center pt-16">
             <div className="relative h-[690px] w-full max-w-[600px]">
+              {/* No más de 64 px a los costados: es el hueco entre las columnas, y
+                  más allá teñiría el texto de la izquierda. */}
+              <Halos activo={activo} className="-inset-x-16 -inset-y-10" />
               {ORDEN.map((slug) => {
                 const caso = CASOS[slug];
                 const visible = activo === slug;

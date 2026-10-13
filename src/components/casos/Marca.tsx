@@ -1,6 +1,9 @@
-import type { Slug } from "./casos";
+import Image from "next/image";
+import { CASOS, ORDEN, type Slug } from "./casos";
 
-/** El nombre de cada producto escrito como lo escribe su propia marca. */
+/** El nombre de cada producto escrito como lo escribe su propia marca. En
+    claro, «sports» va en tinta, como en el logo positivo de A7: el lima sobre
+    hueso no se lee. */
 export function Marca({ caso, className = "" }: { caso: Slug; className?: string }) {
   if (caso === "global-fit")
     return (
@@ -11,7 +14,7 @@ export function Marca({ caso, className = "" }: { caso: Slug; className?: string
   if (caso === "a7-sports")
     return (
       <span className={`font-extrabold [font-stretch:125%] ${className}`}>
-        A7 <span className="text-a7-lima">sports</span>
+        A7 <span className="text-a7-lima claro:text-inherit">sports</span>
       </span>
     );
   return (
@@ -20,6 +23,38 @@ export function Marca({ caso, className = "" }: { caso: Slug; className?: string
       <Planchas tamano={10} />
     </span>
   );
+}
+
+/** El logo del producto. Con versión para fondo claro, van las dos y el CSS
+    muestra la que corresponde al tema, así no hay salto al cargar. */
+export function Logo({ caso, alt, tamano, className = "" }: { caso: Slug; alt: string; tamano: number; className?: string }) {
+  const { logo, logoClaro } = CASOS[caso];
+  const imagen = (src: string, visible = "") => (
+    <Image src={src} alt={alt} width={tamano} height={tamano} className={`rounded-xl object-contain ${visible} ${className}`} />
+  );
+  if (!logoClaro) return imagen(logo);
+  return (
+    <>
+      {imagen(logo, "claro:hidden")}
+      {imagen(logoClaro, "hidden claro:block")}
+    </>
+  );
+}
+
+/** El color de cada marca detrás de su pantalla (ver .halo en
+    globals.css): una capa por caso, y se ve la del activo, para que al cambiar
+    de caso el color se funda en vez de saltar. Las ubica quien las usa. */
+export function Halos({ activo, className }: { activo: Slug; className: string }) {
+  return ORDEN.map((slug) => (
+    <div
+      key={slug}
+      aria-hidden="true"
+      data-caso={slug}
+      className={`halo pointer-events-none absolute transition-opacity duration-700 ${
+        activo === slug ? "opacity-100" : "opacity-0"
+      } ${className}`}
+    />
+  ));
 }
 
 /** Los tres puntos de la marca de Forge Studio: las planchas cian, magenta y amarilla. */

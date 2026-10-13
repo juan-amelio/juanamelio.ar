@@ -20,6 +20,11 @@
   --color-tinta-suave: #8a9097;
   --color-borde-oscuro: #3a3f45;
 
+  /* Los canales del contacto, cada uno con su color. */
+  --color-canal-mail: #3bd0cf;
+  --color-canal-whatsapp: #25d366;
+  --color-canal-linkedin: #4f9ff0;
+
   /* Global Fit: negro frío y turquesa */
   --color-gf-fondo: #0f1213;
   --color-gf-tarjeta: #181b1c;
@@ -86,6 +91,35 @@
    comienzo de una sección más alta que ella. */
 @custom-variant apretado (@media (min-width: 64rem) and (max-height: 860px));
 
+/* Lo que cambia en el modo claro y no se resuelve con los tokens. */
+@custom-variant claro (&:where([data-tema="claro"], [data-tema="claro"] *));
+
+/*
+ * El modo claro. El atributo lo pone el script del <head> de layout.tsx
+ * antes de pintar: lo que eligió la persona o, si no eligió, lo que diga el
+ * sistema. Sin JavaScript queda el oscuro.
+ *
+ * Cambia el sitio y el fondo de cada caso, nunca las pantallas de las apps:
+ * las maquetas leen los colores de su marca (--color-gf-*, -a7-*, -fs-*) y
+ * esos no se tocan acá.
+ */
+:root {
+  color-scheme: dark;
+}
+:root[data-tema="claro"] {
+  color-scheme: light;
+  --color-fondo: #f4f5f6;
+  --color-superficie: #ffffff;
+  --color-tinta: #15171a;
+  --color-tinta-media: #3e444b;
+  --color-tinta-suave: #626a73;
+  --color-borde-oscuro: #d3d7dc;
+  /* En claro, los colores de cada red se oscurecen para pasar 3:1 sobre blanco. */
+  --color-canal-mail: #008f8f;
+  --color-canal-whatsapp: #1c9b50;
+  --color-canal-linkedin: #0a66c2;
+}
+
 /* Ninguna maqueta debería desbordar, pero si una lo hace un instante (antes de
    medirse), que no aparezca scroll horizontal en el celular. */
 html,
@@ -136,6 +170,8 @@ body {
  * portada se visten con la marca del producto: ponen data-caso y todo lo de
  * adentro lee estas variables.
  */
+/* Los temas claros salen del mismo lugar que los oscuros: el :root de
+   gym-app, el data-theme="claro" de catalogo-web y el papel de marca.css. */
 [data-caso="global-fit"] {
   --caso-fondo: var(--color-gf-fondo);
   --caso-superficie: #182021;
@@ -148,7 +184,7 @@ body {
   --caso-cita: var(--color-gf-turquesa);
   --caso-borde: rgb(0 181 181 / 0.28);
   --caso-fuente: var(--font-geist);
-  --caso-brillo: radial-gradient(60% 40% at 80% 0%, rgb(0 181 181 / 0.16), transparent 70%);
+  --caso-brillo: radial-gradient(closest-side, rgb(0 181 181 / 0.34), rgb(0 181 181 / 0.12) 60%, transparent);
 }
 
 [data-caso="a7-sports"] {
@@ -163,13 +199,13 @@ body {
   --caso-cita: var(--color-a7-lima);
   --caso-borde: var(--color-a7-linea);
   --caso-fuente: var(--font-archivo);
-  --caso-brillo: radial-gradient(60% 40% at 15% 0%, rgb(190 222 20 / 0.1), transparent 70%);
+  --caso-brillo: radial-gradient(closest-side, rgb(190 222 20 / 0.26), rgb(190 222 20 / 0.09) 60%, transparent);
 }
 
-/* Forge en su tema oscuro real (marca.css de forge-studio): la tinta como piso,
+/* Forge, en el oscuro, va en su tema oscuro real (marca.css de forge-studio): la tinta como piso,
    el papel como texto, las tintas un escalón más claras. El botón primario
    conserva el cian de imprenta con texto papel, igual que en la app. */
-[data-caso="forge-oscuro"] {
+[data-caso="forge-studio"] {
   --caso-fondo: #1a1918;
   --caso-superficie: #242221;
   --caso-texto: #f3f2f2;
@@ -181,7 +217,49 @@ body {
   --caso-cita: #ff458e;
   --caso-borde: #403d3c;
   --caso-fuente: var(--font-source-serif);
-  --caso-brillo: radial-gradient(60% 40% at 80% 0%, rgb(98 197 238 / 0.1), transparent 70%);
+  --caso-brillo:
+    radial-gradient(closest-side at 30% 42%, rgb(98 197 238 / 0.4), transparent),
+    radial-gradient(closest-side at 72% 66%, rgb(255 69 142 / 0.3), transparent),
+    radial-gradient(closest-side at 70% 26%, rgb(237 187 0 / 0.28), transparent);
+}
+
+[data-tema="claro"] [data-caso="global-fit"] {
+  --caso-fondo: oklch(1 0 0);
+  --caso-superficie: oklch(0.97 0 0);
+  --caso-texto: oklch(0.145 0 0);
+  --caso-texto-medio: oklch(0.36 0 0);
+  --caso-suave: oklch(0.556 0 0);
+  --caso-acento: oklch(0.65 0.11 192);
+  --caso-acento-hover: oklch(0.58 0.11 192);
+  --caso-sobre-acento: oklch(0.985 0 0);
+  --caso-borde: color-mix(in oklab, oklch(0.65 0.11 192) 35%, transparent);
+  --caso-brillo: radial-gradient(closest-side, rgb(0 181 181 / 0.5), rgb(0 181 181 / 0.24) 60%, transparent);
+}
+
+[data-tema="claro"] [data-caso="a7-sports"] {
+  --caso-fondo: #edeeea;
+  --caso-superficie: #ffffff;
+  --caso-texto: #231f20;
+  --caso-texto-medio: #45413f;
+  --caso-suave: #5f6470;
+  --caso-acento-hover: #9cb80e;
+  --caso-borde: #d5d8d1;
+  --caso-brillo: radial-gradient(closest-side, rgb(190 222 20 / 0.6), rgb(190 222 20 / 0.3) 60%, transparent);
+}
+
+[data-tema="claro"] [data-caso="forge-studio"] {
+  --caso-fondo: var(--color-fs-fondo);
+  --caso-superficie: var(--color-fs-panel);
+  --caso-texto: var(--color-fs-tinta);
+  --caso-texto-medio: var(--color-fs-gris);
+  --caso-suave: var(--color-fs-gris-suave);
+  --caso-acento-hover: var(--color-fs-cian-texto);
+  --caso-sobre-acento: var(--color-fs-fondo);
+  --caso-borde: var(--color-fs-borde);
+  --caso-brillo:
+    radial-gradient(closest-side at 30% 42%, rgb(0 136 176 / 0.5), transparent),
+    radial-gradient(closest-side at 72% 66%, rgb(214 0 108 / 0.38), transparent),
+    radial-gradient(closest-side at 70% 26%, rgb(237 187 0 / 0.45), transparent);
 }
 
 /* La barra que cuenta cuánto falta para la próxima pantalla de la galería. */
@@ -198,15 +276,37 @@ body {
  * sin JavaScript o con «reducir movimiento» valen 0 y todo queda quieto.
  */
 .portada {
+  --luz: rgb(255 255 255 / 0.06);
+  --brillo-gf: rgb(0 181 181 / 0.14);
+  --brillo-a7: rgb(190 222 20 / 0.07);
+  --brillo-fs: rgb(214 0 108 / 0.06);
   --mx: 0;
   --my: 0;
   --salida: 0;
   background:
-    radial-gradient(700px circle at calc(62% + var(--mx) * 18%) calc(42% + var(--my) * 18%), rgb(255 255 255 / 0.06), transparent 62%),
-    radial-gradient(520px circle at 70% 35%, rgb(0 181 181 / 0.14), transparent 70%),
-    radial-gradient(420px circle at 92% 30%, rgb(190 222 20 / 0.07), transparent 70%),
-    radial-gradient(460px circle at 48% 70%, rgb(214 0 108 / 0.06), transparent 70%),
+    radial-gradient(700px circle at calc(62% + var(--mx) * 18%) calc(42% + var(--my) * 18%), var(--luz), transparent 62%),
+    radial-gradient(520px circle at 70% 35%, var(--brillo-gf), transparent 70%),
+    radial-gradient(420px circle at 92% 30%, var(--brillo-a7), transparent 70%),
+    radial-gradient(460px circle at 48% 70%, var(--brillo-fs), transparent 70%),
     var(--color-fondo);
+}
+
+/* En claro, los colores de las tres marcas van más cargados: con la misma
+   transparencia que en el oscuro, sobre el gris claro casi no se ven y el
+   fondo queda vacío. La luz que sigue al mouse es blanca de verdad. */
+[data-tema="claro"] .portada {
+  --luz: rgb(255 255 255 / 0.35);
+  --brillo-gf: rgb(0 181 181 / 0.22);
+  --brillo-a7: rgb(190 222 20 / 0.32);
+  --brillo-fs: rgb(214 0 108 / 0.13);
+}
+
+/* El color de la marca detrás de la pantalla de cada caso, en los dos temas:
+   sin él los teléfonos negros se pierden en el fondo oscuro, y en el claro el
+   fondo queda vacío. En el claro va más cargado (ver los temas de cada caso).
+   Lee --caso-brillo del data-caso que lleva. */
+.halo {
+  background: var(--caso-brillo);
 }
 
 .portada-texto {
@@ -278,7 +378,7 @@ body {
   width: 2px;
   height: 36px;
   border-radius: 2px;
-  background: rgb(255 255 255 / 0.18);
+  background: color-mix(in srgb, var(--color-tinta) 18%, transparent);
   overflow: hidden;
 }
 .indicador::after {

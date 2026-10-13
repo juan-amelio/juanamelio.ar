@@ -12,10 +12,10 @@ type Canal = { href: string; nombre: string; Icono: typeof IconoGithub; color: s
  */
 export function Contacto() {
   const canales = [
-    contacto.email && { href: hrefEmail, nombre: "Mail", Icono: IconoMail, color: "#3bd0cf" },
-    hrefWhatsapp && { href: hrefWhatsapp, nombre: "WhatsApp", Icono: IconoWhatsapp, color: "#25d366" },
-    contacto.linkedin && { href: contacto.linkedin, nombre: "LinkedIn", Icono: IconoLinkedin, color: "#4f9ff0" },
-    { href: contacto.github, nombre: "GitHub", Icono: IconoGithub, color: "#eceef0" },
+    contacto.email && { href: hrefEmail, nombre: "Mail", Icono: IconoMail, color: "var(--color-canal-mail)" },
+    hrefWhatsapp && { href: hrefWhatsapp, nombre: "WhatsApp", Icono: IconoWhatsapp, color: "var(--color-canal-whatsapp)" },
+    contacto.linkedin && { href: contacto.linkedin, nombre: "LinkedIn", Icono: IconoLinkedin, color: "var(--color-canal-linkedin)" },
+    { href: contacto.github, nombre: "GitHub", Icono: IconoGithub, color: "var(--color-tinta)" },
   ].filter(Boolean) as Canal[];
 
   return (
@@ -67,7 +67,7 @@ export function Contacto() {
 export function Pie() {
   return (
     <footer className="mx-auto mt-20 w-full max-w-7xl px-4 pb-14 sm:px-14 lg:mt-16 lg:pb-8">
-      <div className="flex flex-wrap justify-between gap-x-6 gap-y-2 border-t border-white/[.07] pt-6 text-[15px] text-tinta-suave">
+      <div className="flex flex-wrap justify-between gap-x-6 gap-y-2 border-t border-tinta/[.08] pt-6 text-[15px] text-tinta-suave">
         <span>juanamelio.ar</span>
         <span>Hecho por mí, con el mismo método que mis proyectos.</span>
       </div>

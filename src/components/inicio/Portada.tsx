@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { CASOS, ORDEN } from "@/components/casos/casos";
+import { Halos, Logo } from "@/components/casos/Marca";
 import { EnlaceSeccion } from "@/components/EnlaceSeccion";
 import { CajaA7 } from "@/components/maquetas/A7";
 import { PantallaForge } from "@/components/maquetas/ForgeEscritorio";
@@ -172,6 +172,8 @@ export function Portada() {
               }
             }}
           >
+            {/* El color de la app que está adelante, detrás de la ronda. */}
+            <Halos activo={caso.slug} className="-inset-x-16 -inset-y-12" />
             <div className="anillo" style={{ "--angulo": `${angulo}deg` } as CSSProperties}>
               {PANTALLAS.map((p, i) => {
                 const adelante = i === frente;
@@ -202,13 +204,13 @@ export function Portada() {
           </div>
 
           {/* La tarjeta del proyecto que está adelante, vestida con su marca. */}
-          <div data-caso={caso.slug === "forge-studio" ? "forge-oscuro" : caso.slug} className="relative z-10 w-full max-w-[460px]">
+          <div data-caso={caso.slug} className="relative z-10 w-full max-w-[460px]">
             <div
               key={caso.slug}
               aria-live="polite"
               className="entrar flex items-center gap-4 rounded-2xl bg-(--caso-superficie) p-4 font-(family-name:--caso-fuente) text-(--caso-texto) shadow-[inset_0_0_0_1px_var(--caso-borde),0_24px_48px_-24px_rgb(0_0_0/.6)]"
             >
-              <Image src={caso.logo} alt={`Logo de ${caso.nombre}`} width={48} height={48} className="size-12 shrink-0 rounded-xl object-contain" />
+              <Logo caso={caso.slug} alt={`Logo de ${caso.nombre}`} tamano={48} className="size-12 shrink-0" />
               <div className="min-w-0 flex-1">
                 <p className="text-lg leading-tight font-bold">{caso.nombre}</p>
                 <p className="mt-0.5 text-sm leading-snug text-(--caso-suave)">{caso.corto}</p>
