@@ -119,30 +119,30 @@ export function Recorrido() {
                 ref={(el) => {
                   pasos.current[slug] = el;
                 }}
-                className={`${FUENTE[slug]} flex min-h-svh snap-start scroll-mt-0! flex-col justify-center py-20 transition-opacity duration-500 lg:pt-20 lg:pb-8 ${
+                className={`${FUENTE[slug]} flex min-h-svh snap-start scroll-mt-0! flex-col justify-center py-20 transition-opacity duration-500 lg:pt-20 lg:pb-8 apretado:pb-5 ${
                   activo === slug ? "opacity-100" : "lg:opacity-30"
                 }`}
               >
-                <p className="flex items-center gap-3.5 text-[22px]">
-                  <Image src={caso.logo} alt="" width={44} height={44} className="size-11 rounded-xl object-contain" />
+                <p className="flex items-center gap-3.5 text-[22px] apretado:text-[19px]">
+                  <Image src={caso.logo} alt="" width={44} height={44} className="size-11 rounded-xl object-contain apretado:size-9" />
                   <Marca caso={slug} />
                 </p>
-                <h2 className="mt-4 max-w-[16ch] text-[clamp(32px,3.6vw,52px)] leading-[1.02] font-extrabold tracking-[-0.03em]">
+                <h2 className="mt-4 max-w-[16ch] text-[clamp(32px,3.6vw,52px)] leading-[1.02] font-extrabold tracking-[-0.03em] apretado:mt-3 apretado:text-[clamp(28px,2.9vw,40px)]">
                   {caso.titular}
                 </h2>
-                <p className="mt-4 max-w-[50ch] text-[17px] leading-relaxed text-(--caso-texto-medio)">{caso.bajada}</p>
+                <p className="mt-4 max-w-[50ch] text-[17px] leading-relaxed text-(--caso-texto-medio) apretado:mt-3 apretado:text-[15px]">{caso.bajada}</p>
 
-                <dl className="mt-5 flex flex-wrap gap-x-6 gap-y-2">
+                <dl className="mt-5 flex flex-wrap gap-x-6 gap-y-2 apretado:mt-3">
                   {/* Los números de uso real: que se vea que la app está viva. */}
                   {caso.numeros.map((n) => (
                     <div key={n.etiqueta} className="flex items-baseline gap-2">
-                      <dd className="text-xl leading-none font-extrabold tabular-nums">{n.valor}</dd>
+                      <dd className="text-xl leading-none font-extrabold tabular-nums apretado:text-lg">{n.valor}</dd>
                       <dt className="text-[13px] text-(--caso-suave)">{n.etiqueta}</dt>
                     </div>
                   ))}
                 </dl>
 
-                <div className="mt-7">
+                <div className="mt-7 apretado:mt-4">
                   <Selector
                     disponibles={disponibles}
                     actual={dispositivo}
@@ -152,7 +152,7 @@ export function Recorrido() {
                     key={dispositivo}
                     role="tablist"
                     aria-label={`Qué hace ${caso.nombre}`}
-                    className="entrar -mx-4 mt-3 flex gap-1 overflow-x-auto px-4 pb-2 [scrollbar-width:none] lg:mx-0 lg:flex-col lg:overflow-visible lg:px-0 lg:pb-0"
+                    className="entrar -mx-4 mt-3 flex gap-1 overflow-x-auto px-4 pb-2 [scrollbar-width:none] lg:mx-0 lg:flex-col lg:overflow-visible lg:px-0 lg:pb-0 apretado:mt-2"
                   >
                     {pantallas.map((p, i) => {
                       const on = i === indice;
@@ -163,7 +163,7 @@ export function Recorrido() {
                           role="tab"
                           aria-selected={on}
                           onClick={() => elegir(slug, { indice: i })}
-                          className={`flex shrink-0 cursor-pointer items-start gap-3 rounded-2xl px-3.5 py-3 text-left transition-colors duration-300 lg:shrink lg:py-2.5 ${
+                          className={`flex shrink-0 cursor-pointer items-start gap-3 rounded-2xl px-3.5 py-3 text-left transition-colors duration-300 lg:shrink lg:py-2.5 apretado:py-1.5 ${
                             on ? "bg-(--caso-superficie) shadow-[inset_0_0_0_1px_var(--caso-borde)]" : "hover:bg-(--caso-superficie)/60"
                           }`}
                         >
@@ -179,7 +179,7 @@ export function Recorrido() {
                               {p.titulo}
                             </span>
                             <span
-                              className={`mt-1.5 max-w-[46ch] text-[14px] leading-relaxed text-(--caso-texto-medio) ${on ? "hidden lg:block" : "hidden"}`}
+                              className={`mt-1.5 max-w-[46ch] text-[14px] leading-relaxed text-(--caso-texto-medio) apretado:mt-1 apretado:text-[13.5px] ${on ? "hidden lg:block" : "hidden"}`}
                             >
                               {p.texto}
                             </span>
@@ -283,7 +283,7 @@ function Selector({
             role="radio"
             aria-checked={on}
             onClick={() => onElegir(d)}
-            className={`flex cursor-pointer items-center gap-2 rounded-full px-4 py-2 text-[14px] font-semibold transition-colors duration-300 ${
+            className={`flex cursor-pointer items-center gap-2 rounded-full px-4 py-2 text-[14px] apretado:py-1.5 font-semibold transition-colors duration-300 ${
               on ? "bg-(--caso-acento) text-(--caso-sobre-acento)" : "text-(--caso-texto-medio) hover:text-(--caso-texto)"
             }`}
           >

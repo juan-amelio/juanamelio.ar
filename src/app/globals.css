@@ -81,6 +81,11 @@
   --font-fs: var(--font-source-serif);
 }
 
+/* Escritorio con poca altura (una laptop con la barra del navegador): cada
+   proyecto tiene que entrar en una pantalla, porque el encaje no deja ver el
+   comienzo de una sección más alta que ella. */
+@custom-variant apretado (@media (min-width: 64rem) and (max-height: 860px));
+
 /* Ninguna maqueta debería desbordar, pero si una lo hace un instante (antes de
    medirse), que no aparezca scroll horizontal en el celular. */
 html,
