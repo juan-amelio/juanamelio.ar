@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { CASOS, MAX_ANCHO, ORDEN, type Dispositivo, type Slug } from "@/components/casos/casos";
-import { Icono, IconoDispositivo } from "@/components/casos/IconosFuncion";
+import { Icono, IconoDispositivo, IconoFlecha } from "@/components/casos/IconosFuncion";
 import { Marca } from "@/components/casos/Marca";
 
 /* Forge va en su tema oscuro real: después de dos marcas negras, pasar al
@@ -31,6 +31,13 @@ const PAUSA_MS = 1600;
    después las del escritorio, así la rotación también muestra el selector. */
 function enOrden(slug: Slug): Eleccion[] {
   return DISPOSITIVOS.flatMap((dispositivo) => CASOS[slug].funciones[dispositivo].map((_, indice) => ({ dispositivo, indice })));
+}
+
+/* La función de al lado en ese orden, dando la vuelta en las puntas. */
+function vecina(slug: Slug, en: Eleccion, paso: 1 | -1): Eleccion {
+  const orden = enOrden(slug);
+  const ahora = orden.findIndex((o) => o.dispositivo === en.dispositivo && o.indice === en.indice);
+  return orden[(ahora + paso + orden.length) % orden.length];
 }
 
 /* Cada caso arranca en el primer dispositivo que tenga pantallas. */
@@ -87,15 +94,35 @@ export function Recorrido() {
     if (!terminada) return;
     const { slug, en } = terminada;
     const t = setTimeout(() => {
-      setEleccion((e) => {
-        if (e[slug] !== en) return e;
-        const orden = enOrden(slug);
-        const ahora = orden.findIndex((o) => o.dispositivo === en.dispositivo && o.indice === en.indice);
-        return { ...e, [slug]: orden[(ahora + 1) % orden.length] };
-      });
+      setEleccion((e) => (e[slug] !== en ? e : { ...e, [slug]: vecina(slug, en, 1) }));
     }, PAUSA_MS);
     return () => clearTimeout(t);
   }, [terminada]);
+
+  /* En el celular la lista de funciones corre de costado: la elegida (a mano,
+     con las flechas o por la rotación) se trae a la vista. Sólo se mueve la
+     lista, nunca la página, y sólo si la elegida quedó fuera de vista: si ya
+     se ve, no se le saca a la persona la lista que estaba deslizando. */
+  useEffect(() => {
+    const suave = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    for (const tab of document.querySelectorAll<HTMLElement>("[data-funciones] [aria-selected=true]")) {
+      const lista = tab.parentElement!;
+      const tope = lista.scrollWidth - lista.clientWidth;
+      if (tope <= 0) continue;
+      const caja = lista.getBoundingClientRect();
+      const elegida = tab.getBoundingClientRect();
+      if (elegida.left >= caja.left && elegida.right <= caja.right) continue;
+      const desplazamiento = elegida.left - caja.left;
+      const centrada = lista.scrollLeft + desplazamiento - (lista.clientWidth - tab.offsetWidth) / 2;
+      const izquierda = Math.min(tope, Math.max(0, centrada));
+      if (Math.abs(izquierda - lista.scrollLeft) < 1) continue;
+      lista.scrollTo({ left: izquierda, behavior: suave ? "smooth" : "instant" });
+    }
+  }, [eleccion]);
+
+  /* Las flechas recorren todas las funciones del caso, celular y escritorio,
+     y como cualquier elección hecha a mano, frenan la rotación. */
+  const pasar = (slug: Slug, paso: 1 | -1) => elegir(slug, vecina(slug, eleccion[slug], paso));
 
   return (
     <section
@@ -151,6 +178,7 @@ export function Recorrido() {
                   <div
                     key={dispositivo}
                     role="tablist"
+                    data-funciones
                     aria-label={`Qué hace ${caso.nombre}`}
                     className="entrar -mx-4 mt-3 flex gap-1 overflow-x-auto px-4 pb-2 [scrollbar-width:none] lg:mx-0 lg:flex-col lg:overflow-visible lg:px-0 lg:pb-0 apretado:mt-2"
                   >
@@ -196,7 +224,12 @@ export function Recorrido() {
                   <div key={`${dispositivo}-${indice}`} className={`entrar mx-auto mt-8 w-full ${MAX_ANCHO[dispositivo]}`}>
                     {pantallas[indice].maqueta(true, alTerminar(slug))}
                   </div>
-                  <p className="mt-3 text-center text-[13px] text-(--caso-suave)">Datos de demo</p>
+                  {/* Juntas al centro: en la punta derecha las tapa el botón de WhatsApp. */}
+                  <div className="mt-4 flex items-center justify-center gap-6">
+                    <Flecha slug={slug} hacia={vecina(slug, eleccion[slug], -1)} onPasar={() => pasar(slug, -1)} />
+                    <p className="text-[13px] text-(--caso-suave)">Datos de demo</p>
+                    <Flecha slug={slug} hacia={vecina(slug, eleccion[slug], 1)} siguiente onPasar={() => pasar(slug, 1)} />
+                  </div>
                 </div>
               </article>
             );
@@ -243,12 +276,60 @@ export function Recorrido() {
                   </div>
                 );
               })}
+
+              {/* Las flechas, a los costados de la pantalla del caso activo: se
+                  acomodan al ancho del celular o de la ventana. */}
+              <div className="pointer-events-none absolute inset-0 flex justify-center">
+                <div className={`relative w-full transition-[max-width] duration-500 ease-out ${MAX_ANCHO[eleccion[activo].dispositivo]}`}>
+                  <Flecha
+                    slug={activo}
+                    hacia={vecina(activo, eleccion[activo], -1)}
+                    onPasar={() => pasar(activo, -1)}
+                    className="pointer-events-auto absolute top-1/2 -left-12 -translate-y-1/2"
+                  />
+                  <Flecha
+                    slug={activo}
+                    hacia={vecina(activo, eleccion[activo], 1)}
+                    siguiente
+                    onPasar={() => pasar(activo, 1)}
+                    className="pointer-events-auto absolute top-1/2 -right-12 -translate-y-1/2"
+                  />
+                </div>
+              </div>
             </div>
             <p className="absolute bottom-3 text-[13px] text-(--caso-suave)">Datos de demo</p>
           </div>
         </div>
       </div>
     </section>
+  );
+}
+
+/* Pasa a la función anterior o a la siguiente del caso; dice a cuál va. */
+function Flecha({
+  slug,
+  hacia,
+  siguiente = false,
+  onPasar,
+  className = "",
+}: {
+  slug: Slug;
+  hacia: Eleccion;
+  siguiente?: boolean;
+  onPasar: () => void;
+  className?: string;
+}) {
+  const destino = CASOS[slug].funciones[hacia.dispositivo][hacia.indice].titulo;
+  return (
+    <button
+      type="button"
+      onClick={onPasar}
+      aria-label={`${siguiente ? "Siguiente" : "Anterior"}: ${destino}`}
+      title={destino}
+      className={`grid size-11 shrink-0 cursor-pointer place-items-center rounded-full bg-(--caso-superficie) text-(--caso-texto-medio) shadow-[inset_0_0_0_1px_var(--caso-borde)] transition-colors duration-300 hover:bg-(--caso-acento) hover:text-(--caso-sobre-acento) ${className}`}
+    >
+      <IconoFlecha siguiente={siguiente} className="size-5" />
+    </button>
   );
 }
 

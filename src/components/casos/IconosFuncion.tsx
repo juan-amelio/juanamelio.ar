@@ -28,6 +28,15 @@ export function Icono({ nombre, className }: { nombre: IconoFuncion; className?:
   );
 }
 
+/** Pasar a la pantalla anterior o a la siguiente. */
+export function IconoFlecha({ siguiente, className }: { siguiente: boolean; className?: string }) {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d={siguiente ? "M9 5l7 7-7 7" : "M15 5l-7 7 7 7"} />
+    </svg>
+  );
+}
+
 /** Celular o escritorio: qué pantalla se va a ver. */
 export function IconoDispositivo({ escritorio, className }: { escritorio: boolean; className?: string }) {
   return escritorio ? (
