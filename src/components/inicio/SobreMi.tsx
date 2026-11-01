@@ -7,7 +7,7 @@ const DATOS: [string, string][] = [
   ["Desde 2023", "Desarrollador en Slingr, equipo de Soluciones"],
   ["Idiomas", "Español nativo; inglés profesional, todos los días con clientes"],
   ["Formación", "Programa Full Stack (Java), Egg, 2022"],
-  ["Busco", "Un puesto o un proyecto"],
+  ["IA aplicada", "Agentes con Gemini en Slingr; Claude Code en mis productos"],
 ];
 
 export function SobreMi() {
@@ -32,9 +32,8 @@ export function SobreMi() {
               técnico y extraer datos de documentos.
             </p>
             <p>
-              En 2026 empecé a construir mis propios productos, y los tres de esta página están en producción. Los hago
-              con Claude Code como herramienta principal y con una regla que no cambio: en mis productos, ningún cambio
-              llega a la gente sin que una persona lo revise.
+              En 2026 empecé a construir mis propios productos. Hoy son tres, y los tres los usan personas todos los
+              días.
             </p>
           </div>
         </div>
