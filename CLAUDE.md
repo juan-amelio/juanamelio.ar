@@ -2,8 +2,7 @@
 
 # juanamelio.ar — contexto para Claude Code
 
-El sitio personal de Juan Amelio: quién es, sus proyectos y cómo trabaja. Sirve
-para conseguir **trabajo y también proyectos**: los dos caminos, siempre.
+El sitio personal de Juan Amelio: quién es, sus proyectos y cómo trabaja.
 
 El repo es **público**. Nada que no se pueda leer en internet entra acá: ni
 `.env` con valores, ni capturas con datos reales, ni textos de clientes sin su OK.
@@ -42,6 +41,10 @@ El repo es **público**. Nada que no se pueda leer en internet entra acá: ni
   Escritorio** (lo que se usa desde el teléfono y lo que se usa desde el
   panel) y la lista de funciones; se cambia tocando, el scroll sólo pasa de un
   proyecto al otro. Forge Studio no tiene versión de celular.
+- **El sitio presenta, no pide** (#43). Los textos muestran quién es Juan y lo
+  que hizo; no se agregan «Busco», «Abierto a…» ni llamados parecidos (en el
+  Sobre mí, la descripción del `<head>` o donde sea) sin preguntarle. La
+  etiqueta de Contacto queda como está, por decisión suya.
 - **A7 Sports se llama siempre así**, nunca X-Trust.
 - **Capturas y videos, siempre con datos de demo.** Global Fit guarda fichas de
   salud (Ley 25.326) y A7 Sports nombres de clientes. Al gimnasio se lo puede

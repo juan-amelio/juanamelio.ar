@@ -5,7 +5,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Juan Amelio",
-  description: "Hago apps para negocios reales y las sostengo en producción. Abierto a un puesto o a un proyecto.",
+  description: "Hago apps para negocios reales y las sostengo en producción.",
 };
 
 /* El tema, antes de pintar (ver BotonTema): lo guardado si la persona eligió,
