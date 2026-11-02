@@ -22,14 +22,16 @@ El repo es **público**. Nada que no se pueda leer en internet entra acá: ni
 - **Dirección visual: la C · En vivo**, elegida el 10/10/2026. El sitio habla con
   Bricolage Grotesque sobre **grafito oscuro** (desde la #23), y **cada caso se
   viste con la marca real de su producto** en su sección: Global Fit (negro + turquesa, Geist), A7 Sports
-  (negro + lima, Archivo) y Forge Studio (su tema oscuro real, Source Serif 4 y
-  los colores de imprenta). El prototipo está en
+  (negro + lima, Archivo) y Forge Studio (Source Serif 4 y los colores de
+  imprenta; sus pantallas, con el tema **claro** de la app, pedido de Juan el
+  01/11/2026). El prototipo está en
   https://claude.ai/artifact/EMLjqPagbSz9YcC64oPbv3 (`EnVivo.dc.html`).
 - **Modo claro** (12/10/2026): botón en la barra; hasta que la persona elige,
   sigue al sistema. Cambia el sitio y el fondo de cada caso (con el tema claro
   real de cada marca), **nunca las pantallas de las apps**: las maquetas leen
-  sólo `--color-gf-*`, `-a7-*` y `-fs-*`, que no cambian con el tema. Si algún
-  día una maqueta va en claro, se decide caso por caso. El tema lo pone el
+  sólo `--color-gf-*`, `-a7-*` y `-fs-*`, que no cambian con el tema. Cada
+  app se muestra en un tema fijo, decidido caso por caso: Global Fit y A7 en
+  oscuro, Forge en claro. El tema lo pone el
   script del `<head>` en `layout.tsx` (`data-tema` en el `<html>`) y se guarda
   en `localStorage`, para que la página siga siendo estática.
 - **La portada son las tres apps vivas** (#23): flotan en perspectiva, se mueven
@@ -50,7 +52,8 @@ El repo es **público**. Nada que no se pueda leer en internet entra acá: ni
   salud (Ley 25.326) y A7 Sports nombres de clientes. Al gimnasio se lo puede
   nombrar: Juan tiene el OK del dueño (10/10/2026).
 - **Forge Studio hoy se llama ADJ Forge** (#237 de su repo) y es producto de ADJ
-  Solutions. Cómo se lo nombra acá lo decide Juan.
+  Solutions. **Acá se llama Forge Studio** (Juan, 01/11/2026); la app grabada y
+  la pestaña de su ventana dicen ADJ Forge, porque es lo que se ve.
 
 ## Estructura
 
@@ -59,7 +62,7 @@ El repo es **público**. Nada que no se pueda leer en internet entra acá: ni
 | `src/app/page.tsx` | El inicio |
 | `src/components/casos/casos.tsx` | Los datos de cada proyecto y sus funciones, por celular y escritorio |
 | `src/components/inicio/Recorrido.tsx` | La escena de los proyectos, con el selector y la lista de funciones |
-| `src/components/maquetas/` | Las pantallas de cada app: dibujadas (A7, Forge) o grabadas (`Grabacion.tsx`, Global Fit) |
+| `src/components/maquetas/` | Las pantallas de cada app: dibujadas (A7) o grabadas (`Grabacion.tsx`, Global Fit y Forge Studio) |
 | `scripts/grabar/` | El grabador de las apps reales y el guion de cada una (ver «Pantallas grabadas») |
 | `public/grabaciones/` | Los MP4 y sus pósters, uno por función |
 | `src/app/globals.css` | Tokens del sitio (se fijan en la #6) |
@@ -77,6 +80,19 @@ regrabar:
 2. `GYM_APP_DIR=<gym-app> node scripts/grabar/global-fit.mjs [toma…]`. Cada
    toma resiembra la base, así arranca siempre igual.
 3. Mirar cada MP4 entero antes de commitear: que no aparezca nada real.
+
+**Forge Studio** (#14) se graba igual, con el tablero de demo de su repo
+(`npm run seed:demo`, forge-studio#103: base `forge_demo` local, todo
+inventado; el board real tiene proyectos de clientes y no se graba nunca):
+
+1. Forge con la base de demo, `DEV_LOGIN=true` y el reloj en
+   `2026-11-10T10:15:00-03:00`, en el 3013 (la entrada `forge-studio-demo` del
+   `launch.json`; los comandos están en el CLAUDE.md de forge-studio, «Una base
+   de demo»).
+2. `FORGE_DIR=<forge-studio> node scripts/grabar/forge-studio.mjs [toma…]`.
+   Graba en claro (cookie `forge_tema`) con el lateral plegado, y siembra con
+   la hora del servidor para que el agente se vea prendido: reloj.cjs lo deja
+   andar desde que arrancó, y la app lo da por apagado a los 90 s.
 
 El grabador usa el screencast de Chrome cuadro a cuadro (el video de
 Playwright sale borroso) y ffmpeg. Muestra el dedo o la flecha en cada toque.

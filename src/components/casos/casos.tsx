@@ -1,8 +1,6 @@
 import type { ReactNode } from "react";
 import { CajaA7 } from "@/components/maquetas/A7";
 import { GestionA7, TiendaA7 } from "@/components/maquetas/A7Escritorio";
-import { TableroForge } from "@/components/maquetas/Forge";
-import { PantallaForge } from "@/components/maquetas/ForgeEscritorio";
 import { TelefonoGrabado, VentanaGrabada } from "@/components/maquetas/Grabacion";
 import type { IconoFuncion } from "./IconosFuncion";
 
@@ -52,6 +50,7 @@ export const ORDEN: Slug[] = ["global-fit", "a7-sports", "forge-studio"];
 
 /** Las grabaciones de Global Fit (scripts/grabar/global-fit.mjs). */
 const GF = "/grabaciones/global-fit";
+const FS = "/grabaciones/forge-studio";
 
 export const CASOS: Record<Slug, Caso> = {
   "global-fit": {
@@ -216,25 +215,33 @@ export const CASOS: Record<Slug, Caso> = {
           titulo: "Lo que te espera hoy",
           icono: "inicio",
           texto: "Al entrar, el Inicio dice qué tarjetas esperan tu revisión, qué tenés en curso y si tu agente está reportando.",
-          maqueta: (activo, alTerminar) => <PantallaForge vista="inicio" activo={activo} alTerminar={alTerminar} />,
+          maqueta: (activo, alTerminar) => (
+            <VentanaGrabada app="forge-studio" src={`${FS}/inicio`} ruta=" · Inicio" etiqueta="Forge Studio: el inicio de una persona del equipo, con sus revisiones pendientes, sus tareas y la agenda, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
+          ),
         },
         {
           titulo: "El tablero",
           icono: "tablero",
           texto: "Seis columnas, de Backlog a En producción. Las tarjetas avanzan con el trabajo y el magenta marca lo que espera a una persona.",
-          maqueta: (activo, alTerminar) => <PantallaForge vista="tablero" activo={activo} alTerminar={alTerminar} />,
+          maqueta: (activo, alTerminar) => (
+            <VentanaGrabada app="forge-studio" src={`${FS}/tablero`} ruta=" · Tareas" etiqueta="Forge Studio: el tablero de un proyecto recorrido de Backlog a En producción, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
+          ),
         },
         {
           titulo: "La revisión",
           icono: "revision",
           texto: "Lint, tipos, pruebas y build antes de entregar, y la aprobación de una persona antes de llegar a producción.",
-          maqueta: (activo, alTerminar) => <TableroForge activo={activo} alTerminar={alTerminar} />,
+          maqueta: (activo, alTerminar) => (
+            <VentanaGrabada app="forge-studio" src={`${FS}/revision`} ruta=" · Tareas · #7" etiqueta="Forge Studio: una tarjeta en revisión con el resultado de lint, tipos, pruebas y build, y la persona que la aprueba, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
+          ),
         },
         {
           titulo: "El calendario",
           icono: "calendario",
           texto: "Las salidas y las fechas de todos los proyectos en un mes, cada uno con su color.",
-          maqueta: (activo, alTerminar) => <PantallaForge vista="calendario" activo={activo} alTerminar={alTerminar} />,
+          maqueta: (activo, alTerminar) => (
+            <VentanaGrabada app="forge-studio" src={`${FS}/calendario`} ruta=" · Calendario" etiqueta="Forge Studio: el calendario del mes con las fechas de cada proyecto en su color, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
+          ),
         },
       ],
     },
