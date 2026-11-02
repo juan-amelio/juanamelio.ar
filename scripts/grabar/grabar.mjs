@@ -126,25 +126,27 @@ function herramientas(page, celular) {
     async escribir(texto, { cada = 70 } = {}) {
       await page.keyboard.type(texto, { delay: cada });
     },
-    /** Desplaza la página (o un contenedor) suave, como con el dedo. */
-    async desplazar(dy, { dentro = null, ms = 900, despues = 500 } = {}) {
+    /** Desplaza la página (o un contenedor) suave, como con el dedo. Con
+        `eje: "x"`, al costado (el tablero de Forge corre sus columnas). */
+    async desplazar(dy, { dentro = null, eje = "y", ms = 900, despues = 500 } = {}) {
       await page.evaluate(
-        async ({ dy, dentro, ms }) => {
+        async ({ dy, dentro, eje, ms }) => {
           const el = dentro ? document.querySelector(dentro) : document.scrollingElement;
-          const desde = el.scrollTop;
+          const prop = eje === "x" ? "scrollLeft" : "scrollTop";
+          const desde = el[prop];
           const t0 = performance.now();
           await new Promise((fin) => {
             const paso = (t) => {
               const k = Math.min(1, (t - t0) / ms);
               const suave = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
-              el.scrollTop = desde + dy * suave;
+              el[prop] = desde + dy * suave;
               if (k < 1) requestAnimationFrame(paso);
               else fin();
             };
             requestAnimationFrame(paso);
           });
         },
-        { dy, dentro, ms },
+        { dy, dentro, eje, ms },
       );
       await espera(despues);
     },
@@ -215,11 +217,13 @@ function armar(cuadros, desde, hasta, salida) {
  * - dispositivo: CELULAR o ESCRITORIO.
  * - reloj: la hora que ve el navegador (la del servidor la corre reloj.cjs).
  * - antes: lo que hay que hacer antes de cada toma (resembrar la base).
+ * - esquema: "dark" (default) o "light", lo que el navegador dice preferir.
+ * - cookies: [{ name, value }] puestas antes de entrar (el tema de Forge).
  * - carpeta: dónde dejar el MP4 y el póster.
  * - final: cuánto se queda quieto el último cuadro.
  */
 export async function grabar(nombre, opciones, guion) {
-  const { base, email, ruta, dispositivo, reloj, antes, carpeta, final = 1500 } = opciones;
+  const { base, email, ruta, dispositivo, reloj, antes, carpeta, final = 1500, esquema = "dark", cookies = [] } = opciones;
   antes?.();
   // El screencast toma la ventana y no el viewport emulado, y a 1x: la ventana
   // va del tamaño del viewport y la densidad se fuerza desde afuera.
@@ -238,8 +242,9 @@ export async function grabar(nombre, opciones, guion) {
       hasTouch: dispositivo.hasTouch,
       locale: "es-AR",
       timezoneId: "America/Argentina/Buenos_Aires",
-      colorScheme: "dark",
+      colorScheme: esquema,
     });
+    if (cookies.length) await contexto.addCookies(cookies.map((c) => ({ ...c, url: base })));
     if (reloj) await contexto.clock.install({ time: new Date(reloj) });
     await contexto.addInitScript(MANO);
     const page = await contexto.newPage();

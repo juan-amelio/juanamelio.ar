@@ -8,7 +8,7 @@ import { Ventana } from "./Ventana";
 /*
  * Una pantalla grabada de la app real (#44), en vez de dibujada: el MP4 y su
  * póster salen de scripts/grabar/ y viven en public/grabaciones/. Datos de
- * demo, siempre (el gimnasio de demo de gym-app).
+ * demo, siempre: el gimnasio de demo de gym-app y el tablero de demo de Forge.
  *
  * Se porta como las maquetas animadas (useCiclo): corre sólo mientras está
  * activa y a la vista, arranca de cero cada vez que vuelve a estar activa y,
@@ -94,21 +94,37 @@ export function TelefonoGrabado({ src, etiqueta, activo, alTerminar }: Animable 
   );
 }
 
+/** Cómo se presenta cada app en la ventana de Chrome. Global Fit muestra su
+    dominio real; Forge sólo su nombre, para no inventar uno (11/10), y la
+    pestaña dice ADJ Forge porque así se llama la app que se ve grabada.
+    Forge va con su tema claro (01/11): el fondo es el papel de Broadsheet. */
+const APPS = {
+  "global-fit": {
+    titulo: "Global Fit · Admin",
+    logo: "/logos/global-fit.png",
+    dominio: "globalfit.ar",
+    marco: `${FONDO_GF} shadow-[0_0_0_1px_#4a4b50,0_40px_90px_-34px_rgba(0,181,181,.4)]`,
+  },
+  "forge-studio": {
+    titulo: "ADJ Forge",
+    logo: "/logos/forge-studio.svg",
+    dominio: "ADJ Forge",
+    marco: "bg-fs-fondo text-fs-tinta shadow-[0_0_0_1px_#4a4b50,0_40px_80px_-40px_rgba(0,0,0,.6)]",
+  },
+} as const;
+
 export function VentanaGrabada({
   src,
   etiqueta,
   ruta,
+  app = "global-fit",
   activo,
   alTerminar,
-}: Animable & { src: string; etiqueta: string; ruta: string }) {
+}: Animable & { src: string; etiqueta: string; ruta: string; app?: keyof typeof APPS }) {
+  const { titulo, logo, dominio, marco } = APPS[app];
   return (
     <div role="img" aria-label={etiqueta}>
-      <Ventana
-        titulo="Global Fit · Admin"
-        logo="/logos/global-fit.png"
-        direccion={["globalfit.ar", ruta]}
-        marco={`${FONDO_GF} shadow-[0_0_0_1px_#4a4b50,0_40px_90px_-34px_rgba(0,181,181,.4)]`}
-      >
+      <Ventana titulo={titulo} logo={logo} direccion={[dominio, ruta]} marco={marco}>
         <Video src={src} activo={activo} alTerminar={alTerminar} />
       </Ventana>
     </div>
