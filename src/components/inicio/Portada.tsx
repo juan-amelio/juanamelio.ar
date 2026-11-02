@@ -6,12 +6,12 @@ import { Halos, Logo } from "@/components/casos/Marca";
 import { EnlaceSeccion } from "@/components/EnlaceSeccion";
 import { CajaA7 } from "@/components/maquetas/A7";
 import { PantallaForge } from "@/components/maquetas/ForgeEscritorio";
-import { TelefonoGlobalFit } from "@/components/maquetas/GlobalFit";
+import { TelefonoGrabado } from "@/components/maquetas/Grabacion";
 
 /* Cada pantalla en la ronda, con su tamaño. La ventana de Forge es más ancha y
    más baja que los teléfonos: va más abajo para quedar centrada con ellos. */
 const PANTALLAS: { maqueta: ReactNode; ancho: string; escala: string }[] = [
-  { maqueta: <TelefonoGlobalFit />, ancho: "w-80", escala: "[--escala:.5] sm:[--escala:.72]" },
+  { maqueta: <TelefonoGrabado src="/grabaciones/global-fit/reservar" etiqueta="Global Fit: una socia reserva una clase" />, ancho: "w-80", escala: "[--escala:.5] sm:[--escala:.72]" },
   { maqueta: <CajaA7 />, ancho: "w-80", escala: "[--escala:.5] sm:[--escala:.72]" },
   { maqueta: <PantallaForge />, ancho: "w-[560px] [--arriba:80px] sm:[--arriba:110px]", escala: "[--escala:.34] sm:[--escala:.66]" },
 ];
