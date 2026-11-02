@@ -63,12 +63,12 @@ const espera = (ms) => new Promise((r) => setTimeout(r, ms));
 
 /** Lo que el guion tiene a mano. */
 function herramientas(page, celular) {
-  async function centro(objetivo) {
+  async function centro(objetivo, traer = true) {
     const loc = typeof objetivo === "string" ? page.locator(objetivo).first() : objetivo;
     await loc.waitFor({ state: "visible", timeout: 15000 });
     // Si queda fuera de la pantalla (o pegado al borde), se lo trae con un
     // desplazamiento suave: un salto seco no lo haría nadie con el dedo.
-    const afuera = await loc.evaluate((el) => {
+    const afuera = traer && await loc.evaluate((el) => {
       const r = el.getBoundingClientRect();
       return r.top < 70 || r.bottom > innerHeight - 90;
     });
@@ -84,9 +84,11 @@ function herramientas(page, celular) {
   return {
     page,
     espera,
-    /** Toca (celular) o hace clic (escritorio) mostrando dónde. */
-    async tocar(objetivo, { despues = 700 } = {}) {
-      const { x, y } = await centro(objetivo);
+    /** Toca (celular) o hace clic (escritorio) mostrando dónde. Con
+        `traer: false` no lo centra antes aunque esté cerca del borde (un
+        link al pie del menú: centrarlo corre el menú entero). */
+    async tocar(objetivo, { despues = 700, traer = true } = {}) {
+      const { x, y } = await centro(objetivo, traer);
       if (celular) {
         await page.evaluate(({ x, y }) => {
           const d = document.getElementById("grabar-dedo");
@@ -214,6 +216,7 @@ function armar(cuadros, desde, hasta, salida) {
 /**
  * Graba un guion. `opciones`:
  * - base, email, ruta: dónde entra y con quién (por el login de desarrollo).
+ *   Sin email entra derecho, sin sesión (la tienda de A7 es pública).
  * - dispositivo: CELULAR o ESCRITORIO.
  * - reloj: la hora que ve el navegador (la del servidor la corre reloj.cjs).
  * - antes: lo que hay que hacer antes de cada toma (resembrar la base).
@@ -250,7 +253,7 @@ export async function grabar(nombre, opciones, guion) {
     const page = await contexto.newPage();
 
     // Entrar y dejar la app caliente (el dev server compila al primer pedido).
-    await page.goto(`${base}/api/dev-login?email=${encodeURIComponent(email)}&next=${encodeURIComponent(ruta)}`);
+    await page.goto(email ? `${base}/api/dev-login?email=${encodeURIComponent(email)}&next=${encodeURIComponent(ruta)}` : `${base}${ruta}`);
     await page.waitForLoadState("networkidle");
 
     const pelicula = await filmar(

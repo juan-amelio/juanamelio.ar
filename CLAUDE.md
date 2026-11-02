@@ -62,7 +62,7 @@ El repo es **público**. Nada que no se pueda leer en internet entra acá: ni
 | `src/app/page.tsx` | El inicio |
 | `src/components/casos/casos.tsx` | Los datos de cada proyecto y sus funciones, por celular y escritorio |
 | `src/components/inicio/Recorrido.tsx` | La escena de los proyectos, con el selector y la lista de funciones |
-| `src/components/maquetas/` | Las pantallas de cada app: dibujadas (A7) o grabadas (`Grabacion.tsx`, Global Fit y Forge Studio) |
+| `src/components/maquetas/` | Las pantallas de cada app, grabadas (`Grabacion.tsx`), con el iPhone y la ventana de Chrome que las enmarcan |
 | `scripts/grabar/` | El grabador de las apps reales y el guion de cada una (ver «Pantallas grabadas») |
 | `public/grabaciones/` | Los MP4 y sus pósters, uno por función |
 | `src/app/globals.css` | Tokens del sitio (se fijan en la #6) |
@@ -94,10 +94,27 @@ inventado; el board real tiene proyectos de clientes y no se graba nunca):
    la hora del servidor para que el agente se vea prendido: reloj.cjs lo deja
    andar desde que arrancó, y la app lo da por apagado a los 90 s.
 
+**A7 Sports** (#13) se graba con la base de demo de su repo
+(`prisma/seed-demo.ts` de a7sports, catalogo-xtrust#139: base `a7_demo`
+local). El catálogo es el de producción —nombres, precios de lista y fotos,
+que ya son públicos en la tienda (Juan, 01/11/2026)— y todo lo demás es
+inventado: costos, stock, ventas, clientes, clubes y eventos. Ningún producto
+sale sin foto:
+
+1. A7 con la base de demo, `DEV_LOGIN=true` y el reloj en
+   `2026-11-24T18:30:00-03:00`, en el 3004 (la entrada `a7sports-demo` del
+   `launch.json`; los pasos para crear la base están en el encabezado de
+   `seed-demo.ts`).
+2. `A7_DIR=<seiszero>/a7sports node scripts/grabar/a7-sports.mjs [toma…]`.
+   La tienda se graba sin login. «Cargar las compras» importa
+   `prisma/demo/compra-demo.csv` del repo de A7 (el archivo que Claude
+   devolvería del PDF) y acepta el `confirm()` de Cargar, que no sale en el
+   video.
+
 El grabador usa el screencast de Chrome cuadro a cuadro (el video de
 Playwright sale borroso) y ffmpeg. Muestra el dedo o la flecha en cada toque.
-`Grabacion.tsx` se porta como `useCiclo`: corre activa y a la vista, avisa al
-terminar y con «reducir movimiento» queda el póster (el último cuadro).
+`Grabacion.tsx` corre activa y a la vista, avisa al terminar y con «reducir
+movimiento» queda el póster (el último cuadro).
 
 ## Gotchas
 

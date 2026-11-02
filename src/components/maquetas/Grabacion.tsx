@@ -2,20 +2,25 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Iphone } from "./Iphone";
-import type { Animable } from "./useCiclo";
 import { Ventana } from "./Ventana";
+
+/** Lo que recibe toda pantalla animada. */
+export type Animable = { activo?: boolean; alTerminar?: () => void };
 
 /*
  * Una pantalla grabada de la app real (#44), en vez de dibujada: el MP4 y su
  * póster salen de scripts/grabar/ y viven en public/grabaciones/. Datos de
- * demo, siempre: el gimnasio de demo de gym-app y el tablero de demo de Forge.
+ * demo, siempre: el gimnasio de demo de gym-app, la base de demo de A7 (el
+ * catálogo y las fotos de verdad, lo demás inventado) y el tablero de demo de
+ * Forge.
  *
- * Se porta como las maquetas animadas (useCiclo): corre sólo mientras está
- * activa y a la vista, arranca de cero cada vez que vuelve a estar activa y,
- * con `alTerminar`, avisa al terminar en vez de dar la vuelta (el recorrido
- * pasa a la función siguiente). Sin `alTerminar` da vueltas (la portada).
- * Con «reducir movimiento» queda el póster quieto: el último cuadro, que es
- * el que cuenta qué pasó.
+ * Se porta como las maquetas dibujadas de antes (useCiclo, que se fue con
+ * la última, la de A7): corre sólo mientras está activa y a la vista,
+ * arranca de cero cada vez que vuelve a estar activa y, con `alTerminar`,
+ * avisa al terminar en vez de dar la vuelta (el recorrido pasa a la función
+ * siguiente). Sin `alTerminar` da vueltas (la portada). Con «reducir
+ * movimiento» queda el póster quieto: el último cuadro, que es el que cuenta
+ * qué pasó.
  */
 function Video({ src, activo = true, alTerminar }: Animable & { src: string }) {
   const ref = useRef<HTMLVideoElement>(null);
@@ -77,18 +82,27 @@ function Video({ src, activo = true, alTerminar }: Animable & { src: string }) {
   );
 }
 
-/** El fondo de la app de Global Fit, medido en la grabación: llena la barra
-    de estado del iPhone para que no se vea el corte. */
+/** El fondo de cada app, medido en la grabación: llena la barra de estado
+    del iPhone para que no se vea el corte. */
 const FONDO_GF = "bg-[#0d1313] text-[#eef1f1]";
+const FONDO_A7 = "bg-[#171717] text-[#f0ecdf]";
 
-export function TelefonoGrabado({ src, etiqueta, activo, alTerminar }: Animable & { src: string; etiqueta: string }) {
+/** Cómo se presenta cada app en el iPhone: su fondo y el brillo de su marca. */
+const TELEFONOS = {
+  "global-fit": { pantalla: `${FONDO_GF} font-gf`, brillo: "shadow-[0_40px_90px_-30px_rgba(0,181,181,.45)]" },
+  "a7-sports": { pantalla: `${FONDO_A7} font-a7`, brillo: "shadow-[0_40px_90px_-30px_rgba(190,222,20,.35)]" },
+} as const;
+
+export function TelefonoGrabado({
+  src,
+  etiqueta,
+  app = "global-fit",
+  activo,
+  alTerminar,
+}: Animable & { src: string; etiqueta: string; app?: keyof typeof TELEFONOS }) {
+  const { pantalla, brillo } = TELEFONOS[app];
   return (
-    <Iphone
-      etiqueta={etiqueta}
-      pantalla={`${FONDO_GF} font-gf`}
-      contenido=""
-      brillo="shadow-[0_40px_90px_-30px_rgba(0,181,181,.45)]"
-    >
+    <Iphone etiqueta={etiqueta} pantalla={pantalla} contenido="" brillo={brillo}>
       <Video src={src} activo={activo} alTerminar={alTerminar} />
     </Iphone>
   );
@@ -97,13 +111,20 @@ export function TelefonoGrabado({ src, etiqueta, activo, alTerminar }: Animable 
 /** Cómo se presenta cada app en la ventana de Chrome. Global Fit muestra su
     dominio real; Forge sólo su nombre, para no inventar uno (11/10), y la
     pestaña dice ADJ Forge porque así se llama la app que se ve grabada.
-    Forge va con su tema claro (01/11): el fondo es el papel de Broadsheet. */
+    Forge va con su tema claro (01/11): el fondo es el papel de Broadsheet.
+    A7 muestra su dominio real y la marca como se escribe en la app. */
 const APPS = {
   "global-fit": {
     titulo: "Global Fit · Admin",
     logo: "/logos/global-fit.png",
     dominio: "globalfit.ar",
     marco: `${FONDO_GF} shadow-[0_0_0_1px_#4a4b50,0_40px_90px_-34px_rgba(0,181,181,.4)]`,
+  },
+  "a7-sports": {
+    titulo: "A7 sports",
+    logo: "/logos/a7-sports.svg",
+    dominio: "a7sports.com.ar",
+    marco: `${FONDO_A7} shadow-[0_0_0_1px_#4a4b50,0_40px_90px_-34px_rgba(190,222,20,.3)]`,
   },
   "forge-studio": {
     titulo: "ADJ Forge",

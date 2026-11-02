@@ -4,14 +4,13 @@ import { useCallback, useEffect, useRef, useState, type CSSProperties, type Reac
 import { CASOS, ORDEN } from "@/components/casos/casos";
 import { Halos, Logo } from "@/components/casos/Marca";
 import { EnlaceSeccion } from "@/components/EnlaceSeccion";
-import { CajaA7 } from "@/components/maquetas/A7";
 import { TelefonoGrabado, VentanaGrabada } from "@/components/maquetas/Grabacion";
 
 /* Cada pantalla en la ronda, con su tamaño. La ventana de Forge es más ancha y
    más baja que los teléfonos: va más abajo para quedar centrada con ellos. */
 const PANTALLAS: { maqueta: ReactNode; ancho: string; escala: string }[] = [
   { maqueta: <TelefonoGrabado src="/grabaciones/global-fit/reservar" etiqueta="Global Fit: una socia reserva una clase" />, ancho: "w-80", escala: "[--escala:.5] sm:[--escala:.72]" },
-  { maqueta: <CajaA7 />, ancho: "w-80", escala: "[--escala:.5] sm:[--escala:.72]" },
+  { maqueta: <TelefonoGrabado app="a7-sports" src="/grabaciones/a7-sports/caja" etiqueta="A7 Sports: una venta en la caja" />, ancho: "w-80", escala: "[--escala:.5] sm:[--escala:.72]" },
   { maqueta: <VentanaGrabada app="forge-studio" src="/grabaciones/forge-studio/inicio" ruta=" · Inicio" etiqueta="Forge Studio: el inicio de una persona del equipo" />, ancho: "w-[560px] [--arriba:80px] sm:[--arriba:110px]", escala: "[--escala:.34] sm:[--escala:.66]" },
 ];
 
