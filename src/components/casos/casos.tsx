@@ -1,6 +1,4 @@
 import type { ReactNode } from "react";
-import { CajaA7 } from "@/components/maquetas/A7";
-import { GestionA7, TiendaA7 } from "@/components/maquetas/A7Escritorio";
 import { TelefonoGrabado, VentanaGrabada } from "@/components/maquetas/Grabacion";
 import type { IconoFuncion } from "./IconosFuncion";
 
@@ -50,6 +48,8 @@ export const ORDEN: Slug[] = ["global-fit", "a7-sports", "forge-studio"];
 
 /** Las grabaciones de Global Fit (scripts/grabar/global-fit.mjs). */
 const GF = "/grabaciones/global-fit";
+/** Las de A7 Sports (scripts/grabar/a7-sports.mjs). */
+const A7 = "/grabaciones/a7-sports";
 const FS = "/grabaciones/forge-studio";
 
 export const CASOS: Record<Slug, Caso> = {
@@ -163,8 +163,10 @@ export const CASOS: Record<Slug, Caso> = {
         {
           titulo: "Vender en la caja",
           icono: "caja",
-          texto: "Desde el celular, en el local o en un evento: las líneas entran, la promo se elige y el total se cuenta solo.",
-          maqueta: (activo, alTerminar) => <CajaA7 activo={activo} alTerminar={alTerminar} />,
+          texto: "Desde el celular, en el local o en un evento: las líneas entran, el descuento se elige y el total se cuenta solo.",
+          maqueta: (activo, alTerminar) => (
+            <TelefonoGrabado app="a7-sports" src={`${A7}/caja`} etiqueta="A7 Sports: una remera en talle M negra y un tubo de pelotas, la remera con 10 % de descuento, cobrado en efectivo, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
+          ),
         },
       ],
       escritorio: [
@@ -172,25 +174,33 @@ export const CASOS: Record<Slug, Caso> = {
           titulo: "Manejar el stock",
           icono: "stock",
           texto: "Cada venta descuenta al momento. Lo que se está por terminar se marca antes de que falte.",
-          maqueta: (activo, alTerminar) => <GestionA7 vista="stock" activo={activo} alTerminar={alTerminar} />,
+          maqueta: (activo, alTerminar) => (
+            <VentanaGrabada app="a7-sports" src={`${A7}/stock`} ruta="/stock" etiqueta="A7 Sports: el stock ordenado por lo que menos queda, y la ficha de una remera con lo que hay de cada talle, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
+          ),
         },
         {
           titulo: "Cargar las compras",
           icono: "compras",
           texto: "Claude lee el PDF del proveedor y devuelve un archivo; la app lo revisa antes de cargarlo y recalcula el costo.",
-          maqueta: (activo, alTerminar) => <GestionA7 vista="compras" activo={activo} alTerminar={alTerminar} />,
+          maqueta: (activo, alTerminar) => (
+            <VentanaGrabada app="a7-sports" src={`${A7}/compras`} ruta="/compras" etiqueta="A7 Sports: se importa el archivo de una factura, la app muestra el stock y los costos que cambian, y se carga, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
+          ),
         },
         {
           titulo: "La tienda para los clientes",
           icono: "tienda",
           texto: "Una vidriera pública que se filtra por categoría y talle, y termina en una consulta por WhatsApp.",
-          maqueta: (activo, alTerminar) => <TiendaA7 activo={activo} alTerminar={alTerminar} />,
+          maqueta: (activo, alTerminar) => (
+            <VentanaGrabada app="a7-sports" src={`${A7}/tienda`} ruta="/tienda" etiqueta="A7 Sports: en la tienda, remeras de mujer en talle M, y la ficha de una remera con su color y la consulta por WhatsApp, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
+          ),
         },
         {
           titulo: "Ver los números",
           icono: "numeros",
           texto: "Lo que se vendió en el mes, por semana y cuánto salió de los eventos, sin abrir una planilla.",
-          maqueta: (activo, alTerminar) => <GestionA7 vista="resumen" activo={activo} alTerminar={alTerminar} />,
+          maqueta: (activo, alTerminar) => (
+            <VentanaGrabada app="a7-sports" src={`${A7}/numeros`} ruta="/analisis" etiqueta="A7 Sports: el resumen, las ventas del mes por semana y lo que dejó cada evento, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
+          ),
         },
       ],
     },
