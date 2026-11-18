@@ -1,11 +1,31 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Redes } from "@/components/Redes";
 import { variablesDeFuentes } from "./fuentes";
 import "./globals.css";
 
+const DESCRIPCION = "Hago apps para negocios reales y las sostengo en producción.";
+
+/*
+ * Lo que leen los buscadores y lo que muestran LinkedIn y WhatsApp al
+ * compartir el link (#17). La imagen y los íconos son archivos de esta
+ * carpeta (opengraph-image.png, icon.png, apple-icon.png, favicon.ico) que
+ * Next toma solo; se regeneran con scripts/compartir/generar.mjs.
+ */
 export const metadata: Metadata = {
+  metadataBase: new URL("https://juanamelio.ar"),
   title: "Juan Amelio",
-  description: "Hago apps para negocios reales y las sostengo en producción.",
+  description: DESCRIPCION,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "es_AR",
+    url: "/",
+    siteName: "Juan Amelio",
+    title: "Juan Amelio",
+    description: DESCRIPCION,
+  },
+  twitter: { card: "summary_large_image", title: "Juan Amelio", description: DESCRIPCION },
 };
 
 /* El tema, antes de pintar (ver BotonTema): lo guardado si la persona eligió,
@@ -30,6 +50,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col">
         {children}
         <Redes />
+        {/* Las visitas (#17), sin cookies. Sólo cuenta en Vercel: en local no manda nada. */}
+        <Analytics />
       </body>
     </html>
   );
