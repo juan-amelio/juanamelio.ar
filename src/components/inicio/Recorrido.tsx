@@ -277,10 +277,13 @@ export function Recorrido() {
                 );
               })}
 
-              {/* Las flechas, a los costados de la pantalla del caso activo: se
-                  acomodan al ancho del celular o de la ventana. */}
+              {/* Las flechas, a los costados de la pantalla del caso activo, siempre
+                  al ancho de la ventana de escritorio aunque se vea el celular:
+                  si se acomodaran a cada uno, al pasar de la ventana al teléfono
+                  la flecha se iría de abajo del cursor y habría que ir a buscarla
+                  para seguir (#46). */}
               <div className="pointer-events-none absolute inset-0 flex justify-center">
-                <div className={`relative w-full transition-[max-width] duration-500 ease-out ${MAX_ANCHO[eleccion[activo].dispositivo]}`}>
+                <div className={`relative w-full ${MAX_ANCHO.escritorio}`}>
                   <Flecha
                     slug={activo}
                     hacia={vecina(activo, eleccion[activo], -1)}
