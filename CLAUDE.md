@@ -65,6 +65,7 @@ El repo es **público**. Nada que no se pueda leer en internet entra acá: ni
 | `src/components/maquetas/` | Las pantallas de cada app, grabadas (`Grabacion.tsx`), con el iPhone y la ventana de Chrome que las enmarcan |
 | `scripts/grabar/` | El grabador de las apps reales y el guion de cada una (ver «Pantallas grabadas») |
 | `public/grabaciones/` | Los MP4 y sus pósters, uno por función |
+| `scripts/compartir/generar.mjs` | La imagen para compartir y los íconos (#17): los deja en `src/app/`. Se vuelve a correr si cambia la foto o los productos |
 | `src/app/globals.css` | Tokens del sitio (se fijan en la #6) |
 
 ## Pantallas grabadas (#44)
