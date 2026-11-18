@@ -14,6 +14,12 @@ El repo es **público**. Nada que no se pueda leer en internet entra acá: ni
 - Antes de entregar: `npm run listo` (lint, tipos y build).
 - Local: `npm run dev`, en **http://localhost:3010** (3000, 3002, 3003 y 4321 ya
   los usan otros proyectos de la Mac de Juan).
+- **Publicación** (#9): proyecto `juanamelio` en Vercel, en el equipo de Juan
+  (el mismo de gym-app, a7sports y forge-studio), conectado a este repo. Lo que
+  entra a `main` se publica solo, y cada PR tiene su vista previa. Dominio
+  `juanamelio.ar` (y `www`), comprado en NIC Argentina y delegado a
+  `ns1.vercel-dns.com` / `ns2.vercel-dns.com`. Las visitas (Vercel Analytics,
+  #17) se prenden en la pestaña Analytics del proyecto.
 
 ## Decisiones que no se rediscuten
 
