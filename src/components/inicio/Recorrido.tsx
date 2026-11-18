@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { CASOS, MAX_ANCHO, ORDEN, type Dispositivo, type Slug } from "@/components/casos/casos";
+import { CASOS, MAX_ANCHO, ORDEN, type Dispositivo, type Pantalla, type Slug } from "@/components/casos/casos";
 import { Icono, IconoDispositivo, IconoFlecha } from "@/components/casos/IconosFuncion";
 import { Halos, Logo, Marca } from "@/components/casos/Marca";
 
@@ -166,52 +166,55 @@ export function Recorrido() {
                     actual={dispositivo}
                     onElegir={(d) => elegir(slug, { dispositivo: d, indice: 0 })}
                   />
-                  <div
-                    key={dispositivo}
-                    role="tablist"
-                    data-funciones
-                    aria-label={`Qué hace ${caso.nombre}`}
-                    className="entrar -mx-4 mt-3 flex gap-1 overflow-x-auto px-4 pb-2 [scrollbar-width:none] lg:mx-0 lg:flex-col lg:overflow-visible lg:px-0 lg:pb-0 apretado:mt-2"
-                  >
-                    {pantallas.map((p, i) => {
-                      const on = i === indice;
-                      return (
-                        <button
-                          key={p.titulo}
-                          type="button"
-                          role="tab"
-                          aria-selected={on}
-                          onClick={() => elegir(slug, { indice: i })}
-                          className={`flex shrink-0 cursor-pointer items-start gap-3 rounded-2xl px-3.5 py-3 text-left transition-colors duration-300 lg:shrink lg:py-2.5 apretado:py-1.5 ${
-                            on ? "bg-(--caso-superficie) shadow-[inset_0_0_0_1px_var(--caso-borde)]" : "hover:bg-(--caso-superficie)/60"
-                          }`}
-                        >
-                          <span
-                            className={`grid size-8 shrink-0 place-items-center rounded-xl transition-colors duration-300 ${
-                              on ? "bg-(--caso-acento) text-(--caso-sobre-acento)" : "bg-(--caso-superficie) text-(--caso-texto-medio)"
-                            }`}
-                          >
-                            <Icono nombre={p.icono} className="size-4" />
-                          </span>
-                          <span className="min-w-0 flex-1 pt-1">
-                            <span className={`block text-[15px] leading-tight font-bold ${on ? "" : "text-(--caso-texto-medio)"}`}>
-                              {p.titulo}
-                            </span>
-                            <span
-                              className={`mt-1.5 max-w-[46ch] text-[14px] leading-relaxed text-(--caso-texto-medio) apretado:mt-1 apretado:text-[13.5px] ${on ? "hidden lg:block" : "hidden"}`}
-                            >
-                              {p.texto}
-                            </span>
-                          </span>
-                        </button>
-                      );
-                    })}
+                  {/* La lista cambia de alto según cuál está abierta (la descripción
+                      ocupa de una a tres líneas) y según el dispositivo (5 o 4
+                      funciones). Como el caso está centrado en vertical, eso movía
+                      toda la columna (#46). Abajo, en la misma celda, van copias
+                      invisibles de cada estado posible: la celda toma el alto del
+                      más alto y la lista real ya no la hace crecer ni achicar. */}
+                  <div className="mt-3 grid grid-cols-[minmax(0,1fr)] apretado:mt-2">
+                    {enOrden(slug).map((e) => (
+                      <div
+                        key={`${e.dispositivo}-${e.indice}`}
+                        aria-hidden="true"
+                        inert
+                        className="invisible hidden flex-col gap-1 [grid-area:1/1] lg:flex"
+                      >
+                        {caso.funciones[e.dispositivo].map((p, i) => (
+                          <Funcion key={p.titulo} pantalla={p} on={i === e.indice} />
+                        ))}
+                      </div>
+                    ))}
+                    <div
+                      key={dispositivo}
+                      role="tablist"
+                      data-funciones
+                      aria-label={`Qué hace ${caso.nombre}`}
+                      className="entrar -mx-4 flex gap-1 overflow-x-auto px-4 pb-2 [scrollbar-width:none] [grid-area:1/1] lg:mx-0 lg:flex-col lg:self-start lg:overflow-visible lg:px-0 lg:pb-0"
+                    >
+                      {pantallas.map((p, i) => (
+                        <Funcion key={p.titulo} pantalla={p} on={i === indice} onElegir={() => elegir(slug, { indice: i })} />
+                      ))}
+                    </div>
                   </div>
                 </div>
 
-                {/* En el celular, la pantalla elegida va acá abajo. */}
+                {/* En el celular, la pantalla elegida va acá abajo. El texto
+                    reserva el alto del más largo del caso, así las flechas de
+                    abajo no se corren al pasar de una función a otra (#46). */}
                 <div className="mt-6 lg:hidden">
-                  <p className="max-w-[52ch] text-[15px] leading-relaxed text-(--caso-texto-medio)">{pantallas[indice].texto}</p>
+                  <div className="grid grid-cols-[minmax(0,1fr)]">
+                    {enOrden(slug).map((e) => (
+                      <p
+                        key={`${e.dispositivo}-${e.indice}`}
+                        aria-hidden="true"
+                        className="invisible max-w-[52ch] text-[15px] leading-relaxed [grid-area:1/1]"
+                      >
+                        {caso.funciones[e.dispositivo][e.indice].texto}
+                      </p>
+                    ))}
+                    <p className="max-w-[52ch] text-[15px] leading-relaxed text-(--caso-texto-medio) [grid-area:1/1]">{pantallas[indice].texto}</p>
+                  </div>
                   <div className="relative isolate mt-8">
                     <div aria-hidden="true" data-caso={slug} className="halo pointer-events-none absolute -inset-x-10 -inset-y-16 -z-10" />
                     <div key={`${dispositivo}-${indice}`} className={`entrar mx-auto w-full ${MAX_ANCHO[dispositivo]}`}>
@@ -274,10 +277,13 @@ export function Recorrido() {
                 );
               })}
 
-              {/* Las flechas, a los costados de la pantalla del caso activo: se
-                  acomodan al ancho del celular o de la ventana. */}
+              {/* Las flechas, a los costados de la pantalla del caso activo, siempre
+                  al ancho de la ventana de escritorio aunque se vea el celular:
+                  si se acomodaran a cada uno, al pasar de la ventana al teléfono
+                  la flecha se iría de abajo del cursor y habría que ir a buscarla
+                  para seguir (#46). */}
               <div className="pointer-events-none absolute inset-0 flex justify-center">
-                <div className={`relative w-full transition-[max-width] duration-500 ease-out ${MAX_ANCHO[eleccion[activo].dispositivo]}`}>
+                <div className={`relative w-full ${MAX_ANCHO.escritorio}`}>
                   <Flecha
                     slug={activo}
                     hacia={vecina(activo, eleccion[activo], -1)}
@@ -299,6 +305,39 @@ export function Recorrido() {
         </div>
       </div>
     </section>
+  );
+}
+
+/* Una función de la lista. Sin onElegir es una de las copias invisibles que
+   reservan el alto: tiene que medir exactamente lo mismo que la real. */
+function Funcion({ pantalla: p, on, onElegir }: { pantalla: Pantalla; on: boolean; onElegir?: () => void }) {
+  return (
+    <button
+      type="button"
+      role={onElegir ? "tab" : undefined}
+      aria-selected={onElegir ? on : undefined}
+      tabIndex={onElegir ? undefined : -1}
+      onClick={onElegir}
+      className={`flex shrink-0 cursor-pointer items-start gap-3 rounded-2xl px-3.5 py-3 text-left transition-colors duration-300 lg:shrink lg:py-2.5 apretado:py-1.5 ${
+        on ? "bg-(--caso-superficie) shadow-[inset_0_0_0_1px_var(--caso-borde)]" : "hover:bg-(--caso-superficie)/60"
+      }`}
+    >
+      <span
+        className={`grid size-8 shrink-0 place-items-center rounded-xl transition-colors duration-300 ${
+          on ? "bg-(--caso-acento) text-(--caso-sobre-acento)" : "bg-(--caso-superficie) text-(--caso-texto-medio)"
+        }`}
+      >
+        <Icono nombre={p.icono} className="size-4" />
+      </span>
+      <span className="min-w-0 flex-1 pt-1">
+        <span className={`block text-[15px] leading-tight font-bold ${on ? "" : "text-(--caso-texto-medio)"}`}>{p.titulo}</span>
+        <span
+          className={`mt-1.5 max-w-[46ch] text-[14px] leading-relaxed text-(--caso-texto-medio) apretado:mt-1 apretado:text-[13.5px] ${on ? "hidden lg:block" : "hidden"}`}
+        >
+          {p.texto}
+        </span>
+      </span>
+    </button>
   );
 }
 
