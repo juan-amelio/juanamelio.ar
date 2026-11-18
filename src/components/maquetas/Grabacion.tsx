@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
+import { IntroA7 } from "./IntroA7";
 import { Iphone } from "./Iphone";
 import { Ventana } from "./Ventana";
 
@@ -97,15 +98,87 @@ export function TelefonoGrabado({
   src,
   etiqueta,
   app = "global-fit",
-  activo,
+  activo = true,
   alTerminar,
-}: Animable & { src: string; etiqueta: string; app?: keyof typeof TELEFONOS }) {
+  intro = false,
+}: Animable & { src: string; etiqueta: string; app?: keyof typeof TELEFONOS; intro?: boolean }) {
   const { pantalla, brillo } = TELEFONOS[app];
+  const marco = useRef<HTMLDivElement>(null);
+  const fase = useFaseIntro(intro, activo, marco);
   return (
-    <Iphone etiqueta={etiqueta} pantalla={pantalla} contenido="" brillo={brillo}>
-      <Video src={src} activo={activo} alTerminar={alTerminar} />
+    <Iphone refCiclo={marco} etiqueta={etiqueta} pantalla={pantalla} contenido="" brillo={brillo}>
+      {/* Mientras corre la intro la grabación espera: arranca de cero cuando termina. */}
+      <Video src={src} activo={activo && fase.estado === "hecha"} alTerminar={alTerminar} />
+      {fase.estado === "corriendo" ? <IntroA7 alTerminar={fase.terminar} /> : null}
     </Iphone>
   );
+}
+
+/*
+ * La intro se ve una vez por visita (#49): la primera vez que el teléfono está
+ * activo y a la vista, y entera. Una vez vista, si se sigue bajando y se
+ * vuelve, va directo a la grabación. Queda en sessionStorage, así recargar la página tampoco la
+ * repite; una visita nueva (otra pestaña, otro día) la vuelve a mostrar. Con
+ * «reducir movimiento» no aparece.
+ *
+ * En la página hay dos teléfonos de A7: el de la columna fija (escritorio) y
+ * el de abajo de la lista (celular). Uno de los dos está escondido y nunca
+ * queda a la vista, así que la intro corre en el que se ve, y la marca en
+ * memoria evita que el otro la repita.
+ */
+const CLAVE_INTRO = "intro-a7-vista";
+let introVista = false;
+
+function yaSeVio() {
+  if (introVista) return true;
+  try {
+    return sessionStorage.getItem(CLAVE_INTRO) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function marcarVista() {
+  introVista = true;
+  try {
+    sessionStorage.setItem(CLAVE_INTRO, "1");
+  } catch {}
+}
+
+type FaseIntro = { estado: "espera" | "corriendo" | "hecha"; terminar: () => void };
+
+function useFaseIntro(intro: boolean, activo: boolean, marco: RefObject<HTMLDivElement | null>): FaseIntro {
+  const [estado, setEstado] = useState<FaseIntro["estado"]>(intro ? "espera" : "hecha");
+
+  // Se decide cuando el teléfono, activo, queda a la vista. El observador se
+  // rearma al cambiar `activo`, y al empezar a observar avisa cómo está.
+  useEffect(() => {
+    const el = marco.current;
+    if (estado !== "espera" || !activo || !el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return;
+        const quieto = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        setEstado(yaSeVio() || quieto ? "hecha" : "corriendo");
+      },
+      { threshold: 0.5 },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [estado, activo, marco]);
+
+  // Cuenta como vista recién al terminar (o al saltearla tocando). Si se va
+  // del caso a mitad de camino —o sólo pasó por él bajando rápido— vuelve a
+  // esperar, y al volver se ve entera.
+  if (estado === "corriendo" && !activo) setEstado("espera");
+
+  return {
+    estado,
+    terminar: () => {
+      marcarVista();
+      setEstado("hecha");
+    },
+  };
 }
 
 /** Cómo se presenta cada app en la ventana de Chrome. Global Fit muestra su

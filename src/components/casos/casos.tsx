@@ -165,7 +165,7 @@ export const CASOS: Record<Slug, Caso> = {
           icono: "caja",
           texto: "Desde el celular, en el local o en un evento: las líneas entran, el descuento se elige y el total se cuenta solo.",
           maqueta: (activo, alTerminar) => (
-            <TelefonoGrabado app="a7-sports" src={`${A7}/caja`} etiqueta="A7 Sports: una remera en talle M negra y un tubo de pelotas, la remera con 10 % de descuento, cobrado en efectivo, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
+            <TelefonoGrabado app="a7-sports" intro src={`${A7}/caja`} etiqueta="A7 Sports: una remera en talle M negra y un tubo de pelotas, la remera con 10 % de descuento, cobrado en efectivo, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
           ),
         },
       ],
