@@ -128,10 +128,10 @@ export function Portada() {
       <div className="mx-auto grid min-h-svh max-w-7xl items-center gap-x-12 gap-y-6 px-4 pt-24 pb-16 sm:px-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:pb-20">
         <div className="portada-texto relative z-10">
           <h1 className="animate-subir max-w-[11ch] text-[clamp(44px,7.2vw,112px)] leading-[0.94] font-extrabold tracking-[-0.04em]">
-            Apps que la gente abre todos los días.
+            Apps que trabajan para vos.
           </h1>
           <p className="animate-subir mt-7 max-w-[34ch] text-xl leading-normal text-tinta-media [animation-delay:.12s]">
-            Soy Juan Amelio. Las diseño, las construyo y las sostengo en producción. Estas tres se usan hoy.
+            Soy Juan Amelio. Las diseño, las construyo y las sostengo en producción. Hoy ya son parte del día de alguien.
           </p>
           <EnlaceSeccion href="/#proyectos" className="animate-subir group mt-10 inline-flex items-center gap-3 text-base font-semibold [animation-delay:.24s]">
             <span className="indicador" aria-hidden="true" />
