@@ -8,7 +8,6 @@ import { EnlaceSeccion } from "@/components/EnlaceSeccion";
 const SECCIONES = [
   { id: "sobre-mi", nombre: "Sobre mí", visible: "hidden sm:inline-block" },
   { id: "proyectos", nombre: "Proyectos", visible: "hidden sm:inline-block" },
-  { id: "proceso", nombre: "Proceso", visible: "hidden md:inline-block" },
   { id: "contacto", nombre: "Contacto", visible: "inline-block" },
 ] as const;
 
