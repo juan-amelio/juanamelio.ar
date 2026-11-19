@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { CASOS, MAX_ANCHO, ORDEN, type Dispositivo, type Pantalla, type Slug } from "@/components/casos/casos";
 import { Icono, IconoDispositivo, IconoFlecha } from "@/components/casos/IconosFuncion";
+import { Contador } from "@/components/casos/Contador";
 import { Halos, Logo, Marca } from "@/components/casos/Marca";
 
 const FUENTE: Record<Slug, string> = {
@@ -171,7 +172,9 @@ export function Recorrido() {
                   {/* Los números de uso real: que se vea que la app está viva. */}
                   {caso.numeros.map((n) => (
                     <div key={n.etiqueta} className="flex items-baseline gap-2">
-                      <dd className="text-xl leading-none font-extrabold tabular-nums apretado:text-lg">{n.valor}</dd>
+                      <dd className="text-xl leading-none font-extrabold apretado:text-lg">
+                        <Contador valor={n.valor} />
+                      </dd>
                       <dt className="text-[13px] text-(--caso-suave)">{n.etiqueta}</dt>
                     </div>
                   ))}
