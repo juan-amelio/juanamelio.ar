@@ -24,8 +24,8 @@ export function SobreMi() {
               Soy Juan Bautista Amelio, desarrollador de software en Mendoza. Desde 2023 trabajo en el equipo de
               Soluciones de Slingr, haciendo aplicaciones a medida para empresas de Estados Unidos. Me reúno cada
               semana con los clientes, en inglés, para mostrar avances, ajustar requisitos y planear lo que sigue.
-              Desde noviembre de 2026 soy team leader: lidero un equipo chico, con un desarrollador y una QA, en un
-              proyecto para un cliente de Estados Unidos.
+              Hoy soy team leader: lidero un equipo chico, con un desarrollador y una QA, en un proyecto para un
+              cliente de Estados Unidos.
             </p>
             <p>
               Ahí hice de punta a punta un ERP para una empresa industrial: inventario, compras, producción, ventas y
