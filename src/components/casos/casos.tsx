@@ -34,7 +34,8 @@ export type Pantalla = {
 };
 
 /** Un número de uso real, sacado de la base de producción de cada app. */
-export type Numero = { valor: string; etiqueta: string };
+/** `valor` en cifras: el sitio lo cuenta desde 0 al mostrarlo (#52). */
+export type Numero = { valor: number; etiqueta: string };
 
 /** El ancho máximo de cada dispositivo, en clases. */
 export const MAX_ANCHO: Record<Dispositivo, string> = {
@@ -42,8 +43,8 @@ export const MAX_ANCHO: Record<Dispositivo, string> = {
   escritorio: "max-w-140",
 };
 
-/* Los números de cada caso son de ejemplo hasta que se junten los reales de
-   producción (#30). */
+/* Los números de cada caso son FICTICIOS (#52, para probar el conteo) hasta
+   que se junten los reales de producción (#30). No se publican así. */
 export const ORDEN: Slug[] = ["global-fit", "a7-sports", "forge-studio"];
 
 /** Las grabaciones de Global Fit (scripts/grabar/global-fit.mjs). */
@@ -62,9 +63,9 @@ export const CASOS: Record<Slug, Caso> = {
     bajada:
       "La app de un gimnasio de Mendoza. Los socios reservan desde el celular, los profesores toman asistencia en la clase y el dueño maneja socios, pagos y horarios desde un panel.",
     numeros: [
-      { valor: "XX", etiqueta: "socios activos" },
-      { valor: "XX", etiqueta: "clases por semana" },
-      { valor: "XX", etiqueta: "reservas en el último mes" },
+      // FICTICIOS (#52), para probar el conteo: los reales son la #30.
+      { valor: 184, etiqueta: "socios activos" },
+      { valor: 42, etiqueta: "clases por semana" },
     ],
     funciones: {
       celular: [
@@ -155,8 +156,9 @@ export const CASOS: Record<Slug, Caso> = {
     bajada:
       "Ventas, stock, caja y una tienda pública para un emprendimiento familiar de pádel. La usan cinco personas desde el celular, en el local y en los eventos.",
     numeros: [
-      { valor: "XX", etiqueta: "ventas en el último mes" },
-      { valor: "XX", etiqueta: "eventos en el último año" },
+      // FICTICIOS (#52), para probar el conteo: los reales son la #30.
+      { valor: 1250, etiqueta: "ventas" },
+      { valor: 18, etiqueta: "eventos en el último año" },
     ],
     funciones: {
       celular: [
@@ -214,9 +216,10 @@ export const CASOS: Record<Slug, Caso> = {
     bajada:
       "El tablero donde trabaja mi equipo, con un agente que corre en la máquina de cada desarrollador y un plugin para trabajar con IA sin perder el control.",
     numeros: [
-      { valor: "XX", etiqueta: "proyectos" },
-      { valor: "XX", etiqueta: "tareas en el tablero" },
-      { valor: "XX", etiqueta: "llegaron a producción" },
+      // FICTICIOS (#52), para probar el conteo: los reales son la #30.
+      { valor: 7, etiqueta: "proyectos" },
+      { valor: 640, etiqueta: "tareas en el tablero" },
+      { valor: 410, etiqueta: "en producción" },
     ],
     funciones: {
       celular: [],
