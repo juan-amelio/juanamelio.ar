@@ -43,9 +43,9 @@ export const MAX_ANCHO: Record<Dispositivo, string> = {
   escritorio: "max-w-140",
 };
 
-/* Los números de cada caso son reales, contados en la base de producción de
-   cada app el 19/11/2026 (#30), con consultas de sólo lectura que cuentan
-   filas. Son una foto: se actualizan a mano, cada tanto. */
+/* Los números de cada caso salen de la base de producción de cada app,
+   contados el 19/11/2026 (#30) con consultas de sólo lectura, salvo donde el
+   comentario dice otra cosa. Son una foto: se actualizan a mano. */
 export const ORDEN: Slug[] = ["global-fit", "a7-sports", "forge-studio"];
 
 /** Las grabaciones de Global Fit (scripts/grabar/global-fit.mjs). */
@@ -64,8 +64,9 @@ export const CASOS: Record<Slug, Caso> = {
     bajada:
       "La app de un gimnasio de Mendoza. Los socios reservan desde el celular, los profesores toman asistencia en la clase y el dueño maneja socios, pagos y horarios desde un panel.",
     numeros: [
-      // Socios con membresía activa en el gimnasio; clases de la semana, sin las canceladas.
-      { valor: 49, etiqueta: "socios activos" },
+      // Socios: valor fijado por Juan el 19/11/2026, no sale del conteo.
+      // Clases: las de la semana, sin las canceladas.
+      { valor: 97, etiqueta: "socios activos" },
       { valor: 48, etiqueta: "clases por semana" },
     ],
     funciones: {
