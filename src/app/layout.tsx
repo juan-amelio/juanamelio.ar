@@ -1,10 +1,28 @@
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Redes } from "@/components/Redes";
+import { contacto } from "@/lib/contacto";
 import { variablesDeFuentes } from "./fuentes";
 import "./globals.css";
 
 const DESCRIPCION = "Hago apps para negocios reales y las sostengo en producción.";
+
+/*
+ * La ficha de persona para Google (#57): junta «Juan Amelio» y «Juan Bautista
+ * Amelio» en la misma persona y le dice que este sitio, LinkedIn y GitHub son
+ * de ella. No se ve en la página.
+ */
+const PERSONA = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Juan Amelio",
+  alternateName: "Juan Bautista Amelio",
+  url: "https://juanamelio.ar",
+  image: contacto.foto ? `https://juanamelio.ar${contacto.foto}` : undefined,
+  jobTitle: "Desarrollador de software",
+  address: { "@type": "PostalAddress", addressLocality: "Mendoza", addressCountry: "AR" },
+  sameAs: [contacto.linkedin, contacto.github].filter(Boolean),
+};
 
 /*
  * Lo que leen los buscadores y lo que muestran LinkedIn y WhatsApp al
@@ -14,7 +32,7 @@ const DESCRIPCION = "Hago apps para negocios reales y las sostengo en producció
  */
 export const metadata: Metadata = {
   metadataBase: new URL("https://juanamelio.ar"),
-  title: "Juan Amelio",
+  title: "Juan Amelio · Desarrollador de software en Mendoza",
   description: DESCRIPCION,
   alternates: { canonical: "/" },
   openGraph: {
@@ -46,6 +64,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: TEMA }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(PERSONA).replace(/</g, "\\u003c") }}
+        />
       </head>
       <body className="min-h-full flex flex-col">
         {children}
