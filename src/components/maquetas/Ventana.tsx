@@ -112,7 +112,7 @@ export function Ventana({
 
 /* El campo de la dirección. Con `enlace`, se puede tocar y abre el sitio de
    verdad en otra pestaña. Fuera del orden del teclado y de los lectores (la
-   ventana es decorado): para ellos el enlace es el de la lista de funciones. */
+   ventana es decorado): para ellos el enlace es el del encabezado del caso. */
 function Campo({ enlace, children }: { enlace?: string; children: ReactNode }) {
   const clases = `flex h-[27px] flex-1 items-center gap-2 rounded-full px-3 text-[12px] ${CHROME.campo}`;
   if (!enlace) return <div className={clases}>{children}</div>;

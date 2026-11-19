@@ -144,6 +144,23 @@ export function Recorrido() {
                 <p className="flex items-center gap-3.5 text-[22px] apretado:text-[19px]">
                   <Logo caso={slug} alt="" tamano={56} className="size-14 apretado:size-11" />
                   <Marca caso={slug} />
+                  {/* Lo que se puede visitar de verdad (#51), a la vista mientras se
+                      mira el caso. Borde y texto del caso, no el acento: el lima
+                      no se lee sobre el tema claro de A7. */}
+                  {caso.enlace && (
+                    <a
+                      href={caso.enlace.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="ml-auto inline-flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-[14px] font-semibold text-(--caso-texto) no-underline shadow-[inset_0_0_0_1px_var(--caso-borde)] transition-colors duration-200 hover:bg-(--caso-acento) hover:text-(--caso-sobre-acento) hover:shadow-none"
+                    >
+                      {caso.enlace.texto}
+                      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="size-3.5">
+                        <path d="M7 17L17 7M9 7h8v8" />
+                      </svg>
+                      <span className="sr-only"> (se abre en otra pestaña)</span>
+                    </a>
+                  )}
                 </p>
                 <h2 className="mt-4 max-w-[16ch] text-[clamp(32px,3.6vw,52px)] leading-[1.02] font-extrabold tracking-[-0.03em] apretado:mt-3 apretado:text-[clamp(28px,2.9vw,40px)]">
                   {caso.titular}
@@ -205,17 +222,15 @@ export function Recorrido() {
                 <div className="mt-6 lg:hidden">
                   <div className="grid grid-cols-[minmax(0,1fr)]">
                     {enOrden(slug).map((e) => (
-                      <div key={`${e.dispositivo}-${e.indice}`} aria-hidden="true" inert className="invisible flex flex-col [grid-area:1/1]">
-                        <p className="max-w-[52ch] text-[15px] leading-relaxed">{caso.funciones[e.dispositivo][e.indice].texto}</p>
-                        {caso.funciones[e.dispositivo][e.indice].enlace && (
-                          <Enlace enlace={caso.funciones[e.dispositivo][e.indice].enlace!} tabIndex={-1} className="mt-3 inline-flex" />
-                        )}
-                      </div>
+                      <p
+                        key={`${e.dispositivo}-${e.indice}`}
+                        aria-hidden="true"
+                        className="invisible max-w-[52ch] text-[15px] leading-relaxed [grid-area:1/1]"
+                      >
+                        {caso.funciones[e.dispositivo][e.indice].texto}
+                      </p>
                     ))}
-                    <div className="flex flex-col [grid-area:1/1]">
-                      <p className="max-w-[52ch] text-[15px] leading-relaxed text-(--caso-texto-medio)">{pantallas[indice].texto}</p>
-                      {pantallas[indice].enlace && <Enlace enlace={pantallas[indice].enlace} className="mt-3 inline-flex" />}
-                    </div>
+                    <p className="max-w-[52ch] text-[15px] leading-relaxed text-(--caso-texto-medio) [grid-area:1/1]">{pantallas[indice].texto}</p>
                   </div>
                   <div className="relative isolate mt-8">
                     <div aria-hidden="true" data-caso={slug} className="halo pointer-events-none absolute -inset-x-10 -inset-y-16 -z-10" />
@@ -314,66 +329,32 @@ export function Recorrido() {
    reservan el alto: tiene que medir exactamente lo mismo que la real. */
 function Funcion({ pantalla: p, on, onElegir }: { pantalla: Pantalla; on: boolean; onElegir?: () => void }) {
   return (
-    <div
-      role={onElegir ? "presentation" : undefined}
-      className={`flex shrink-0 flex-col rounded-2xl transition-colors duration-300 lg:shrink ${
+    <button
+      type="button"
+      role={onElegir ? "tab" : undefined}
+      aria-selected={onElegir ? on : undefined}
+      tabIndex={onElegir ? undefined : -1}
+      onClick={onElegir}
+      className={`flex shrink-0 cursor-pointer items-start gap-3 rounded-2xl px-3.5 py-3 text-left transition-colors duration-300 lg:shrink lg:py-2.5 apretado:py-1.5 ${
         on ? "bg-(--caso-superficie) shadow-[inset_0_0_0_1px_var(--caso-borde)]" : "hover:bg-(--caso-superficie)/60"
       }`}
     >
-      <button
-        type="button"
-        role={onElegir ? "tab" : undefined}
-        aria-selected={onElegir ? on : undefined}
-        tabIndex={onElegir ? undefined : -1}
-        onClick={onElegir}
-        className="flex cursor-pointer items-start gap-3 px-3.5 py-3 text-left lg:py-2.5 apretado:py-1.5"
+      <span
+        className={`grid size-8 shrink-0 place-items-center rounded-xl transition-colors duration-300 ${
+          on ? "bg-(--caso-acento) text-(--caso-sobre-acento)" : "bg-(--caso-superficie) text-(--caso-texto-medio)"
+        }`}
       >
+        <Icono nombre={p.icono} className="size-4" />
+      </span>
+      <span className="min-w-0 flex-1 pt-1">
+        <span className={`block text-[15px] leading-tight font-bold ${on ? "" : "text-(--caso-texto-medio)"}`}>{p.titulo}</span>
         <span
-          className={`grid size-8 shrink-0 place-items-center rounded-xl transition-colors duration-300 ${
-            on ? "bg-(--caso-acento) text-(--caso-sobre-acento)" : "bg-(--caso-superficie) text-(--caso-texto-medio)"
-          }`}
+          className={`mt-1.5 max-w-[46ch] text-[14px] leading-relaxed text-(--caso-texto-medio) apretado:mt-1 apretado:text-[13.5px] ${on ? "hidden lg:block" : "hidden"}`}
         >
-          <Icono nombre={p.icono} className="size-4" />
+          {p.texto}
         </span>
-        <span className="min-w-0 flex-1 pt-1">
-          <span className={`block text-[15px] leading-tight font-bold ${on ? "" : "text-(--caso-texto-medio)"}`}>{p.titulo}</span>
-          <span
-            className={`mt-1.5 max-w-[46ch] text-[14px] leading-relaxed text-(--caso-texto-medio) apretado:mt-1 apretado:text-[13.5px] ${on ? "hidden lg:block" : "hidden"}`}
-          >
-            {p.texto}
-          </span>
-        </span>
-      </button>
-      {/* Fuera del botón (un enlace no puede ir adentro), alineado con el texto. */}
-      {p.enlace && (
-        <Enlace
-          enlace={p.enlace}
-          tabIndex={onElegir ? undefined : -1}
-          className={`-mt-1 mb-3 ml-[58px] apretado:mb-2 ${on ? "hidden lg:inline-flex" : "hidden"}`}
-        />
-      )}
-    </div>
-  );
-}
-
-/* El enlace a lo real de una función (#51): sale en otra pestaña. Subrayado
-   con el acento de la marca y no escrito en él, que en el tema claro de A7
-   (lima sobre blanco) no se leería. */
-function Enlace({ enlace, className = "", tabIndex }: { enlace: NonNullable<Pantalla["enlace"]>; className?: string; tabIndex?: number }) {
-  return (
-    <a
-      href={enlace.href}
-      target="_blank"
-      rel="noreferrer"
-      tabIndex={tabIndex}
-      className={`w-fit items-center gap-1 text-[14px] font-semibold text-(--caso-texto) underline decoration-(--caso-acento) decoration-2 underline-offset-4 transition-colors hover:text-(--caso-acento) ${className}`}
-    >
-      {enlace.texto}
-      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="size-3.5">
-        <path d="M7 17L17 7M9 7h8v8" />
-      </svg>
-      <span className="sr-only"> (se abre en otra pestaña)</span>
-    </a>
+      </span>
+    </button>
   );
 }
 
