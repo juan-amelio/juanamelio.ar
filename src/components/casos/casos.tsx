@@ -30,6 +30,8 @@ export type Pantalla = {
   titulo: string;
   texto: string;
   icono: IconoFuncion;
+  /** Un enlace a lo real, cuando es público (la tienda de A7, #51). */
+  enlace?: { texto: string; href: string };
   maqueta: (activo: boolean, alTerminar?: () => void) => ReactNode;
 };
 
@@ -190,8 +192,9 @@ export const CASOS: Record<Slug, Caso> = {
           titulo: "La tienda para los clientes",
           icono: "tienda",
           texto: "Una vidriera pública que se filtra por categoría y talle, y termina en una consulta por WhatsApp.",
+          enlace: { texto: "Abrir la tienda real", href: "https://a7sports.com.ar/tienda" },
           maqueta: (activo, alTerminar) => (
-            <VentanaGrabada app="a7-sports" src={`${A7}/tienda`} ruta="/tienda" etiqueta="A7 Sports: en la tienda, remeras de mujer en talle M, y la ficha de una remera con su color y la consulta por WhatsApp, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
+            <VentanaGrabada app="a7-sports" src={`${A7}/tienda`} ruta="/tienda" enlace="https://a7sports.com.ar/tienda" etiqueta="A7 Sports: en la tienda, remeras de mujer en talle M, y la ficha de una remera con su color y la consulta por WhatsApp, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
           ),
         },
         {
