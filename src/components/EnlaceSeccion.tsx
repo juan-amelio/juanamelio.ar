@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import type { ComponentProps, MouseEvent } from "react";
 
 /*
- * Un enlace a una sección del inicio ("/#proceso"): la página se desliza
+ * Un enlace a una sección del inicio ("/#proyectos"): la página se desliza
  * hasta la sección en vez de saltar. Desde otra ruta (un 404, por ejemplo)
  * navega como cualquier Link.
  *
