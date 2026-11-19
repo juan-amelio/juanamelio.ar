@@ -15,8 +15,13 @@ El repo es **público**. Nada que no se pueda leer en internet entra acá: ni
 - Local: `npm run dev`, en **http://localhost:3010** (3000, 3002, 3003 y 4321 ya
   los usan otros proyectos de la Mac de Juan).
 - **Publicación** (#9): proyecto `juanamelio` en Vercel, en el equipo de Juan
-  (el mismo de gym-app, a7sports y forge-studio), conectado a este repo. Lo que
-  entra a `main` se publica solo, y cada PR tiene su vista previa. Dominio
+  (el mismo de gym-app, a7sports y forge-studio). **Mergear no publica**
+  (#53): `vercel.json` apaga los deploys automáticos (`git.deploymentEnabled:
+  false`), así que no hay vista previa por PR ni comentarios de vercel[bot].
+  A producción se sale con el botón **Publicar** de Forge Studio, que corre
+  `.github/workflows/salida.yml` (lint, tipos y `vercel deploy --prod` desde
+  una copia limpia de `main`; necesita el secreto `VERCEL_TOKEN` en el repo).
+  Es el mismo modelo que gym-app, a7sports y forge-studio. Dominio
   `juanamelio.ar` (y `www`), comprado en NIC Argentina y delegado a
   `ns1.vercel-dns.com` / `ns2.vercel-dns.com`. Las visitas (Vercel Analytics,
   #17) se prenden en la pestaña Analytics del proyecto.
