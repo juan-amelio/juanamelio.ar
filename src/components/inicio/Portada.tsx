@@ -131,7 +131,7 @@ export function Portada() {
             Apps que trabajan para vos.
           </h1>
           <p className="animate-subir mt-7 max-w-[34ch] text-xl leading-normal text-tinta-media [animation-delay:.12s]">
-            Soy Juan Amelio. Las diseño, las construyo y las sostengo en producción. Hoy ya son parte del día de alguien.
+            Soy Juan Amelio. Las diseño, construyo y las sostengo en producción. Hoy son parte del día a día de alguien.
           </p>
           <EnlaceSeccion href="/#proyectos" className="animate-subir group mt-10 inline-flex items-center gap-3 text-base font-semibold [animation-delay:.24s]">
             <span className="indicador" aria-hidden="true" />
@@ -217,7 +217,7 @@ export function Portada() {
                 href={`/#${caso.slug}`}
                 className="shrink-0 rounded-full bg-(--caso-acento) px-4 py-2.5 text-sm font-bold text-(--caso-sobre-acento) hover:bg-(--caso-acento-hover)"
               >
-                Ver el proyecto
+                Ver proyecto
               </EnlaceSeccion>
             </div>
             <div className="mt-3 flex justify-center gap-1">
