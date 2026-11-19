@@ -43,8 +43,9 @@ export const MAX_ANCHO: Record<Dispositivo, string> = {
   escritorio: "max-w-140",
 };
 
-/* Los números de cada caso son FICTICIOS (#52, para probar el conteo) hasta
-   que se junten los reales de producción (#30). No se publican así. */
+/* Los números de cada caso son reales, contados en la base de producción de
+   cada app el 19/11/2026 (#30), con consultas de sólo lectura que cuentan
+   filas. Son una foto: se actualizan a mano, cada tanto. */
 export const ORDEN: Slug[] = ["global-fit", "a7-sports", "forge-studio"];
 
 /** Las grabaciones de Global Fit (scripts/grabar/global-fit.mjs). */
@@ -63,9 +64,9 @@ export const CASOS: Record<Slug, Caso> = {
     bajada:
       "La app de un gimnasio de Mendoza. Los socios reservan desde el celular, los profesores toman asistencia en la clase y el dueño maneja socios, pagos y horarios desde un panel.",
     numeros: [
-      // FICTICIOS (#52), para probar el conteo: los reales son la #30.
-      { valor: 184, etiqueta: "socios activos" },
-      { valor: 42, etiqueta: "clases por semana" },
+      // Socios con membresía activa en el gimnasio; clases de la semana, sin las canceladas.
+      { valor: 49, etiqueta: "socios activos" },
+      { valor: 48, etiqueta: "clases por semana" },
     ],
     funciones: {
       celular: [
@@ -156,9 +157,9 @@ export const CASOS: Record<Slug, Caso> = {
     bajada:
       "Ventas, stock, caja y una tienda pública para un emprendimiento familiar de pádel. La usan cinco personas desde el celular, en el local y en los eventos.",
     numeros: [
-      // FICTICIOS (#52), para probar el conteo: los reales son la #30.
-      { valor: 1250, etiqueta: "ventas" },
-      { valor: 18, etiqueta: "eventos en el último año" },
+      // Todas las ventas registradas, sin las canceladas (desde el 29/07/2026); eventos de los últimos 12 meses.
+      { valor: 366, etiqueta: "ventas" },
+      { valor: 10, etiqueta: "eventos en el último año" },
     ],
     funciones: {
       celular: [
@@ -216,10 +217,10 @@ export const CASOS: Record<Slug, Caso> = {
     bajada:
       "El tablero donde trabaja mi equipo, con un agente que corre en la máquina de cada desarrollador y un plugin para trabajar con IA sin perder el control.",
     numeros: [
-      // FICTICIOS (#52), para probar el conteo: los reales son la #30.
-      { valor: 7, etiqueta: "proyectos" },
-      { valor: 640, etiqueta: "tareas en el tablero" },
-      { valor: 410, etiqueta: "en producción" },
+      // Proyectos activos del board; todas las tarjetas; las que están En producción.
+      { valor: 5, etiqueta: "proyectos" },
+      { valor: 467, etiqueta: "tareas en el tablero" },
+      { valor: 294, etiqueta: "en producción" },
     ],
     funciones: {
       celular: [],
