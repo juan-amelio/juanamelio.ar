@@ -35,6 +35,7 @@ export function Ventana({
   logo,
   direccion,
   marco,
+  enlace,
   children,
 }: {
   titulo: string;
@@ -43,6 +44,8 @@ export function Ventana({
   /** El fondo, la letra y el color del texto de la app, y la sombra: el
       borde de la ventana (#4a4b50) y el brillo del producto. */
   marco: string;
+  /** Si lo que se ve es público, la barra de direcciones lleva ahí (#51). */
+  enlace?: string;
   children: ReactNode;
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -85,14 +88,18 @@ export function Ventana({
             <Trazo d="M19 12H5M11 6l-6 6 6 6" className={`size-[15px] ${CHROME.suave}`} />
             <Trazo d="M5 12h14M13 6l6 6-6 6" className="size-[15px] text-[#5f6368]" />
             <Trazo d="M19 12a7 7 0 1 1-2.1-5M19 4v4h-4" className={`size-[14px] ${CHROME.suave}`} />
-            <div className={`flex h-[27px] flex-1 items-center gap-2 rounded-full px-3 text-[12px] ${CHROME.campo}`}>
+            <Campo enlace={enlace}>
               <Trazo d="M4 8h10M18 8h2M4 16h2M10 16h10M14 6v4M8 14v4" className={`size-[13px] ${CHROME.suave}`} />
               <span className="min-w-0 flex-1 truncate">
                 {direccion[0]}
                 {direccion[1] && <span className={CHROME.suave}>{direccion[1]}</span>}
               </span>
-              <Trazo d="M12 4l2.5 5 5.5.8-4 3.9.9 5.5-4.9-2.6-4.9 2.6.9-5.5-4-3.9 5.5-.8z" className={`size-[13px] ${CHROME.suave}`} />
-            </div>
+              {enlace ? (
+                <Trazo d="M7 17L17 7M9 7h8v8" className={`size-[13px] ${CHROME.suave} transition-colors group-hover:text-[#e8eaed]`} />
+              ) : (
+                <Trazo d="M12 4l2.5 5 5.5.8-4 3.9.9 5.5-4.9-2.6-4.9 2.6.9-5.5-4-3.9 5.5-.8z" className={`size-[13px] ${CHROME.suave}`} />
+              )}
+            </Campo>
             <span className="grid size-[22px] place-items-center rounded-full bg-[#8ab4f8] text-[10px] font-semibold text-[#202124]">J</span>
             <Trazo d="M12 5.5v.01M12 12v.01M12 18.5v.01" className={`size-[15px] ${CHROME.suave}`} ancho={3} />
           </div>
@@ -100,6 +107,19 @@ export function Ventana({
         <div className="relative h-[360px] overflow-hidden">{children}</div>
       </div>
     </div>
+  );
+}
+
+/* El campo de la dirección. Con `enlace`, se puede tocar y abre el sitio de
+   verdad en otra pestaña. Fuera del orden del teclado y de los lectores (la
+   ventana es decorado): para ellos el enlace es el del encabezado del caso. */
+function Campo({ enlace, children }: { enlace?: string; children: ReactNode }) {
+  const clases = `flex h-[27px] flex-1 items-center gap-2 rounded-full px-3 text-[12px] ${CHROME.campo}`;
+  if (!enlace) return <div className={clases}>{children}</div>;
+  return (
+    <a href={enlace} target="_blank" rel="noreferrer" tabIndex={-1} className={`group ${clases} cursor-pointer no-underline transition-colors hover:bg-[#2a2b2e]`}>
+      {children}
+    </a>
   );
 }
 

@@ -214,11 +214,12 @@ export function VentanaGrabada({
   app = "global-fit",
   activo,
   alTerminar,
-}: Animable & { src: string; etiqueta: string; ruta: string; app?: keyof typeof APPS }) {
+  enlace,
+}: Animable & { src: string; etiqueta: string; ruta: string; app?: keyof typeof APPS; enlace?: string }) {
   const { titulo, logo, dominio, marco } = APPS[app];
   return (
     <div role="img" aria-label={etiqueta}>
-      <Ventana titulo={titulo} logo={logo} direccion={[dominio, ruta]} marco={marco}>
+      <Ventana titulo={titulo} logo={logo} direccion={[dominio, ruta]} marco={marco} enlace={enlace}>
         <Video src={src} activo={activo} alTerminar={alTerminar} />
       </Ventana>
     </div>

@@ -13,6 +13,9 @@ export type Caso = {
   logo: string;
   /** La versión para fondo claro, si la marca tiene una distinta. */
   logoClaro?: string;
+  /** Un enlace a lo real, cuando es público: la tienda de A7 (#51). Se ve
+      siempre en el encabezado del caso. */
+  enlace?: { texto: string; href: string };
   titular: string;
   bajada: string;
   /** Lo que muestra que la app está viva: números reales de producción. */
@@ -151,6 +154,7 @@ export const CASOS: Record<Slug, Caso> = {
     corto: "Ventas, stock y caja de una tienda de pádel",
     logo: "/logos/a7-sports.svg",
     logoClaro: "/logos/a7-sports-claro.svg",
+    enlace: { texto: "Ver la tienda", href: "https://a7sports.com.ar/tienda" },
     titular: "De la planilla a la caja.",
     bajada:
       "Ventas, stock, caja y una tienda pública para un emprendimiento familiar de pádel. La usan cinco personas desde el celular, en el local y en los eventos.",
@@ -191,7 +195,7 @@ export const CASOS: Record<Slug, Caso> = {
           icono: "tienda",
           texto: "Una vidriera pública que se filtra por categoría y talle, y termina en una consulta por WhatsApp.",
           maqueta: (activo, alTerminar) => (
-            <VentanaGrabada app="a7-sports" src={`${A7}/tienda`} ruta="/tienda" etiqueta="A7 Sports: en la tienda, remeras de mujer en talle M, y la ficha de una remera con su color y la consulta por WhatsApp, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
+            <VentanaGrabada app="a7-sports" src={`${A7}/tienda`} ruta="/tienda" enlace="https://a7sports.com.ar/tienda" etiqueta="A7 Sports: en la tienda, remeras de mujer en talle M, y la ficha de una remera con su color y la consulta por WhatsApp, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
           ),
         },
         {

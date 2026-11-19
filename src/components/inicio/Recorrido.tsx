@@ -144,6 +144,23 @@ export function Recorrido() {
                 <p className="flex items-center gap-3.5 text-[22px] apretado:text-[19px]">
                   <Logo caso={slug} alt="" tamano={56} className="size-14 apretado:size-11" />
                   <Marca caso={slug} />
+                  {/* Lo que se puede visitar de verdad (#51), a la vista mientras se
+                      mira el caso. Borde y texto del caso, no el acento: el lima
+                      no se lee sobre el tema claro de A7. */}
+                  {caso.enlace && (
+                    <a
+                      href={caso.enlace.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="ml-auto inline-flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-[14px] font-semibold text-(--caso-texto) no-underline shadow-[inset_0_0_0_1px_var(--caso-borde)] transition-colors duration-200 hover:bg-(--caso-acento) hover:text-(--caso-sobre-acento) hover:shadow-none"
+                    >
+                      {caso.enlace.texto}
+                      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="size-3.5">
+                        <path d="M7 17L17 7M9 7h8v8" />
+                      </svg>
+                      <span className="sr-only"> (se abre en otra pestaña)</span>
+                    </a>
+                  )}
                 </p>
                 <h2 className="mt-4 max-w-[16ch] text-[clamp(32px,3.6vw,52px)] leading-[1.02] font-extrabold tracking-[-0.03em] apretado:mt-3 apretado:text-[clamp(28px,2.9vw,40px)]">
                   {caso.titular}
