@@ -4,7 +4,7 @@ import { Foto } from "@/components/Foto";
    que cambie de su carrera se cambia acá. */
 const DATOS: [string, string][] = [
   ["Base", "Guaymallén, Mendoza, Argentina"],
-  ["Desde 2023", "Desarrollador en Slingr, equipo de Soluciones"],
+  ["Desde 2023", "Slingr, equipo de Soluciones; hoy team leader"],
   ["Idiomas", "Español nativo; inglés profesional, todos los días con clientes"],
   ["Formación", "Programa Full Stack (Java), Egg, 2022"],
   ["IA aplicada", "Agentes con Gemini en Slingr; Claude Code en mis productos"],
@@ -24,6 +24,8 @@ export function SobreMi() {
               Soy Juan Bautista Amelio, desarrollador de software en Mendoza. Desde 2023 trabajo en el equipo de
               Soluciones de Slingr, haciendo aplicaciones a medida para empresas de Estados Unidos. Me reúno cada
               semana con los clientes, en inglés, para mostrar avances, ajustar requisitos y planear lo que sigue.
+              Desde noviembre de 2026 soy team leader: lidero un equipo chico, con un desarrollador y una QA, en un
+              proyecto para un cliente de Estados Unidos.
             </p>
             <p>
               Ahí hice de punta a punta un ERP para una empresa industrial: inventario, compras, producción, ventas y
