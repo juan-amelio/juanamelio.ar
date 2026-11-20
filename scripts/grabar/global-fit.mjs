@@ -48,7 +48,7 @@ const TOMAS = {
     }),
 
   reservar: () =>
-    grabar("reservar", { ...comun, email: SOCIA, ruta: "/calendario", dispositivo: CELULAR }, async ({ page, tocar, espera }) => {
+    grabar("reservar", { ...comun, email: SOCIA, ruta: "/calendario", dispositivo: CELULAR, listo: (page) => page.getByText("08:00").first() }, async ({ page, tocar, espera }) => {
       await espera(700);
       await tocar(page.getByText("JUE", { exact: true }).first(), { despues: 1300 });
       await tocar(enTarjeta(page, "19:00", "Reservar"), { despues: 2000 });

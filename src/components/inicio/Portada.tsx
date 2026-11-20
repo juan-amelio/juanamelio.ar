@@ -206,12 +206,14 @@ export function Portada() {
             </div>
           </div>
 
-          {/* La tarjeta del proyecto que está adelante, vestida con su marca. */}
+          {/* La tarjeta del proyecto que está adelante, vestida con su marca. En el
+              celular el botón va abajo, a todo el ancho: al lado le dejaba al
+              texto una columna de una palabra por renglón (#60). */}
           <div data-caso={caso.slug} className="relative z-10 w-full max-w-[460px]">
             <div
               key={caso.slug}
               aria-live="polite"
-              className="entrar flex items-center gap-4 rounded-2xl bg-(--caso-superficie) p-4 font-(family-name:--caso-fuente) text-(--caso-texto) shadow-[inset_0_0_0_1px_var(--caso-borde),0_24px_48px_-24px_rgb(0_0_0/.6)]"
+              className="entrar flex flex-wrap items-center gap-x-4 gap-y-3 rounded-2xl bg-(--caso-superficie) p-4 font-(family-name:--caso-fuente) text-(--caso-texto) shadow-[inset_0_0_0_1px_var(--caso-borde),0_24px_48px_-24px_rgb(0_0_0/.6)] sm:flex-nowrap"
             >
               <Logo caso={caso.slug} alt={t.logo(caso.nombre)} tamano={48} className="size-12 shrink-0" />
               <div className="min-w-0 flex-1">
@@ -220,7 +222,7 @@ export function Portada() {
               </div>
               <EnlaceSeccion
                 href={`/#${caso.slug}`}
-                className="shrink-0 rounded-full bg-(--caso-acento) px-4 py-2.5 text-sm font-bold text-(--caso-sobre-acento) hover:bg-(--caso-acento-hover)"
+                className="w-full shrink-0 rounded-full bg-(--caso-acento) px-4 py-2.5 text-center text-sm font-bold text-(--caso-sobre-acento) hover:bg-(--caso-acento-hover) sm:w-auto"
               >
                 {t.verProyecto}
               </EnlaceSeccion>
