@@ -1,7 +1,7 @@
 import { EnlaceSeccion } from "@/components/EnlaceSeccion";
 import { BotonIdioma } from "./BotonIdioma";
 import { BotonTema } from "./BotonTema";
-import { MenuSecciones } from "./MenuSecciones";
+import { MenuCelular, MenuSecciones } from "./MenuSecciones";
 
 /*
  * La barra de arriba (#29): fija, translúcida y con el fondo del sitio siempre,
@@ -16,9 +16,11 @@ export function Encabezado() {
           Juan Amelio
         </EnlaceSeccion>
         {/* En el celular los espacios van más justos: a 360 px el botón de tema
-            quedaba pegado al borde y a 320 px, afuera (#60). */}
+            quedaba pegado al borde y a 320 px, afuera (#60). Las secciones van
+            en «Menú» (#61). */}
         <div className="flex items-center gap-x-3 sm:gap-x-7">
-          <MenuSecciones className="flex items-center gap-x-7 text-[15px] font-medium" />
+          <MenuSecciones className="hidden items-center gap-x-7 text-[15px] font-medium sm:flex" />
+          <MenuCelular />
           <div className="flex items-center gap-x-2 sm:gap-x-3">
             <BotonIdioma />
             <BotonTema />

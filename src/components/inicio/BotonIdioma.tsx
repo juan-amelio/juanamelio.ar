@@ -25,6 +25,8 @@ export function BotonIdioma() {
     if (idioma !== actual) window.location.assign(INICIO[idioma] + window.location.hash);
   };
 
+  /* Cada opción se ve de 28 px de alto pero se toca en 48 (#61): el área
+     crece para arriba y para abajo, que es donde sobra lugar en la barra. */
   return (
     <nav aria-label={t.idioma} className="flex items-center rounded-full p-0.5 text-[13px] font-semibold shadow-[inset_0_0_0_1px_var(--color-borde-oscuro)]">
       {IDIOMAS.map((idioma) => {
@@ -38,7 +40,7 @@ export function BotonIdioma() {
             aria-label={NOMBRE[idioma]}
             aria-current={on ? "page" : undefined}
             onClick={elegir(idioma)}
-            className={`grid h-7 min-w-9 place-items-center rounded-full px-2 no-underline transition-colors duration-300 ${
+            className={`relative grid h-7 min-w-9 place-items-center rounded-full px-2 no-underline transition-colors duration-300 before:absolute before:-inset-y-2.5 before:inset-x-0 before:content-[''] ${
               on ? "bg-tinta text-fondo" : "text-tinta-media hover:text-tinta"
             }`}
           >

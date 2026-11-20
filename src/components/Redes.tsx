@@ -1,6 +1,7 @@
 import type { Idioma } from "@/idioma/idiomas";
 import { TEXTOS } from "@/idioma/textos";
 import { contacto, hrefEmail, hrefWhatsapp } from "@/lib/contacto";
+import { BotonWhatsapp } from "./BotonWhatsapp";
 import { IconoGithub, IconoLinkedin, IconoMail, IconoWhatsapp } from "./Iconos";
 
 /*
@@ -9,7 +10,8 @@ import { IconoGithub, IconoLinkedin, IconoMail, IconoWhatsapp } from "./Iconos";
  * A la izquierda, en escritorio, una columna fina con LinkedIn, GitHub y el
  * mail, en blanco. Lleva mix-blend-difference para que sobre el papel de Forge
  * se vea en negro sin tener que saber de qué color es el fondo.
- * Abajo a la derecha, el botón de WhatsApp, como en halfpipe.dev.
+ * Abajo a la derecha, el botón de WhatsApp, como en halfpipe.dev; se va
+ * mientras se ve Contacto (BotonWhatsapp).
  */
 export function Redes({ idioma }: { idioma: Idioma }) {
   const t = TEXTOS[idioma].redes;
@@ -43,18 +45,16 @@ export function Redes({ idioma }: { idioma: Idioma }) {
       </nav>
 
       {whatsapp && (
-        <a
+        <BotonWhatsapp
           href={whatsapp}
-          target="_blank"
-          rel="noreferrer"
           aria-label={t.whatsapp}
-          className="whatsapp group fixed right-5 bottom-5 z-40 grid size-14 place-items-center rounded-full bg-[#25d366] text-white shadow-[0_10px_30px_-8px_rgb(0_0_0/.55)] transition-transform duration-200 hover:scale-105 sm:right-7 sm:bottom-7"
+          className="whatsapp group fixed right-5 bottom-5 z-40 grid size-14 place-items-center rounded-full bg-[#25d366] text-white shadow-[0_10px_30px_-8px_rgb(0_0_0/.55)] hover:scale-105 sm:right-7 sm:bottom-7"
         >
           <IconoWhatsapp className="size-7" />
           <span className="pointer-events-none absolute right-full mr-3 rounded-full bg-tinta px-3 py-1.5 text-sm font-semibold whitespace-nowrap text-fondo opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100">
             {t.whatsapp}
           </span>
-        </a>
+        </BotonWhatsapp>
       )}
     </>
   );
