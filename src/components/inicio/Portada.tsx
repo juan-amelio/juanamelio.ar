@@ -1,17 +1,18 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
-import { CASOS, ORDEN } from "@/components/casos/casos";
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { CASOS_EN, ORDEN } from "@/components/casos/casos";
 import { Halos, Logo } from "@/components/casos/Marca";
 import { EnlaceSeccion } from "@/components/EnlaceSeccion";
 import { TelefonoGrabado, VentanaGrabada } from "@/components/maquetas/Grabacion";
+import { useIdioma, useTextos } from "@/idioma/Idioma";
 
 /* Cada pantalla en la ronda, con su tamaño. La ventana de Forge es más ancha y
    más baja que los teléfonos: va más abajo para quedar centrada con ellos. */
-const PANTALLAS: { maqueta: ReactNode; ancho: string; escala: string }[] = [
-  { maqueta: <TelefonoGrabado src="/grabaciones/global-fit/reservar" etiqueta="Global Fit: una socia reserva una clase" />, ancho: "w-80", escala: "[--escala:.5] sm:[--escala:.72]" },
-  { maqueta: <TelefonoGrabado app="a7-sports" src="/grabaciones/a7-sports/caja" etiqueta="A7 Sports: una venta en la caja" />, ancho: "w-80", escala: "[--escala:.5] sm:[--escala:.72]" },
-  { maqueta: <VentanaGrabada app="forge-studio" src="/grabaciones/forge-studio/inicio" ruta=" · Inicio" etiqueta="Forge Studio: el inicio de una persona del equipo" />, ancho: "w-[560px] [--arriba:80px] sm:[--arriba:110px]", escala: "[--escala:.34] sm:[--escala:.66]" },
+const PANTALLAS: { maqueta: (etiqueta: string) => ReactNode; ancho: string; escala: string }[] = [
+  { maqueta: (e) => <TelefonoGrabado src="/grabaciones/global-fit/reservar" etiqueta={e} />, ancho: "w-80", escala: "[--escala:.5] sm:[--escala:.72]" },
+  { maqueta: (e) => <TelefonoGrabado app="a7-sports" src="/grabaciones/a7-sports/caja" etiqueta={e} />, ancho: "w-80", escala: "[--escala:.5] sm:[--escala:.72]" },
+  { maqueta: (e) => <VentanaGrabada app="forge-studio" src="/grabaciones/forge-studio/inicio" ruta=" · Inicio" etiqueta={e} />, ancho: "w-[560px] [--arriba:80px] sm:[--arriba:110px]", escala: "[--escala:.34] sm:[--escala:.66]" },
 ];
 
 const PASO = 360 / ORDEN.length;
@@ -30,6 +31,10 @@ const GIRO_SOLO_MS = 5500;
  * luz, y --salida (cuánto se scrolleó) la hace bajar y desvanecerse.
  */
 export function Portada() {
+  const t = useTextos().portada;
+  const CASOS = CASOS_EN[useIdioma()];
+  // Las pantallas se arman una vez por idioma, no en cada giro de la ronda.
+  const maquetas = useMemo(() => PANTALLAS.map((p, i) => p.maqueta(t.pantallas[i])), [t]);
   const ref = useRef<HTMLElement>(null);
   const [angulo, setAngulo] = useState(0);
   const [tocado, setTocado] = useState(false);
@@ -128,22 +133,22 @@ export function Portada() {
       <div className="mx-auto grid min-h-svh max-w-7xl items-center gap-x-12 gap-y-6 px-4 pt-24 pb-16 sm:px-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:pb-20">
         <div className="portada-texto relative z-10">
           <h1 className="animate-subir max-w-[11ch] text-[clamp(44px,7.2vw,112px)] leading-[0.94] font-extrabold tracking-[-0.04em]">
-            Apps que trabajan para vos.
+            {t.titulo}
           </h1>
           <p className="animate-subir mt-7 max-w-[34ch] text-xl leading-normal text-tinta-media [animation-delay:.12s]">
-            Soy Juan Amelio. Las diseño, construyo y las sostengo en producción. Hoy son parte del día a día de alguien.
+            {t.bajada}
           </p>
           <EnlaceSeccion href="/#proyectos" className="animate-subir group mt-10 inline-flex items-center gap-3 text-base font-semibold [animation-delay:.24s]">
             <span className="indicador" aria-hidden="true" />
-            Bajá y miralas por dentro
+            {t.bajar}
           </EnlaceSeccion>
         </div>
 
         <div className="portada-ronda flex flex-col items-center">
           <div
             role="group"
-            aria-roledescription="carrusel"
-            aria-label="Mis proyectos"
+            aria-roledescription={t.carrusel}
+            aria-label={t.misProyectos}
             className="escenario relative h-[380px] w-full max-w-[680px] cursor-grab touch-pan-y select-none active:cursor-grabbing [--radio:105px] sm:h-[520px] sm:[--radio:220px]"
             onKeyDown={(e) => {
               if (e.key === "ArrowRight") girar(1);
@@ -180,17 +185,17 @@ export function Portada() {
                     <div className="animate-subir" style={{ animationDelay: `${0.2 + i * 0.15}s` }}>
                       {adelante ? (
                         <div className="flotar" aria-hidden="true">
-                          {p.maqueta}
+                          {maquetas[i]}
                         </div>
                       ) : (
                         <button
                           type="button"
                           className="atras block w-full cursor-pointer text-left"
-                          aria-label={`Traer ${CASOS[ORDEN[i]].nombre} adelante`}
+                          aria-label={t.traer(CASOS[ORDEN[i]].nombre)}
                           onClick={() => tocarYTraer(i)}
                         >
                           <span className="block" aria-hidden="true">
-                            {p.maqueta}
+                            {maquetas[i]}
                           </span>
                         </button>
                       )}
@@ -208,7 +213,7 @@ export function Portada() {
               aria-live="polite"
               className="entrar flex items-center gap-4 rounded-2xl bg-(--caso-superficie) p-4 font-(family-name:--caso-fuente) text-(--caso-texto) shadow-[inset_0_0_0_1px_var(--caso-borde),0_24px_48px_-24px_rgb(0_0_0/.6)]"
             >
-              <Logo caso={caso.slug} alt={`Logo de ${caso.nombre}`} tamano={48} className="size-12 shrink-0" />
+              <Logo caso={caso.slug} alt={t.logo(caso.nombre)} tamano={48} className="size-12 shrink-0" />
               <div className="min-w-0 flex-1">
                 <p className="text-lg leading-tight font-bold">{caso.nombre}</p>
                 <p className="mt-0.5 text-sm leading-snug text-(--caso-suave)">{caso.corto}</p>
@@ -217,7 +222,7 @@ export function Portada() {
                 href={`/#${caso.slug}`}
                 className="shrink-0 rounded-full bg-(--caso-acento) px-4 py-2.5 text-sm font-bold text-(--caso-sobre-acento) hover:bg-(--caso-acento-hover)"
               >
-                Ver proyecto
+                {t.verProyecto}
               </EnlaceSeccion>
             </div>
             <div className="mt-3 flex justify-center gap-1">
@@ -225,7 +230,7 @@ export function Portada() {
                 <button
                   key={slug}
                   type="button"
-                  aria-label={`Mostrar ${CASOS[slug].nombre}`}
+                  aria-label={t.mostrar(CASOS[slug].nombre)}
                   aria-pressed={i === frente}
                   onClick={() => tocarYTraer(i)}
                   className="grid size-7 cursor-pointer place-items-center"

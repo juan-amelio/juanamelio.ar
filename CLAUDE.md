@@ -23,7 +23,16 @@ El repo es **público**. Nada que no se pueda leer en internet entra acá: ni
 
 ## Decisiones que no se rediscuten
 
-- **Idioma:** español primero; el inglés se suma después (#11 deja las rutas listas, #22 traduce).
+- **Dos idiomas** (#22, 19/11/2026): español en `/`, inglés en `/en`. La
+  primera visita a `/` sigue al navegador (si pone el inglés antes que el
+  español, va a `/en`); el selector ES / EN de la barra guarda la elección en
+  la cookie `idioma`, que manda desde ahí. Un link a `/en` es siempre inglés.
+  Lo decide `src/proxy.ts`: por dentro las dos son `app/[lang]`, y `/` se
+  reescribe a `/es` (que no se usa como dirección: redirige a `/`). Las
+  grabaciones de las apps quedan en español en las dos versiones.
+- **Todo texto nuevo va en los dos idiomas**, en `src/idioma/es.ts` y `en.ts`
+  (misma forma: TypeScript pide el que falte). Nada de texto suelto en los
+  componentes.
 - **Dominio:** `juanamelio.ar` (lo compra Juan, #18).
 - **Dirección visual: la C · En vivo**, elegida el 10/10/2026. El sitio habla con
   Bricolage Grotesque sobre **grafito oscuro** (desde la #23), y **cada caso se
@@ -66,13 +75,15 @@ El repo es **público**. Nada que no se pueda leer en internet entra acá: ni
 
 | Dónde | Qué |
 |---|---|
-| `src/app/page.tsx` | El inicio |
-| `src/components/casos/casos.tsx` | Los datos de cada proyecto y sus funciones, por celular y escritorio |
+| `src/app/[lang]/page.tsx` | El inicio, en cada idioma (`layout.tsx` al lado: metadatos, hreflang y tema) |
+| `src/proxy.ts` | Qué versión ve cada visita: cookie, navegador y redirecciones |
+| `src/idioma/` | Los textos de cada idioma (`es.ts`, `en.ts`) y cómo los toman los componentes (`Idioma.tsx`) |
+| `src/components/casos/casos.tsx` | Los datos de cada proyecto y sus grabaciones, por celular y escritorio (los textos, en `src/idioma`) |
 | `src/components/inicio/Recorrido.tsx` | La escena de los proyectos, con el selector y la lista de funciones |
 | `src/components/maquetas/` | Las pantallas de cada app, grabadas (`Grabacion.tsx`), con el iPhone y la ventana de Chrome que las enmarcan |
 | `scripts/grabar/` | El grabador de las apps reales y el guion de cada una (ver «Pantallas grabadas») |
 | `public/grabaciones/` | Los MP4 y sus pósters, uno por función |
-| `scripts/compartir/generar.mjs` | La imagen para compartir y los íconos (#17): los deja en `src/app/`. Se vuelve a correr si cambia la foto o los productos |
+| `scripts/compartir/generar.mjs` | La imagen para compartir de cada idioma (`public/compartir/`) y los íconos (`src/app/`) (#17, #22). Se vuelve a correr si cambia la foto o los productos |
 | `src/app/globals.css` | Tokens del sitio (se fijan en la #6) |
 
 ## Pantallas grabadas (#44)

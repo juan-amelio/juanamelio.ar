@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { CASOS, MAX_ANCHO, ORDEN, type Dispositivo, type Pantalla, type Slug } from "@/components/casos/casos";
+import { CASOS_EN, MAX_ANCHO, ORDEN, type Caso, type Dispositivo, type Pantalla, type Slug } from "@/components/casos/casos";
 import { Icono, IconoDispositivo, IconoFlecha } from "@/components/casos/IconosFuncion";
 import { Contador } from "@/components/casos/Contador";
 import { Halos, Logo, Marca } from "@/components/casos/Marca";
+import { useIdioma, useTextos } from "@/idioma/Idioma";
 
 const FUENTE: Record<Slug, string> = {
   "global-fit": "font-gf",
@@ -21,20 +22,21 @@ const PAUSA_MS = 1600;
 
 /* Todas las funciones de un caso en el orden en que rotan: las del celular y
    después las del escritorio, así la rotación también muestra el selector. */
-function enOrden(slug: Slug): Eleccion[] {
+function enOrden(CASOS: Record<Slug, Caso>, slug: Slug): Eleccion[] {
   return DISPOSITIVOS.flatMap((dispositivo) => CASOS[slug].funciones[dispositivo].map((_, indice) => ({ dispositivo, indice })));
 }
 
 /* La función de al lado en ese orden, dando la vuelta en las puntas. */
-function vecina(slug: Slug, en: Eleccion, paso: 1 | -1): Eleccion {
-  const orden = enOrden(slug);
+function vecina(CASOS: Record<Slug, Caso>, slug: Slug, en: Eleccion, paso: 1 | -1): Eleccion {
+  const orden = enOrden(CASOS, slug);
   const ahora = orden.findIndex((o) => o.dispositivo === en.dispositivo && o.indice === en.indice);
   return orden[(ahora + paso + orden.length) % orden.length];
 }
 
-/* Cada caso arranca en el primer dispositivo que tenga pantallas. */
+/* Cada caso arranca en el primer dispositivo que tenga pantallas (igual en
+   los dos idiomas: lo que cambia es el texto, no las funciones). */
 const INICIAL = Object.fromEntries(
-  ORDEN.map((slug) => [slug, { dispositivo: CASOS[slug].funciones.celular.length ? "celular" : "escritorio", indice: 0 }]),
+  ORDEN.map((slug) => [slug, { dispositivo: CASOS_EN.es[slug].funciones.celular.length ? "celular" : "escritorio", indice: 0 }]),
 ) as Record<Slug, Eleccion>;
 
 /*
@@ -53,6 +55,8 @@ const INICIAL = Object.fromEntries(
  * lista, y el fondo cambia igual.
  */
 export function Recorrido() {
+  const t = useTextos().recorrido;
+  const CASOS = CASOS_EN[useIdioma()];
   const [activo, setActivo] = useState<Slug>("global-fit");
   const [eleccion, setEleccion] = useState(INICIAL);
   const [tocados, setTocados] = useState<Partial<Record<Slug, true>>>({});
@@ -86,10 +90,10 @@ export function Recorrido() {
     if (!terminada) return;
     const { slug, en } = terminada;
     const t = setTimeout(() => {
-      setEleccion((e) => (e[slug] !== en ? e : { ...e, [slug]: vecina(slug, en, 1) }));
+      setEleccion((e) => (e[slug] !== en ? e : { ...e, [slug]: vecina(CASOS, slug, en, 1) }));
     }, PAUSA_MS);
     return () => clearTimeout(t);
-  }, [terminada]);
+  }, [terminada, CASOS]);
 
   /* En el celular la lista de funciones corre de costado: la elegida (a mano,
      con las flechas o por la rotación) se trae a la vista. Sólo se mueve la
@@ -114,13 +118,13 @@ export function Recorrido() {
 
   /* Las flechas recorren todas las funciones del caso, celular y escritorio,
      y como cualquier elección hecha a mano, frenan la rotación. */
-  const pasar = (slug: Slug, paso: 1 | -1) => elegir(slug, vecina(slug, eleccion[slug], paso));
+  const pasar = (slug: Slug, paso: 1 | -1) => elegir(slug, vecina(CASOS, slug, eleccion[slug], paso));
 
   return (
     <section
       id="proyectos"
       data-caso={activo}
-      aria-label="Proyectos"
+      aria-label={t.proyectos}
       className="recorrido relative bg-(--caso-fondo) text-(--caso-texto) transition-[background-color,color] duration-700 ease-out"
     >
       <div className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)] px-4 sm:px-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-x-16">
@@ -159,7 +163,7 @@ export function Recorrido() {
                       <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="size-3.5">
                         <path d="M7 17L17 7M9 7h8v8" />
                       </svg>
-                      <span className="sr-only"> (se abre en otra pestaña)</span>
+                      <span className="sr-only">{t.otraPestana}</span>
                     </a>
                   )}
                 </p>
@@ -193,7 +197,7 @@ export function Recorrido() {
                       invisibles de cada estado posible: la celda toma el alto del
                       más alto y la lista real ya no la hace crecer ni achicar. */}
                   <div className="mt-3 grid grid-cols-[minmax(0,1fr)] apretado:mt-2">
-                    {enOrden(slug).map((e) => (
+                    {enOrden(CASOS, slug).map((e) => (
                       <div
                         key={`${e.dispositivo}-${e.indice}`}
                         aria-hidden="true"
@@ -209,7 +213,7 @@ export function Recorrido() {
                       key={dispositivo}
                       role="tablist"
                       data-funciones
-                      aria-label={`Qué hace ${caso.nombre}`}
+                      aria-label={t.queHace(caso.nombre)}
                       className="entrar -mx-4 flex gap-1 overflow-x-auto px-4 pb-2 [scrollbar-width:none] [grid-area:1/1] lg:mx-0 lg:flex-col lg:self-start lg:overflow-visible lg:px-0 lg:pb-0"
                     >
                       {pantallas.map((p, i) => (
@@ -224,7 +228,7 @@ export function Recorrido() {
                     abajo no se corren al pasar de una función a otra (#46). */}
                 <div className="mt-6 lg:hidden">
                   <div className="grid grid-cols-[minmax(0,1fr)]">
-                    {enOrden(slug).map((e) => (
+                    {enOrden(CASOS, slug).map((e) => (
                       <p
                         key={`${e.dispositivo}-${e.indice}`}
                         aria-hidden="true"
@@ -243,9 +247,9 @@ export function Recorrido() {
                   </div>
                   {/* Juntas al centro: en la punta derecha las tapa el botón de WhatsApp. */}
                   <div className="mt-4 flex items-center justify-center gap-6">
-                    <Flecha slug={slug} hacia={vecina(slug, eleccion[slug], -1)} onPasar={() => pasar(slug, -1)} />
-                    <p className="text-[13px] text-(--caso-suave)">Datos de demo</p>
-                    <Flecha slug={slug} hacia={vecina(slug, eleccion[slug], 1)} siguiente onPasar={() => pasar(slug, 1)} />
+                    <Flecha slug={slug} hacia={vecina(CASOS, slug, eleccion[slug], -1)} onPasar={() => pasar(slug, -1)} />
+                    <p className="text-[13px] text-(--caso-suave)">{t.datosDeDemo}</p>
+                    <Flecha slug={slug} hacia={vecina(CASOS, slug, eleccion[slug], 1)} siguiente onPasar={() => pasar(slug, 1)} />
                   </div>
                 </div>
               </article>
@@ -306,13 +310,13 @@ export function Recorrido() {
                 <div className={`relative w-full ${MAX_ANCHO.escritorio}`}>
                   <Flecha
                     slug={activo}
-                    hacia={vecina(activo, eleccion[activo], -1)}
+                    hacia={vecina(CASOS, activo, eleccion[activo], -1)}
                     onPasar={() => pasar(activo, -1)}
                     className="pointer-events-auto absolute top-1/2 -left-12 -translate-y-1/2"
                   />
                   <Flecha
                     slug={activo}
-                    hacia={vecina(activo, eleccion[activo], 1)}
+                    hacia={vecina(CASOS, activo, eleccion[activo], 1)}
                     siguiente
                     onPasar={() => pasar(activo, 1)}
                     className="pointer-events-auto absolute top-1/2 -right-12 -translate-y-1/2"
@@ -320,7 +324,7 @@ export function Recorrido() {
                 </div>
               </div>
             </div>
-            <p className="absolute bottom-3 text-[13px] text-(--caso-suave)">Datos de demo</p>
+            <p className="absolute bottom-3 text-[13px] text-(--caso-suave)">{t.datosDeDemo}</p>
           </div>
         </div>
       </div>
@@ -375,12 +379,13 @@ function Flecha({
   onPasar: () => void;
   className?: string;
 }) {
-  const destino = CASOS[slug].funciones[hacia.dispositivo][hacia.indice].titulo;
+  const t = useTextos().recorrido;
+  const destino = CASOS_EN[useIdioma()][slug].funciones[hacia.dispositivo][hacia.indice].titulo;
   return (
     <button
       type="button"
       onClick={onPasar}
-      aria-label={`${siguiente ? "Siguiente" : "Anterior"}: ${destino}`}
+      aria-label={`${siguiente ? t.siguiente : t.anterior}: ${destino}`}
       title={destino}
       className={`grid size-11 shrink-0 cursor-pointer place-items-center rounded-full bg-(--caso-superficie) text-(--caso-texto-medio) shadow-[inset_0_0_0_1px_var(--caso-borde)] transition-colors duration-300 hover:bg-(--caso-acento) hover:text-(--caso-sobre-acento) ${className}`}
     >
@@ -400,17 +405,18 @@ function Selector({
   actual: Dispositivo;
   onElegir: (d: Dispositivo) => void;
 }) {
-  const NOMBRE: Record<Dispositivo, string> = { celular: "Celular", escritorio: "Escritorio" };
+  const t = useTextos().recorrido;
+  const NOMBRE = t.dispositivo;
   if (disponibles.length === 1) {
     return (
       <p className="inline-flex items-center gap-2 rounded-full bg-(--caso-superficie) px-3.5 py-2 text-[13px] font-semibold text-(--caso-texto-medio)">
         <IconoDispositivo escritorio={disponibles[0] === "escritorio"} className="size-4" />
-        Solo en {NOMBRE[disponibles[0]].toLowerCase()}
+        {t.solo(NOMBRE[disponibles[0]])}
       </p>
     );
   }
   return (
-    <div role="radiogroup" aria-label="Desde dónde se usa" className="inline-flex rounded-full bg-(--caso-superficie) p-1 shadow-[inset_0_0_0_1px_var(--caso-borde)]">
+    <div role="radiogroup" aria-label={t.desdeDonde} className="inline-flex rounded-full bg-(--caso-superficie) p-1 shadow-[inset_0_0_0_1px_var(--caso-borde)]">
       {disponibles.map((d) => {
         const on = d === actual;
         return (

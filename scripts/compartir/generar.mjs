@@ -5,10 +5,12 @@
  *
  * Arma cada imagen como una página HTML con las fuentes, la foto y los logos
  * reales, y la saca con Chrome (Playwright): así lleva los degradés y la
- * Bricolage tal cual, cosa que el ImageResponse de Next no dibuja bien. Deja
- * los archivos en src/app/, donde Next los toma solo:
+ * Bricolage tal cual, cosa que el ImageResponse de Next no dibuja bien. Los
+ * íconos van a src/app/, donde Next los toma solo:
  *
- *   opengraph-image.png  1200×630, lo que muestran LinkedIn y WhatsApp
+ *   public/compartir/es.png y en.png  1200×630, lo que muestran LinkedIn y
+ *                        WhatsApp, una por idioma (#22). Las declara
+ *                        src/app/[lang]/layout.tsx, con su texto alternativo
  *   icon.png             512×512, la pestaña
  *   apple-icon.png       180×180, el acceso directo del iPhone
  *   favicon.ico          16, 32 y 48, para quien pida /favicon.ico (necesita
@@ -46,7 +48,13 @@ const BASE = `
     #0e1012}
 `;
 
-const COMPARTIR = `
+/* La frase de abajo del nombre, en cada idioma. */
+const FRASE = {
+  es: "Desarrollador de software en Mendoza. Apps que se usan todos los días.",
+  en: "Software developer in Mendoza, Argentina. Apps people use every day.",
+};
+
+const COMPARTIR = (idioma) => `
   <style>${BASE}
     body{width:1200px;height:630px;overflow:hidden}
     .lienzo{position:relative;width:100%;height:100%;padding:72px 80px;display:flex;gap:64px;align-items:center}
@@ -63,7 +71,7 @@ const COMPARTIR = `
   <div class="lienzo halo">
     <div class="texto">
       <h1>Juan<br>Amelio</h1>
-      <p>Desarrollador de software en Mendoza. Apps que se usan todos los días.</p>
+      <p>${FRASE[idioma]}</p>
       <ul>${LOGOS.map(([n, src]) => `<li><img src="${src}" alt="">${n}</li>`).join("")}</ul>
     </div>
     <div class="foto"><img src="${FOTO}" alt=""></div>
@@ -82,16 +90,18 @@ const ICONO = (lado) => `
   <div class="marco halo"><span>JA</span></div>`;
 
 const navegador = await chromium.launch({ channel: "chrome" });
-async function sacar(html, ancho, alto, archivo, transparente = false) {
+async function sacar(html, ancho, alto, archivo, transparente = false, carpeta = APP) {
   const pagina = await navegador.newPage({ viewport: { width: ancho, height: alto }, deviceScaleFactor: 1 });
   await pagina.setContent(html, { waitUntil: "networkidle" });
   await pagina.evaluate(() => document.fonts.ready);
-  await pagina.screenshot({ path: resolve(APP, archivo), omitBackground: transparente });
+  await pagina.screenshot({ path: resolve(carpeta, archivo), omitBackground: transparente });
   await pagina.close();
   console.log("✓", archivo);
 }
 
-await sacar(COMPARTIR, 1200, 630, "opengraph-image.png");
+for (const idioma of ["es", "en"]) {
+  await sacar(COMPARTIR(idioma), 1200, 630, `${idioma}.png`, false, resolve(RAIZ, "public/compartir"));
+}
 await sacar(ICONO(512), 512, 512, "icon.png", true);
 // En el iPhone el sistema redondea solo: el apple-icon va lleno, sin esquinas.
 await sacar(ICONO(180).replace("border-radius:22%", "border-radius:0"), 180, 180, "apple-icon.png");

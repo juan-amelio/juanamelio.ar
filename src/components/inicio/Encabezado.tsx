@@ -1,11 +1,12 @@
 import { EnlaceSeccion } from "@/components/EnlaceSeccion";
+import { BotonIdioma } from "./BotonIdioma";
 import { BotonTema } from "./BotonTema";
 import { MenuSecciones } from "./MenuSecciones";
 
 /*
  * La barra de arriba (#29): fija, translúcida y con el fondo del sitio siempre,
  * aunque abajo pase la marca de cada proyecto, para que el sitio tenga un solo
- * marco. A la derecha, el cambio entre claro y oscuro.
+ * marco. A la derecha, el idioma (#22) y el cambio entre claro y oscuro.
  */
 export function Encabezado() {
   return (
@@ -14,9 +15,12 @@ export function Encabezado() {
         <EnlaceSeccion href="/#inicio" className="shrink-0 text-[19px] font-extrabold no-underline">
           Juan Amelio
         </EnlaceSeccion>
-        <div className="flex items-center gap-x-5 sm:gap-x-7">
+        <div className="flex items-center gap-x-4 sm:gap-x-7">
           <MenuSecciones className="flex items-center gap-x-7 text-[15px] font-medium" />
-          <BotonTema />
+          <div className="flex items-center gap-x-2 sm:gap-x-3">
+            <BotonIdioma />
+            <BotonTema />
+          </div>
         </div>
       </div>
     </header>

@@ -1,5 +1,7 @@
 import type { CSSProperties } from "react";
 import { IconoGithub, IconoLinkedin, IconoMail, IconoWhatsapp } from "@/components/Iconos";
+import type { Idioma } from "@/idioma/idiomas";
+import { TEXTOS } from "@/idioma/textos";
 import { contacto, hrefEmail, hrefWhatsapp } from "@/lib/contacto";
 import { HoraMendoza } from "./HoraMendoza";
 
@@ -10,10 +12,12 @@ type Canal = { href: string; nombre: string; Icono: typeof IconoGithub; color: s
  * a todo el ancho, y los mismos canales que flotan en los costados (Redes),
  * acá grandes y con su nombre, para que no haya que buscar cómo escribir.
  */
-export function Contacto() {
+export function Contacto({ idioma }: { idioma: Idioma }) {
+  const t = TEXTOS[idioma].contacto;
+  const whatsapp = hrefWhatsapp(idioma);
   const canales = [
     contacto.email && { href: hrefEmail, nombre: "Mail", Icono: IconoMail, color: "var(--color-canal-mail)" },
-    hrefWhatsapp && { href: hrefWhatsapp, nombre: "WhatsApp", Icono: IconoWhatsapp, color: "var(--color-canal-whatsapp)" },
+    whatsapp && { href: whatsapp, nombre: "WhatsApp", Icono: IconoWhatsapp, color: "var(--color-canal-whatsapp)" },
     contacto.linkedin && { href: contacto.linkedin, nombre: "LinkedIn", Icono: IconoLinkedin, color: "var(--color-canal-linkedin)" },
     { href: contacto.github, nombre: "GitHub", Icono: IconoGithub, color: "var(--color-tinta)" },
   ].filter(Boolean) as Canal[];
@@ -29,17 +33,16 @@ export function Contacto() {
             <span className="absolute inset-0 animate-ping rounded-full bg-[#25d366] opacity-60 motion-reduce:animate-none" />
             <span className="relative size-2.5 rounded-full bg-[#25d366]" />
           </span>
-          Disponible
+          {t.disponible}
         </span>
         <HoraMendoza />
       </div>
 
-      <h2 className="mt-6 -ml-[0.05em] text-[clamp(64px,15vw,232px)] leading-[0.86] font-extrabold tracking-[-0.055em]">Hablemos.</h2>
+      <h2 className="mt-6 -ml-[0.05em] text-[clamp(64px,15vw,232px)] leading-[0.86] font-extrabold tracking-[-0.055em]">{t.titulo}</h2>
 
       <div className="mt-10 flex flex-wrap items-end justify-between gap-x-12 gap-y-10 lg:mt-12">
         <p className="max-w-[40ch] text-[19px] leading-normal text-tinta-media">
-          Si tenés una idea que querés ver funcionando, o te interesa algo de lo que hice, escribime por donde te quede
-          más cómodo.
+          {t.texto}
         </p>
         <ul className="flex flex-wrap gap-4 sm:gap-6">
           {canales.map(({ href, nombre, Icono, color }) => (
@@ -64,12 +67,12 @@ export function Contacto() {
   );
 }
 
-export function Pie() {
+export function Pie({ idioma }: { idioma: Idioma }) {
   return (
     <footer className="mx-auto mt-20 w-full max-w-7xl px-4 pb-14 sm:px-14 lg:mt-16 lg:pb-8">
       <div className="flex flex-wrap justify-between gap-x-6 gap-y-2 border-t border-tinta/[.08] pt-6 text-[15px] text-tinta-suave">
         <span>juanamelio.ar</span>
-        <span>Hecho por mí, con el mismo método que mis proyectos.</span>
+        <span>{TEXTOS[idioma].contacto.pie}</span>
       </div>
     </footer>
   );

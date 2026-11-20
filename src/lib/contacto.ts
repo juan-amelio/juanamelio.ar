@@ -1,3 +1,6 @@
+import type { Idioma } from "@/idioma/idiomas";
+import { TEXTOS } from "@/idioma/textos";
+
 /**
  * Los datos de contacto, en un solo lugar.
  *
@@ -15,12 +18,12 @@ export const contacto = {
   whatsapp: "5492613679513" as string | null,
 };
 
-/** El mensaje que llega escrito al abrir WhatsApp desde el sitio. */
-const MENSAJE_WHATSAPP = "Hola Juan, vi tu sitio y te quería consultar por";
-
-export const hrefWhatsapp = contacto.whatsapp
-  ? `https://wa.me/${contacto.whatsapp}?text=${encodeURIComponent(MENSAJE_WHATSAPP)}`
-  : null;
+/** WhatsApp con el mensaje ya escrito en el idioma del sitio (src/idioma).
+    En null si no hay número. */
+export const hrefWhatsapp = (idioma: Idioma) =>
+  contacto.whatsapp
+    ? `https://wa.me/${contacto.whatsapp}?text=${encodeURIComponent(TEXTOS[idioma].redes.mensajeWhatsapp)}`
+    : null;
 
 export const hrefEmail = contacto.email ? `mailto:${contacto.email}` : "#contacto";
 export const hrefLinkedin = contacto.linkedin ?? "#contacto";

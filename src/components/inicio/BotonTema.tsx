@@ -2,6 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import { IconoLuna, IconoSol } from "@/components/Iconos";
+import { useTextos } from "@/idioma/Idioma";
 
 type Tema = "claro" | "oscuro";
 
@@ -24,6 +25,7 @@ const leerEnServidor = () => null;
  */
 export function BotonTema() {
   const tema = useSyncExternalStore(suscribir, leer, leerEnServidor);
+  const t = useTextos().barra;
   const otro: Tema = tema === "claro" ? "oscuro" : "claro";
 
   const cambiar = () => {
@@ -39,8 +41,8 @@ export function BotonTema() {
     <button
       type="button"
       onClick={cambiar}
-      aria-label={`Pasar a modo ${otro}`}
-      title={`Modo ${otro}`}
+      aria-label={t.pasarATema(otro)}
+      title={t.tema(otro)}
       className="-mr-2 grid size-10 shrink-0 cursor-pointer place-items-center rounded-full text-tinta-media transition-colors duration-300 hover:bg-tinta/[.07] hover:text-tinta"
     >
       {tema && (tema === "claro" ? <IconoLuna className="size-5" /> : <IconoSol className="size-5" />)}

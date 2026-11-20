@@ -1,14 +1,14 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { EnlaceSeccion } from "@/components/EnlaceSeccion";
+import { useTextos } from "@/idioma/Idioma";
 
 /* En el orden de la página: la sección activa se busca recorriéndolas así. */
 const SECCIONES = [
-  { id: "sobre-mi", nombre: "Sobre mí", visible: "hidden sm:inline-block" },
-  { id: "proyectos", nombre: "Proyectos", visible: "hidden sm:inline-block" },
-  { id: "contacto", nombre: "Contacto", visible: "inline-block" },
+  { id: "sobre-mi", nombre: "sobreMi", visible: "hidden sm:inline-block" },
+  { id: "proyectos", nombre: "proyectos", visible: "hidden sm:inline-block" },
+  { id: "contacto", nombre: "contacto", visible: "inline-block" },
 ] as const;
 
 /*
@@ -17,9 +17,10 @@ const SECCIONES = [
  */
 export function MenuSecciones({ className }: { className: string }) {
   const actual = useSeccionActual();
+  const t = useTextos().barra;
 
   return (
-    <nav aria-label="Secciones" className={className}>
+    <nav aria-label={t.secciones} className={className}>
       {SECCIONES.map(({ id, nombre, visible }) => {
         const activa = id === actual;
         return (
@@ -31,7 +32,7 @@ export function MenuSecciones({ className }: { className: string }) {
               activa ? "text-tinta after:scale-x-100" : "text-tinta-media after:scale-x-0 hover:text-tinta"
             } ${visible}`}
           >
-            {nombre}
+            {t[nombre]}
           </EnlaceSeccion>
         );
       })}
@@ -42,13 +43,12 @@ export function MenuSecciones({ className }: { className: string }) {
 /* La sección activa es la última cuyo comienzo ya pasó el 40 % de la pantalla.
    Al llegar al final de la página gana la última, aunque no alcance esa
    línea: el contacto es corto y si no nunca se marcaría. En la portada,
-   ninguna. */
+   ninguna. Fuera del inicio (una página que no existe) las secciones no
+   están y no se marca nada. */
 function useSeccionActual() {
-  const ruta = usePathname();
   const [actual, setActual] = useState<string | null>(null);
 
   useEffect(() => {
-    if (ruta !== "/") return;
     let raf = 0;
     const medir = () => {
       raf = 0;
@@ -72,7 +72,7 @@ function useSeccionActual() {
       window.removeEventListener("resize", pedir);
       cancelAnimationFrame(raf);
     };
-  }, [ruta]);
+  }, []);
 
-  return ruta === "/" ? actual : null;
+  return actual;
 }
