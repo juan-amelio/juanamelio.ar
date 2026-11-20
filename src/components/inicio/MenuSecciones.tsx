@@ -8,7 +8,8 @@ import { useTextos } from "@/idioma/Idioma";
 const SECCIONES = [
   { id: "sobre-mi", nombre: "sobreMi", visible: "hidden sm:inline-block" },
   { id: "proyectos", nombre: "proyectos", visible: "hidden sm:inline-block" },
-  { id: "contacto", nombre: "contacto", visible: "inline-block" },
+  // Por debajo de 360 px no entra en la barra (#60): ahí queda el botón de WhatsApp.
+  { id: "contacto", nombre: "contacto", visible: "hidden min-[360px]:inline-block" },
 ] as const;
 
 /*
