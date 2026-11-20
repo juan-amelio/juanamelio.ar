@@ -29,7 +29,7 @@ export function Contacto() {
             <span className="absolute inset-0 animate-ping rounded-full bg-[#25d366] opacity-60 motion-reduce:animate-none" />
             <span className="relative size-2.5 rounded-full bg-[#25d366]" />
           </span>
-          Disponible para un puesto o un proyecto
+          Disponible
         </span>
         <HoraMendoza />
       </div>
@@ -38,7 +38,7 @@ export function Contacto() {
 
       <div className="mt-10 flex flex-wrap items-end justify-between gap-x-12 gap-y-10 lg:mt-12">
         <p className="max-w-[40ch] text-[19px] leading-normal text-tinta-media">
-          Si buscás a alguien para tu equipo o tenés una idea que querés ver funcionando, escribime por donde te quede
+          Si tenés una idea que querés ver funcionando, o te interesa algo de lo que hice, escribime por donde te quede
           más cómodo.
         </p>
         <ul className="flex flex-wrap gap-4 sm:gap-6">

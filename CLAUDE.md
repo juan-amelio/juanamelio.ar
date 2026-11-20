@@ -52,7 +52,8 @@ El repo es **público**. Nada que no se pueda leer en internet entra acá: ni
 - **El sitio presenta, no pide** (#43). Los textos muestran quién es Juan y lo
   que hizo; no se agregan «Busco», «Abierto a…» ni llamados parecidos (en el
   Sobre mí, la descripción del `<head>` o donde sea) sin preguntarle. La
-  etiqueta de Contacto queda como está, por decisión suya.
+  etiqueta de Contacto dice sólo «Disponible» (#59): que se pueda leer como
+  freelance está bien, como búsqueda de puesto no.
 - **A7 Sports se llama siempre así**, nunca X-Trust.
 - **Capturas y videos, siempre con datos de demo.** Global Fit guarda fichas de
   salud (Ley 25.326) y A7 Sports nombres de clientes. Al gimnasio se lo puede
