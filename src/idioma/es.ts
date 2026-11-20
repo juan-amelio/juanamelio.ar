@@ -31,6 +31,7 @@ export const es = {
   },
   barra: {
     secciones: "Secciones",
+    menu: "Menú",
     sobreMi: "Sobre mí",
     proyectos: "Proyectos",
     contacto: "Contacto",
@@ -40,7 +41,7 @@ export const es = {
   },
   portada: {
     titulo: "Apps que trabajan para vos.",
-    bajada: "Soy Juan Amelio. Las diseño, construyo y las sostengo en producción. Hoy son parte del día a día de alguien.",
+    bajada: "Soy Juan Amelio. Las diseño, las construyo y las sostengo en producción. Hoy son parte del día a día de alguien.",
     bajar: "Bajá y miralas por dentro",
     carrusel: "carrusel",
     misProyectos: "Mis proyectos",
@@ -57,7 +58,7 @@ export const es = {
   sobreMi: {
     titulo: "Sobre mí",
     parrafos: [
-      "Soy Juan Bautista Amelio, desarrollador de software en Mendoza. Desde 2023 trabajo en el equipo de Soluciones de Slingr, haciendo aplicaciones a medida para empresas de Estados Unidos. Me reúno cada semana con los clientes, en inglés, para mostrar avances, ajustar requisitos y planear lo que sigue. Hoy soy team leader: lidero un equipo chico, con un desarrollador y una QA, en un proyecto para un cliente de Estados Unidos.",
+      "Soy Juan Bautista Amelio, desarrollador de software en Mendoza. Desde 2023 trabajo en el equipo de Soluciones de Slingr, haciendo aplicaciones a medida para empresas de Estados Unidos. Me reúno cada semana con los clientes, en inglés, para mostrar avances, ajustar requisitos y planear lo que sigue. Hoy soy team leader: lidero un equipo chico, con un desarrollador y una QA, en un proyecto para uno de esos clientes.",
       "Ahí hice de punta a punta un ERP para una empresa industrial: inventario, compras, producción, ventas y envíos, integración con su tienda online y reportes. También construí agentes de IA que automatizan procesos en industrias reguladas: revisar documentos contra una normativa, responder consultas de soporte técnico y extraer datos de documentos.",
       "En 2026 empecé a construir mis propios productos. Hoy son tres, y los tres los usan personas todos los días.",
     ],
@@ -81,6 +82,7 @@ export const es = {
     dispositivo: { celular: "Celular", escritorio: "Escritorio" } as Record<Dispositivo, string>,
     solo: (dispositivo: string) => `Solo en ${dispositivo.toLowerCase()}`,
     desdeDonde: "Desde dónde se usa",
+    verEnGrande: "Ver en grande",
   },
   casos: {
     "global-fit": {
@@ -113,7 +115,7 @@ export const es = {
           },
           {
             titulo: "Avisar el pago",
-            texto: "El socio transfiere, toca «Ya pagué» y el dueño lo confirma de un toque. Sabe quién está al día sin cruzar mensajes.",
+            texto: "El socio transfiere, toca «Ya pagué» y el dueño lo confirma de un toque: sabe quién está al día sin cruzar mensajes.",
             etiqueta: "Global Fit: la socia avisa que pagó la cuota y queda en espera de la confirmación, grabado con datos de demo",
           },
         ],
@@ -174,7 +176,7 @@ export const es = {
           },
           {
             titulo: "Ver los números",
-            texto: "Lo que se vendió en el mes, por semana y cuánto salió de los eventos, sin abrir una planilla.",
+            texto: "Lo que se vendió en el mes, semana por semana, y cuánto dejó cada evento, sin abrir una planilla.",
             etiqueta: "A7 Sports: el resumen, las ventas del mes por semana y lo que dejó cada evento, grabado con datos de demo",
           },
         ],
@@ -182,7 +184,7 @@ export const es = {
     },
     "forge-studio": {
       corto: "El tablero donde trabaja mi equipo",
-      titular: "Del Trello a un tablero con revisión humana.",
+      titular: "De Trello a un tablero con revisión humana.",
       bajada:
         "El tablero donde trabaja mi equipo, con un agente que corre en la máquina de cada desarrollador y un plugin para trabajar con IA sin perder el control.",
       numeros: ["proyectos", "tareas en el tablero", "en producción"],
