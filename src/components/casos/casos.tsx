@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 import { TelefonoGrabado, VentanaGrabada } from "@/components/maquetas/Grabacion";
+import type { Idioma } from "@/idioma/idiomas";
+import { TEXTOS } from "@/idioma/textos";
 import type { IconoFuncion } from "./IconosFuncion";
 
 export type Slug = "global-fit" | "a7-sports" | "forge-studio";
@@ -46,9 +48,6 @@ export const MAX_ANCHO: Record<Dispositivo, string> = {
   escritorio: "max-w-140",
 };
 
-/* Los números de cada caso salen de la base de producción de cada app,
-   contados el 19/11/2026 (#30) con consultas de sólo lectura, salvo donde el
-   comentario dice otra cosa. Son una foto: se actualizan a mano. */
 export const ORDEN: Slug[] = ["global-fit", "a7-sports", "forge-studio"];
 
 /** Las grabaciones de Global Fit (scripts/grabar/global-fit.mjs). */
@@ -57,212 +56,139 @@ const GF = "/grabaciones/global-fit";
 const A7 = "/grabaciones/a7-sports";
 const FS = "/grabaciones/forge-studio";
 
-export const CASOS: Record<Slug, Caso> = {
+/* Una función, sin texto: el ícono y cómo se dibuja su grabación. La
+   etiqueta (lo que leen los lectores de pantalla) llega del idioma. */
+type Grabada = {
+  icono: IconoFuncion;
+  dibujar: (etiqueta: string, activo: boolean, alTerminar?: () => void) => ReactNode;
+};
+
+const telefono = (icono: IconoFuncion, src: string, extra: { app?: "a7-sports"; intro?: boolean } = {}): Grabada => ({
+  icono,
+  dibujar: (etiqueta, activo, alTerminar) => (
+    <TelefonoGrabado {...extra} src={src} etiqueta={etiqueta} activo={activo} alTerminar={alTerminar} />
+  ),
+});
+
+const ventana = (
+  icono: IconoFuncion,
+  src: string,
+  ruta: string,
+  extra: { app?: "a7-sports" | "forge-studio"; enlace?: string } = {},
+): Grabada => ({
+  icono,
+  dibujar: (etiqueta, activo, alTerminar) => (
+    <VentanaGrabada {...extra} src={src} ruta={ruta} etiqueta={etiqueta} activo={activo} alTerminar={alTerminar} />
+  ),
+});
+
+/* Lo que no cambia con el idioma: nombre, logos, enlaces, números y
+   grabaciones. Los textos están en src/idioma, en el mismo orden.
+
+   Los números de cada caso salen de la base de producción de cada app,
+   contados el 19/11/2026 (#30) con consultas de sólo lectura, salvo donde el
+   comentario dice otra cosa. Son una foto: se actualizan a mano. */
+const BASE: Record<
+  Slug,
+  {
+    nombre: string;
+    logo: string;
+    logoClaro?: string;
+    enlace?: string;
+    numeros: number[];
+    funciones: Record<Dispositivo, Grabada[]>;
+  }
+> = {
   "global-fit": {
-    slug: "global-fit",
     nombre: "Global Fit",
-    corto: "La app de un gimnasio de Mendoza",
     logo: "/logos/global-fit.png",
-    titular: "Del cuaderno al celular.",
-    bajada:
-      "La app de un gimnasio de Mendoza. Los socios reservan desde el celular, los profesores toman asistencia en la clase y el dueño maneja socios, pagos y horarios desde un panel.",
-    numeros: [
-      // Socios: valor fijado por Juan el 19/11/2026, no sale del conteo.
-      // Clases: las de la semana, sin las canceladas.
-      { valor: 97, etiqueta: "socios activos" },
-      { valor: 48, etiqueta: "clases por semana" },
-    ],
+    // Socios: valor fijado por Juan el 19/11/2026, no sale del conteo.
+    // Clases: las de la semana, sin las canceladas.
+    numeros: [97, 48],
     funciones: {
       celular: [
-        {
-          titulo: "Su semana, de un vistazo",
-          icono: "semana",
-          texto: "La próxima clase, cuántos días lleva usados en la semana y si tiene la cuota pendiente.",
-          maqueta: (activo, alTerminar) => (
-            <TelefonoGrabado src={`${GF}/inicio`} etiqueta="Global Fit: el inicio de una socia, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
-          ),
-        },
-        {
-          titulo: "Reservar una clase",
-          icono: "reservar",
-          texto: "El socio elige el día y la clase, y ve cuántos lugares quedan. El cupo se respeta aunque dos reserven en el mismo segundo.",
-          maqueta: (activo, alTerminar) => (
-            <TelefonoGrabado src={`${GF}/reservar`} etiqueta="Global Fit: la socia elige el jueves y reserva la clase de las 19, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
-          ),
-        },
-        {
-          titulo: "Tomar asistencia",
-          icono: "asistencia",
-          texto: "El profesor ve solo a sus alumnos, los marca en la clase, y sabe antes de empezar quién reportó dolor.",
-          maqueta: (activo, alTerminar) => (
-            <TelefonoGrabado src={`${GF}/asistencia`} etiqueta="Global Fit: el profesor abre su clase, mira la ficha del alumno que avisó dolor y confirma la asistencia, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
-          ),
-        },
-        {
-          titulo: "Cargar el entrenamiento",
-          icono: "entreno",
-          texto: "El socio anota qué trabajó y ve su racha. Es un diario personal: no lo ven ni el profe ni el dueño.",
-          maqueta: (activo, alTerminar) => (
-            <TelefonoGrabado src={`${GF}/entreno`} etiqueta="Global Fit: la socia marca las zonas que trabajó y deja una nota, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
-          ),
-        },
-        {
-          titulo: "Avisar el pago",
-          icono: "pagos",
-          texto: "El socio transfiere, toca «Ya pagué» y el dueño lo confirma de un toque. Sabe quién está al día sin cruzar mensajes.",
-          maqueta: (activo, alTerminar) => (
-            <TelefonoGrabado src={`${GF}/pagos`} etiqueta="Global Fit: la socia avisa que pagó la cuota y queda en espera de la confirmación, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
-          ),
-        },
+        telefono("semana", `${GF}/inicio`),
+        telefono("reservar", `${GF}/reservar`),
+        telefono("asistencia", `${GF}/asistencia`),
+        telefono("entreno", `${GF}/entreno`),
+        telefono("pagos", `${GF}/pagos`),
       ],
       escritorio: [
-        {
-          titulo: "Lo que pide atención hoy",
-          icono: "inicio",
-          texto: "Al entrar, el dueño ve qué espera de él: socios para dar de alta, pagos para confirmar y clases sin asistencia. Lo resuelve ahí mismo.",
-          maqueta: (activo, alTerminar) => (
-            <VentanaGrabada src={`${GF}/panel-inicio`} ruta="/admin" etiqueta="Global Fit: el dueño confirma los cuatro pagos pendientes desde el inicio del panel, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
-          ),
-        },
-        {
-          titulo: "Los socios",
-          icono: "socios",
-          texto: "Quién está al día, quién debe y quién pidió entrar. Se aprueba y se confirma desde la misma lista.",
-          maqueta: (activo, alTerminar) => (
-            <VentanaGrabada src={`${GF}/socios`} ruta="/admin/socios" etiqueta="Global Fit: el dueño filtra los socios, confirma un pago y aprueba a una socia nueva, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
-          ),
-        },
-        {
-          titulo: "Armar la semana",
-          icono: "calendario",
-          texto: "La plantilla de horarios y cupos se arma una vez; cada semana se genera con un botón y los socios ya pueden reservar.",
-          maqueta: (activo, alTerminar) => (
-            <VentanaGrabada src={`${GF}/semana`} ruta="/admin/calendario" etiqueta="Global Fit: de la plantilla de horarios al calendario, y la semana siguiente generada con un botón, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
-          ),
-        },
-        {
-          titulo: "Las métricas",
-          icono: "numeros",
-          texto: "Asistencias, ocupación de cada horario y cómo se reparten los planes, sin abrir una planilla.",
-          maqueta: (activo, alTerminar) => (
-            <VentanaGrabada src={`${GF}/metricas`} ruta="/admin/estadisticas" etiqueta="Global Fit: el tablero de métricas del dueño, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
-          ),
-        },
+        ventana("inicio", `${GF}/panel-inicio`, "/admin"),
+        ventana("socios", `${GF}/socios`, "/admin/socios"),
+        ventana("calendario", `${GF}/semana`, "/admin/calendario"),
+        ventana("numeros", `${GF}/metricas`, "/admin/estadisticas"),
       ],
     },
   },
   "a7-sports": {
-    slug: "a7-sports",
     nombre: "A7 Sports",
-    corto: "Ventas, stock y caja de una tienda de pádel",
     logo: "/logos/a7-sports.svg",
     logoClaro: "/logos/a7-sports-claro.svg",
-    enlace: { texto: "Ver la tienda", href: "https://a7sports.com.ar/tienda" },
-    titular: "De la planilla a la caja.",
-    bajada:
-      "Ventas, stock, caja y una tienda pública para un emprendimiento familiar de pádel. La usan cinco personas desde el celular, en el local y en los eventos.",
-    numeros: [
-      // Todas las ventas registradas, sin las canceladas (desde el 29/07/2026); eventos de los últimos 12 meses.
-      { valor: 366, etiqueta: "ventas" },
-      { valor: 10, etiqueta: "eventos en el último año" },
-    ],
+    enlace: "https://a7sports.com.ar/tienda",
+    // Todas las ventas registradas, sin las canceladas (desde el 29/07/2026); eventos de los últimos 12 meses.
+    numeros: [366, 10],
     funciones: {
-      celular: [
-        {
-          titulo: "Vender en la caja",
-          icono: "caja",
-          texto: "Desde el celular, en el local o en un evento: las líneas entran, el descuento se elige y el total se cuenta solo.",
-          maqueta: (activo, alTerminar) => (
-            <TelefonoGrabado app="a7-sports" intro src={`${A7}/caja`} etiqueta="A7 Sports: una remera en talle M negra y un tubo de pelotas, la remera con 10 % de descuento, cobrado en efectivo, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
-          ),
-        },
-      ],
+      celular: [telefono("caja", `${A7}/caja`, { app: "a7-sports", intro: true })],
       escritorio: [
-        {
-          titulo: "Manejar el stock",
-          icono: "stock",
-          texto: "Cada venta descuenta al momento. Lo que se está por terminar se marca antes de que falte.",
-          maqueta: (activo, alTerminar) => (
-            <VentanaGrabada app="a7-sports" src={`${A7}/stock`} ruta="/stock" etiqueta="A7 Sports: el stock ordenado por lo que menos queda, y la ficha de una remera con lo que hay de cada talle, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
-          ),
-        },
-        {
-          titulo: "Cargar las compras",
-          icono: "compras",
-          texto: "Claude lee el PDF del proveedor y devuelve un archivo; la app lo revisa antes de cargarlo y recalcula el costo.",
-          maqueta: (activo, alTerminar) => (
-            <VentanaGrabada app="a7-sports" src={`${A7}/compras`} ruta="/compras" etiqueta="A7 Sports: se importa el archivo de una factura, la app muestra el stock y los costos que cambian, y se carga, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
-          ),
-        },
-        {
-          titulo: "La tienda para los clientes",
-          icono: "tienda",
-          texto: "Una vidriera pública que se filtra por categoría y talle, y termina en una consulta por WhatsApp.",
-          maqueta: (activo, alTerminar) => (
-            <VentanaGrabada app="a7-sports" src={`${A7}/tienda`} ruta="/tienda" enlace="https://a7sports.com.ar/tienda" etiqueta="A7 Sports: en la tienda, remeras de mujer en talle M, y la ficha de una remera con su color y la consulta por WhatsApp, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
-          ),
-        },
-        {
-          titulo: "Ver los números",
-          icono: "numeros",
-          texto: "Lo que se vendió en el mes, por semana y cuánto salió de los eventos, sin abrir una planilla.",
-          maqueta: (activo, alTerminar) => (
-            <VentanaGrabada app="a7-sports" src={`${A7}/numeros`} ruta="/analisis" etiqueta="A7 Sports: el resumen, las ventas del mes por semana y lo que dejó cada evento, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
-          ),
-        },
+        ventana("stock", `${A7}/stock`, "/stock", { app: "a7-sports" }),
+        ventana("compras", `${A7}/compras`, "/compras", { app: "a7-sports" }),
+        ventana("tienda", `${A7}/tienda`, "/tienda", { app: "a7-sports", enlace: "https://a7sports.com.ar/tienda" }),
+        ventana("numeros", `${A7}/numeros`, "/analisis", { app: "a7-sports" }),
       ],
     },
   },
   "forge-studio": {
-    slug: "forge-studio",
     nombre: "Forge Studio",
-    corto: "El tablero donde trabaja mi equipo",
     logo: "/logos/forge-studio.svg",
-    titular: "Del Trello a un tablero con revisión humana.",
-    bajada:
-      "El tablero donde trabaja mi equipo, con un agente que corre en la máquina de cada desarrollador y un plugin para trabajar con IA sin perder el control.",
-    numeros: [
-      // Proyectos activos del board; todas las tarjetas; las que están En producción.
-      { valor: 5, etiqueta: "proyectos" },
-      { valor: 467, etiqueta: "tareas en el tablero" },
-      { valor: 294, etiqueta: "en producción" },
-    ],
+    // Proyectos activos del board; todas las tarjetas; las que están En producción.
+    numeros: [5, 467, 294],
     funciones: {
       celular: [],
       escritorio: [
-        {
-          titulo: "Lo que te espera hoy",
-          icono: "inicio",
-          texto: "Al entrar, el Inicio dice qué tarjetas esperan tu revisión, qué tenés en curso y si tu agente está reportando.",
-          maqueta: (activo, alTerminar) => (
-            <VentanaGrabada app="forge-studio" src={`${FS}/inicio`} ruta=" · Inicio" etiqueta="Forge Studio: el inicio de una persona del equipo, con sus revisiones pendientes, sus tareas y la agenda, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
-          ),
-        },
-        {
-          titulo: "El tablero",
-          icono: "tablero",
-          texto: "Seis columnas, de Backlog a En producción. Las tarjetas avanzan con el trabajo y el magenta marca lo que espera a una persona.",
-          maqueta: (activo, alTerminar) => (
-            <VentanaGrabada app="forge-studio" src={`${FS}/tablero`} ruta=" · Tareas" etiqueta="Forge Studio: el tablero de un proyecto recorrido de Backlog a En producción, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
-          ),
-        },
-        {
-          titulo: "La revisión",
-          icono: "revision",
-          texto: "Lint, tipos, pruebas y build antes de entregar, y la aprobación de una persona antes de llegar a producción.",
-          maqueta: (activo, alTerminar) => (
-            <VentanaGrabada app="forge-studio" src={`${FS}/revision`} ruta=" · Tareas · #7" etiqueta="Forge Studio: una tarjeta en revisión con el resultado de lint, tipos, pruebas y build, y la persona que la aprueba, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
-          ),
-        },
-        {
-          titulo: "El calendario",
-          icono: "calendario",
-          texto: "Las salidas y las fechas de todos los proyectos en un mes, cada uno con su color.",
-          maqueta: (activo, alTerminar) => (
-            <VentanaGrabada app="forge-studio" src={`${FS}/calendario`} ruta=" · Calendario" etiqueta="Forge Studio: el calendario del mes con las fechas de cada proyecto en su color, grabado con datos de demo" activo={activo} alTerminar={alTerminar} />
-          ),
-        },
+        ventana("inicio", `${FS}/inicio`, " · Inicio", { app: "forge-studio" }),
+        ventana("tablero", `${FS}/tablero`, " · Tareas", { app: "forge-studio" }),
+        ventana("revision", `${FS}/revision`, " · Tareas · #7", { app: "forge-studio" }),
+        ventana("calendario", `${FS}/calendario`, " · Calendario", { app: "forge-studio" }),
       ],
     },
   },
 };
+
+function armar(idioma: Idioma): Record<Slug, Caso> {
+  const textos = TEXTOS[idioma].casos;
+  return Object.fromEntries(
+    ORDEN.map((slug): [Slug, Caso] => {
+      const base = BASE[slug];
+      const t = textos[slug];
+      return [
+        slug,
+        {
+          slug,
+          nombre: base.nombre,
+          corto: t.corto,
+          logo: base.logo,
+          logoClaro: base.logoClaro,
+          enlace: base.enlace && t.enlace ? { texto: t.enlace, href: base.enlace } : undefined,
+          titular: t.titular,
+          bajada: t.bajada,
+          numeros: base.numeros.map((valor, i) => ({ valor, etiqueta: t.numeros[i] })),
+          funciones: {
+            celular: base.funciones.celular.map((g, i) => pantalla(g, t.funciones.celular[i])),
+            escritorio: base.funciones.escritorio.map((g, i) => pantalla(g, t.funciones.escritorio[i])),
+          },
+        },
+      ];
+    }),
+  ) as Record<Slug, Caso>;
+}
+
+function pantalla(g: Grabada, t: { titulo: string; texto: string; etiqueta: string }): Pantalla {
+  return { titulo: t.titulo, texto: t.texto, icono: g.icono, maqueta: (activo, alTerminar) => g.dibujar(t.etiqueta, activo, alTerminar) };
+}
+
+/** Los casos con los textos de cada idioma. */
+export const CASOS_EN: Record<Idioma, Record<Slug, Caso>> = { es: armar("es"), en: armar("en") };
+
+/** Para lo que no depende del idioma (los logos de Marca.tsx). */
+export const CASOS = CASOS_EN.es;

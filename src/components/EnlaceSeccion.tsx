@@ -1,23 +1,25 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import type { ComponentProps, MouseEvent } from "react";
+import { useInicio } from "@/idioma/Idioma";
 
 /*
  * Un enlace a una sección del inicio ("/#proyectos"): la página se desliza
- * hasta la sección en vez de saltar. Desde otra ruta (un 404, por ejemplo)
- * navega como cualquier Link.
+ * hasta la sección en vez de saltar. Si la sección no está en la página (un
+ * 404, por ejemplo) navega como cualquier Link. El href se escribe siempre
+ * como "/#…" y va al inicio del idioma que se mira («/en#…» en inglés).
  *
  * El deslizamiento es propio, y no scroll-behavior: smooth, para controlar
  * la curva y el tiempo y para devolver el control si la persona toca la rueda.
  */
 export function EnlaceSeccion({ href, onClick, ...resto }: ComponentProps<typeof Link> & { href: `/#${string}` }) {
-  const ruta = usePathname();
+  const inicio = useInicio();
+  const destinoHref = inicio === "/" ? href : `${inicio}${href.slice(1)}`;
 
   const deslizar = (e: MouseEvent<HTMLAnchorElement>) => {
     onClick?.(e);
-    if (ruta !== "/" || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+    if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
     const id = href.slice(2);
     const destino = document.getElementById(id);
     if (!destino) return;
@@ -26,7 +28,7 @@ export function EnlaceSeccion({ href, onClick, ...resto }: ComponentProps<typeof
     irA(destino);
   };
 
-  return <Link href={href} onClick={deslizar} {...resto} />;
+  return <Link href={destinoHref} onClick={deslizar} {...resto} />;
 }
 
 /* Desliza con una curva suave (lenta al salir y al llegar) y un tiempo que

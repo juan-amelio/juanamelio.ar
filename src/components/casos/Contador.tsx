@@ -1,9 +1,15 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useIdioma } from "@/idioma/Idioma";
+import { LOCALE } from "@/idioma/idiomas";
 
 const DURACION_MS = 1100;
-const FORMATO = new Intl.NumberFormat("es-AR");
+/* Los separadores de miles de cada idioma: 1.234 en español, 1,234 en inglés. */
+const FORMATO = {
+  es: new Intl.NumberFormat(LOCALE.es),
+  en: new Intl.NumberFormat(LOCALE.en),
+};
 
 /*
  * Un número de uso que cuenta desde 0 hasta su valor cuando aparece (#52):
@@ -20,6 +26,7 @@ const FORMATO = new Intl.NumberFormat("es-AR");
 export function Contador({ valor, className = "" }: { valor: number; className?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const [actual, setActual] = useState(valor);
+  const formato = FORMATO[useIdioma()];
 
   useEffect(() => {
     const el = ref.current;
@@ -52,12 +59,12 @@ export function Contador({ valor, className = "" }: { valor: number; className?:
   return (
     <span ref={ref} className={`inline-grid tabular-nums ${className}`}>
       <span aria-hidden="true" className="invisible [grid-area:1/1]">
-        {FORMATO.format(valor)}
+        {formato.format(valor)}
       </span>
       <span aria-hidden="true" className="[grid-area:1/1]">
-        {FORMATO.format(actual)}
+        {formato.format(actual)}
       </span>
-      <span className="sr-only">{FORMATO.format(valor)}</span>
+      <span className="sr-only">{formato.format(valor)}</span>
     </span>
   );
 }

@@ -1,16 +1,10 @@
 import { Foto } from "@/components/Foto";
+import type { Idioma } from "@/idioma/idiomas";
+import { TEXTOS } from "@/idioma/textos";
 
-/* Borrador de la #1. Todo sale del CV de Juan: nada de acá se inventó, y lo
-   que cambie de su carrera se cambia acá. */
-const DATOS: [string, string][] = [
-  ["Base", "Guaymallén, Mendoza, Argentina"],
-  ["Desde 2023", "Slingr, equipo de Soluciones; hoy team leader"],
-  ["Idiomas", "Español nativo; inglés profesional, todos los días con clientes"],
-  ["Formación", "Programa Full Stack (Java), Egg, 2022"],
-  ["IA aplicada", "Agentes con Gemini en Slingr; Claude Code en mis productos"],
-];
-
-export function SobreMi() {
+/* Todo sale del CV de Juan: nada se inventó. Los textos están en src/idioma. */
+export function SobreMi({ idioma }: { idioma: Idioma }) {
+  const t = TEXTOS[idioma].sobreMi;
   return (
     <section id="sobre-mi" className="mx-auto w-full max-w-7xl snap-start px-4 pt-24 sm:px-14 sm:pt-40 lg:flex lg:min-h-svh lg:flex-col lg:justify-center lg:scroll-mt-0! lg:pt-20 lg:pb-10">
       {/* El texto y la foto, arriba a la derecha (en el celular, la foto primero).
@@ -18,30 +12,16 @@ export function SobreMi() {
       <div className="grid gap-x-20 gap-y-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,340px)]">
         <Foto tamanos="(min-width: 1024px) 340px, 220px" className="aspect-[4/5] w-full max-w-[220px] rounded-[28px] lg:col-start-2 lg:row-start-1 lg:max-w-none" />
         <div className="min-w-0 lg:col-start-1 lg:row-start-1">
-          <h2 className="text-[clamp(32px,4.4vw,64px)] leading-none font-extrabold tracking-[-0.035em]">Sobre mí</h2>
+          <h2 className="text-[clamp(32px,4.4vw,64px)] leading-none font-extrabold tracking-[-0.035em]">{t.titulo}</h2>
           <div className="mt-11 space-y-5 text-[19px] leading-relaxed text-tinta-media lg:mt-8 lg:text-[18px]">
-            <p>
-              Soy Juan Bautista Amelio, desarrollador de software en Mendoza. Desde 2023 trabajo en el equipo de
-              Soluciones de Slingr, haciendo aplicaciones a medida para empresas de Estados Unidos. Me reúno cada
-              semana con los clientes, en inglés, para mostrar avances, ajustar requisitos y planear lo que sigue.
-              Hoy soy team leader: lidero un equipo chico, con un desarrollador y una QA, en un proyecto para un
-              cliente de Estados Unidos.
-            </p>
-            <p>
-              Ahí hice de punta a punta un ERP para una empresa industrial: inventario, compras, producción, ventas y
-              envíos, integración con su tienda online y reportes. También construí agentes de IA que automatizan
-              procesos en industrias reguladas: revisar documentos contra una normativa, responder consultas de soporte
-              técnico y extraer datos de documentos.
-            </p>
-            <p>
-              En 2026 empecé a construir mis propios productos. Hoy son tres, y los tres los usan personas todos los
-              días.
-            </p>
+            {t.parrafos.map((p) => (
+              <p key={p}>{p}</p>
+            ))}
           </div>
         </div>
       </div>
       <dl className="mt-16 grid lg:mt-10 lg:pt-6 gap-x-8 gap-y-7 border-t border-borde-oscuro pt-8 sm:grid-cols-2 lg:grid-cols-5">
-        {DATOS.map(([etiqueta, valor]) => (
+        {t.datos.map(([etiqueta, valor]) => (
           <div key={etiqueta}>
             <dt className="text-[15px] text-tinta-suave">{etiqueta}</dt>
             <dd className="mt-1 text-lg leading-snug font-semibold">{valor}</dd>
