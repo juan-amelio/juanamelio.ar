@@ -227,7 +227,8 @@ export function Portada() {
                 {t.verProyecto}
               </EnlaceSeccion>
             </div>
-            <div className="mt-3 flex justify-center gap-1">
+            {/* Puntos chicos, pero de 44 px para el dedo (#61). */}
+            <div className="mt-1 flex justify-center">
               {ORDEN.map((slug, i) => (
                 <button
                   key={slug}
@@ -235,7 +236,7 @@ export function Portada() {
                   aria-label={t.mostrar(CASOS[slug].nombre)}
                   aria-pressed={i === frente}
                   onClick={() => tocarYTraer(i)}
-                  className="grid size-7 cursor-pointer place-items-center"
+                  className="grid size-11 cursor-pointer place-items-center"
                 >
                   <span className={`block h-1.5 rounded-full bg-tinta transition-all duration-300 ${i === frente ? "w-5" : "w-1.5 opacity-35"}`} />
                 </button>

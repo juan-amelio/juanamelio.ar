@@ -5,6 +5,7 @@ import { CASOS_EN, MAX_ANCHO, ORDEN, type Caso, type Dispositivo, type Pantalla,
 import { Icono, IconoDispositivo, IconoFlecha } from "@/components/casos/IconosFuncion";
 import { Contador } from "@/components/casos/Contador";
 import { Halos, Logo, Marca } from "@/components/casos/Marca";
+import { VerEnGrande } from "@/components/maquetas/VerEnGrande";
 import { useIdioma, useTextos } from "@/idioma/Idioma";
 
 const FUENTE: Record<Slug, string> = {
@@ -241,8 +242,10 @@ export function Recorrido() {
                   </div>
                   <div className="relative isolate mt-8">
                     <div aria-hidden="true" data-caso={slug} className="halo pointer-events-none absolute -inset-x-10 -inset-y-16 -z-10" />
-                    <div key={`${dispositivo}-${indice}`} className={`entrar mx-auto w-full ${MAX_ANCHO[dispositivo]}`}>
+                    <div key={`${dispositivo}-${indice}`} className={`entrar relative mx-auto w-full ${MAX_ANCHO[dispositivo]}`}>
                       {pantallas[indice].maqueta(true, alTerminar(slug))}
+                      {/* Achicada al ancho del teléfono, la de escritorio no se lee (#61). */}
+                      {dispositivo === "escritorio" && <VerEnGrande />}
                     </div>
                   </div>
                   {/* Juntas al centro: en la punta derecha las tapa el botón de WhatsApp. */}

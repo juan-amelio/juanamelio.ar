@@ -4,8 +4,8 @@ const TEMA = { claro: "light", oscuro: "dark" } as const;
 
 /*
  * Todos los textos del sitio en inglés (#22), con la misma forma que es.ts.
- * Los nombres de botones de las apps quedan en español entre comillas
- * («Ya pagué»): las apps son en español y así se ven en las grabaciones.
+ * Los nombres de botones de las apps quedan en español, entre comillas
+ * inglesas ("Ya pagué"): las apps son en español y así se ven en las grabaciones.
  */
 export const en: Textos = {
   meta: {
@@ -17,6 +17,7 @@ export const en: Textos = {
   },
   barra: {
     secciones: "Sections",
+    menu: "Menu",
     sobreMi: "About me",
     proyectos: "Projects",
     contacto: "Contact",
@@ -43,7 +44,7 @@ export const en: Textos = {
   sobreMi: {
     titulo: "About me",
     parrafos: [
-      "I'm Juan Bautista Amelio, a software developer in Mendoza, Argentina. Since 2023 I've been on the Solutions team at Slingr, building custom applications for US companies. I meet with clients every week, in English, to demo progress, refine requirements and plan what comes next. Today I'm a team leader: I lead a small team, with one developer and one QA, on a project for a US client.",
+      "I'm Juan Bautista Amelio, a software developer in Mendoza, Argentina. Since 2023 I've been on the Solutions team at Slingr, building custom applications for US companies. I meet with clients every week, in English, to demo progress, refine requirements and plan what comes next. Today I'm a team leader: I lead a small team, with one developer and one QA, on a project for one of those clients.",
       "There I built an ERP end to end for an industrial company: inventory, purchasing, production, sales and shipping, integration with their online store, and reporting. I've also built AI agents that automate processes in regulated industries: checking documents against regulations, answering technical support questions and extracting data from documents.",
       "In 2026 I started building my own products. There are three today, and people use all three every day.",
     ],
@@ -65,6 +66,7 @@ export const en: Textos = {
     dispositivo: { celular: "Phone", escritorio: "Desktop" },
     solo: (dispositivo) => `${dispositivo} only`,
     desdeDonde: "Where it's used",
+    verEnGrande: "View full screen",
   },
   casos: {
     "global-fit": {
@@ -97,7 +99,7 @@ export const en: Textos = {
           },
           {
             titulo: "Report a payment",
-            texto: "Members make the transfer, tap «Ya pagué» (I've paid) and the owner confirms it in one tap. They know who's up to date without chasing messages.",
+            texto: "Members make the transfer and tap \"Ya pagué\" (I've paid); the owner confirms it in one tap and knows who's up to date without chasing messages.",
             etiqueta: "Global Fit: the member reports she paid her fee and waits for confirmation, recorded with demo data",
           },
         ],
