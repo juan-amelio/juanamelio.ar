@@ -127,11 +127,11 @@ export function Recorrido() {
                 }`}
               >
                 {/* En el celular, la escena del caso entra en una pantalla (#62):
-                    logo, titular, el selector, la grabación achicada al lugar
-                    que sobra y los controles pegados abajo. La bajada y los
-                    números quedan después. En escritorio esta caja no existe
-                    (lg:contents) y todo sigue en la columna de la izquierda. En el
-                    celular el encaje del scroll va a esta caja y no al caso
+                    logo, titular, los números, el selector, los controles y la
+                    grabación achicada al lugar que sobra (#63). La bajada queda
+                    después. En escritorio esta caja no existe (lg:contents) y
+                    todo sigue en la columna de la izquierda, en su orden (order).
+                    En el celular el encaje del scroll va a esta caja y no al caso
                     entero: mide una pantalla, así se acomoda pasándose o no. */}
                 <div className="flex h-[calc(100svh-4rem)] snap-start scroll-mt-16 flex-col pt-4 pb-2 lg:contents">
                 <p className="flex items-center gap-3 text-[19px] lg:gap-3.5 lg:text-[22px] apretado:text-[19px]">
@@ -158,6 +158,19 @@ export function Recorrido() {
                 <h2 className="mt-3 max-w-[16ch] text-[28px] leading-[1.02] font-extrabold tracking-[-0.03em] sm:text-[clamp(32px,3.6vw,52px)] lg:mt-4 apretado:mt-3 apretado:text-[clamp(28px,2.9vw,40px)]">
                   {caso.titular}
                 </h2>
+                <dl className="mt-3 flex flex-wrap gap-x-6 gap-y-2 lg:order-1 lg:mt-5 apretado:mt-3">
+                  {/* Los números de uso real: que se vea que la app está viva. En
+                      el celular, debajo del titular (#63); en escritorio, debajo
+                      de la bajada. */}
+                  {caso.numeros.map((n) => (
+                    <div key={n.etiqueta} className="flex items-baseline gap-2">
+                      <dd className="text-xl leading-none font-extrabold apretado:text-lg">
+                        <Contador valor={n.valor} />
+                      </dd>
+                      <dt className="text-[13px] text-(--caso-suave)">{n.etiqueta}</dt>
+                    </div>
+                  ))}
+                </dl>
 
                 <div className="mt-4 flex items-center justify-between gap-3 lg:hidden">
                   <Selector
@@ -168,20 +181,12 @@ export function Recorrido() {
                   />
                   <p className="text-[13px] text-(--caso-suave)">{t.datosDeDemo}</p>
                 </div>
-                <div className="relative isolate my-3 flex min-h-0 flex-1 flex-col lg:hidden">
-                  <div aria-hidden="true" data-caso={slug} className="halo pointer-events-none absolute -inset-x-10 -inset-y-6 -z-10" />
-                  {/* Las dos se dibujan a su tamaño (el iPhone a 320 px, la
-                      ventana a 560) y se achican enteras para entrar. */}
-                  <Encajar>
-                    <div key={`${dispositivo}-${indice}`} className={`entrar ${dispositivo === "celular" ? "w-80" : "w-140"}`}>
-                      {pantallas[indice].maqueta(true, alTerminar(slug))}
-                    </div>
-                  </Encajar>
-                </div>
                 {/* Los controles, pegados a la grabación: cuál se ve, cuántas
                     hay y las flechas. Reemplazan la tira de funciones, que en el
-                    celular corría de costado y quedaba cortada. */}
-                <div className="flex items-center gap-2 lg:hidden">
+                    celular corría de costado y quedaba cortada. Van arriba y sin
+                    la descripción (#63): abajo los tapaba el botón de WhatsApp,
+                    y así la grabación gana el lugar. */}
+                <div className="mt-3 flex items-center gap-2 lg:hidden">
                   <Flecha slug={slug} hacia={vecina(CASOS, slug, eleccion[slug], -1)} onPasar={() => pasar(slug, -1)} />
                   <p className="flex min-w-0 flex-1 items-baseline justify-center gap-2">
                     <span className="truncate text-[16px] font-bold">{pantallas[indice].titulo}</span>
@@ -194,34 +199,23 @@ export function Recorrido() {
                   </p>
                   <Flecha slug={slug} hacia={vecina(CASOS, slug, eleccion[slug], 1)} siguiente onPasar={() => pasar(slug, 1)} />
                 </div>
-                {/* Angosto en el celular: a la derecha está el botón de WhatsApp.
-                    Reserva el alto del texto más largo del caso, así la grabación
-                    no cambia de tamaño al pasar de una a otra (#46). */}
-                <div className="mt-2 grid grid-cols-[minmax(0,1fr)] px-16 text-center lg:hidden">
-                  {enOrden(CASOS, slug).map((e) => (
-                    <p key={`${e.dispositivo}-${e.indice}`} aria-hidden="true" className="invisible text-[14px] leading-snug [grid-area:1/1]">
-                      {caso.funciones[e.dispositivo][e.indice].texto}
-                    </p>
-                  ))}
-                  <p className="text-[14px] leading-snug text-(--caso-texto-medio) [grid-area:1/1]">{pantallas[indice].texto}</p>
-                </div>
-                </div>
-
-                <p className="mt-6 max-w-[50ch] lg:mt-4 text-[17px] leading-relaxed text-(--caso-texto-medio) apretado:mt-3 apretado:text-[15px]">{caso.bajada}</p>
-
-                <dl className="mt-5 flex flex-wrap gap-x-6 gap-y-2 apretado:mt-3">
-                  {/* Los números de uso real: que se vea que la app está viva. */}
-                  {caso.numeros.map((n) => (
-                    <div key={n.etiqueta} className="flex items-baseline gap-2">
-                      <dd className="text-xl leading-none font-extrabold apretado:text-lg">
-                        <Contador valor={n.valor} />
-                      </dd>
-                      <dt className="text-[13px] text-(--caso-suave)">{n.etiqueta}</dt>
+                <div className="relative isolate mt-3 flex min-h-0 flex-1 flex-col lg:hidden">
+                  <div aria-hidden="true" data-caso={slug} className="halo pointer-events-none absolute -inset-x-10 -inset-y-6 -z-10" />
+                  {/* Las dos se dibujan a su tamaño (el iPhone a 320 px, la
+                      ventana a 560) y se achican enteras para entrar. */}
+                  <Encajar>
+                    <div key={`${dispositivo}-${indice}`} className={`entrar ${dispositivo === "celular" ? "w-80" : "w-140"}`}>
+                      {pantallas[indice].maqueta(true, alTerminar(slug))}
                     </div>
-                  ))}
-                </dl>
+                  </Encajar>
+                </div>
+                </div>
 
-                <div className="mt-7 hidden lg:block apretado:mt-4">
+                {/* En el celular la bajada es un punto de encaje (su final): si no, la
+                    escena de al lado la tapaba al querer leerla (#63). */}
+                <p className="mt-6 max-w-[50ch] text-[17px] leading-relaxed text-(--caso-texto-medio) max-lg:snap-end max-lg:scroll-mb-24 lg:mt-4 apretado:mt-3 apretado:text-[15px]">{caso.bajada}</p>
+
+                <div className="mt-7 hidden lg:order-2 lg:block apretado:mt-4">
                   <Selector
                     disponibles={disponibles}
                     actual={dispositivo}

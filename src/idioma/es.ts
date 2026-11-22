@@ -57,6 +57,7 @@ export const es = {
   },
   sobreMi: {
     titulo: "Sobre mí",
+    nombre: "Juan Bautista Amelio",
     parrafos: [
       "Soy Juan Bautista Amelio, desarrollador de software en Mendoza. Desde 2023 trabajo en el equipo de Soluciones de Slingr, haciendo aplicaciones a medida para empresas de Estados Unidos. Me reúno cada semana con los clientes, en inglés, para mostrar avances, ajustar requisitos y planear lo que sigue. Hoy soy team leader: lidero un equipo chico, con un desarrollador y una QA, en un proyecto para uno de esos clientes.",
       "Ahí hice de punta a punta un ERP para una empresa industrial: inventario, compras, producción, ventas y envíos, integración con su tienda online y reportes. También construí agentes de IA que automatizan procesos en industrias reguladas: revisar documentos contra una normativa, responder consultas de soporte técnico y extraer datos de documentos.",

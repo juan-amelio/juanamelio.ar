@@ -43,6 +43,7 @@ export const en: Textos = {
   },
   sobreMi: {
     titulo: "About me",
+    nombre: "Juan Bautista Amelio",
     parrafos: [
       "I'm Juan Bautista Amelio, a software developer in Mendoza, Argentina. Since 2023 I've been on the Solutions team at Slingr, building custom applications for US companies. I meet with clients every week, in English, to demo progress, refine requirements and plan what comes next. Today I'm a team leader: I lead a small team, with one developer and one QA, on a project for one of those clients.",
       "There I built an ERP end to end for an industrial company: inventory, purchasing, production, sales and shipping, integration with their online store, and reporting. I've also built AI agents that automate processes in regulated industries: checking documents against regulations, answering technical support questions and extracting data from documents.",
