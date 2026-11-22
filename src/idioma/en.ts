@@ -66,7 +66,6 @@ export const en: Textos = {
     dispositivo: { celular: "Phone", escritorio: "Desktop" },
     solo: (dispositivo) => `${dispositivo} only`,
     desdeDonde: "Where it's used",
-    verEnGrande: "View full screen",
   },
   casos: {
     "global-fit": {

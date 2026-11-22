@@ -88,9 +88,11 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
       lang={lang}
       // El script de TEMA le pone data-tema antes de que React lo hidrate.
       suppressHydrationWarning
-      // Al scrollear, la página encaja de sección en sección (#33). Sólo en
-      // escritorio: en el celular cada proyecto es más alto que la pantalla.
-      className={`${variablesDeFuentes} h-full antialiased lg:motion-safe:snap-y lg:motion-safe:snap-mandatory`}
+      // Al scrollear, la página encaja de sección en sección (#33). En el
+      // celular, sólo si se suelta cerca (proximity, #62): así la escena de cada
+      // proyecto queda entera, y Sobre mí o la bajada se leen sin que la
+      // página tire hacia otro lado.
+      className={`${variablesDeFuentes} h-full antialiased motion-safe:snap-y motion-safe:snap-proximity lg:motion-safe:snap-mandatory`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: TEMA }} />
