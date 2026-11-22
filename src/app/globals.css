@@ -343,7 +343,12 @@ body {
      sin esto se come el clic que las trae adelante. */
   pointer-events: none;
   transform-style: preserve-3d;
+  /* --ajuste (Portada.tsx, #65): en un celular bajo, la ronda se achica para
+     que la portada entre en una pantalla. Desde arriba, donde arrancan las
+     pantallas. */
+  transform-origin: top center;
   transform:
+    scale(var(--ajuste, 1))
     translateZ(calc(var(--radio) * -1))
     rotateX(calc(5deg - var(--my) * 5deg))
     rotateY(calc(var(--mx) * 8deg - var(--angulo)));

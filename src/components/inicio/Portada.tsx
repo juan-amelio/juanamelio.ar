@@ -128,9 +128,30 @@ export function Portada() {
     return () => el.removeEventListener("wheel", rueda);
   }, []);
 
+  /* Si el escenario quedó más bajo que su alto de diseño (el max-height: 380
+     o 520 px), la ronda entera se achica para entrar (#65). Las pantallas
+     ocupan el 92 % de ese alto (el resto es aire para que floten): se
+     achica sólo lo que haga falta para que entren ellas. */
+  useEffect(() => {
+    const el = escenarioRef.current;
+    if (!el) return;
+    const medir = () => {
+      const base = parseFloat(getComputedStyle(el).maxHeight) * 0.92;
+      const ajuste = base > 0 ? Math.min(1, el.clientHeight / base) : 1;
+      el.style.setProperty("--ajuste", ajuste.toFixed(3));
+    };
+    const observador = new ResizeObserver(medir);
+    observador.observe(el);
+    return () => observador.disconnect();
+  }, []);
+
   return (
     <section ref={ref} id="inicio" className="portada relative isolate overflow-hidden lg:snap-start lg:scroll-mt-0!">
-      <div className="mx-auto grid min-h-svh max-w-7xl items-center gap-x-12 gap-y-6 px-4 pt-24 pb-16 sm:px-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:pb-20">
+      {/* En el celular la portada es justo una pantalla (#65): titular,
+          ronda y tarjeta, sin que la tarjeta quede cortada abajo. La ronda
+          toma el lugar que sobra y se achica si no le alcanza (--ajuste). Con
+          menos de 34rem de alto (un celular acostado) se deja scrollear. */}
+      <div className="mx-auto flex h-svh min-h-[34rem] max-w-7xl flex-col justify-center gap-x-12 gap-y-3 px-4 pt-20 pb-3 sm:px-14 lg:grid lg:h-auto lg:min-h-svh lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:items-center lg:gap-y-6 lg:pt-24 lg:pb-20">
         {/* En el celular el orden es otro (#63): titular y la ronda, y nada
             más (#64): la bajada y «Bajá y miralas por dentro» no van, después
             sigue Sobre mí. La caja del texto se disuelve (contents) para que
@@ -148,12 +169,12 @@ export function Portada() {
           </EnlaceSeccion>
         </div>
 
-        <div className="portada-ronda flex flex-col items-center max-lg:order-2">
+        <div className="portada-ronda flex flex-col items-center max-lg:order-2 max-lg:min-h-0 max-lg:flex-1 max-lg:justify-center">
           <div
             role="group"
             aria-roledescription={t.carrusel}
             aria-label={t.misProyectos}
-            className="escenario relative h-[380px] w-full max-w-[680px] cursor-grab touch-pan-y select-none active:cursor-grabbing [--radio:105px] sm:h-[520px] sm:[--radio:220px]"
+            className="escenario relative max-h-[380px] min-h-0 w-full max-w-[680px] flex-1 cursor-grab touch-pan-y select-none active:cursor-grabbing [--radio:105px] sm:max-h-[520px] sm:[--radio:220px] lg:h-[520px] lg:flex-none"
             onKeyDown={(e) => {
               if (e.key === "ArrowRight") girar(1);
               if (e.key === "ArrowLeft") girar(-1);
@@ -222,7 +243,9 @@ export function Portada() {
               <Logo caso={caso.slug} alt={t.logo(caso.nombre)} tamano={48} className="size-12 shrink-0" />
               <div className="min-w-0 flex-1">
                 <p className="text-lg leading-tight font-bold">{caso.nombre}</p>
-                <p className="mt-0.5 text-sm leading-snug text-(--caso-suave)">{caso.corto}</p>
+                {/* Dos renglones siempre en el celular: si la tarjeta cambiara de
+                    alto con cada proyecto, la ronda se achicaría y crecería al girar (#65). */}
+                <p className="mt-0.5 text-sm leading-snug text-(--caso-suave) max-sm:min-h-[2lh]">{caso.corto}</p>
               </div>
               <EnlaceSeccion
                 href={`/#${caso.slug}`}
