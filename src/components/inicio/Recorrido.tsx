@@ -122,7 +122,7 @@ export function Recorrido() {
                 ref={(el) => {
                   pasos.current[slug] = el;
                 }}
-                className={`${FUENTE[slug]} flex min-h-svh snap-start scroll-mt-0! flex-col justify-center pt-16 pb-20 transition-opacity duration-500 lg:pt-20 lg:pb-8 apretado:pb-5 ${
+                className={`${FUENTE[slug]} flex min-h-svh scroll-mt-0! flex-col justify-center pt-16 pb-20 lg:snap-start transition-opacity duration-500 lg:pt-20 lg:pb-8 apretado:pb-5 ${
                   activo === slug ? "opacity-100" : "lg:opacity-30"
                 }`}
               >
@@ -130,8 +130,10 @@ export function Recorrido() {
                     logo, titular, el selector, la grabación achicada al lugar
                     que sobra y los controles pegados abajo. La bajada y los
                     números quedan después. En escritorio esta caja no existe
-                    (lg:contents) y todo sigue en la columna de la izquierda. */}
-                <div className="flex h-[calc(100svh-4rem)] flex-col pt-4 pb-2 lg:contents">
+                    (lg:contents) y todo sigue en la columna de la izquierda. En el
+                    celular el encaje del scroll va a esta caja y no al caso
+                    entero: mide una pantalla, así se acomoda pasándose o no. */}
+                <div className="flex h-[calc(100svh-4rem)] snap-start scroll-mt-16 flex-col pt-4 pb-2 lg:contents">
                 <p className="flex items-center gap-3 text-[19px] lg:gap-3.5 lg:text-[22px] apretado:text-[19px]">
                   <Logo caso={slug} alt="" tamano={56} className="size-10 lg:size-14 apretado:size-11" />
                   <Marca caso={slug} />
