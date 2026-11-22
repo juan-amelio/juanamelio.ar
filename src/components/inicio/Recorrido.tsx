@@ -158,16 +158,18 @@ export function Recorrido() {
                 <h2 className="mt-3 max-w-[16ch] text-[28px] leading-[1.02] font-extrabold tracking-[-0.03em] sm:text-[clamp(32px,3.6vw,52px)] lg:mt-4 apretado:mt-3 apretado:text-[clamp(28px,2.9vw,40px)]">
                   {caso.titular}
                 </h2>
-                <dl className="mt-3 flex flex-wrap gap-x-6 gap-y-2 lg:order-1 lg:mt-5 apretado:mt-3">
+                <dl className="mt-3 flex flex-wrap gap-x-4 gap-y-2 max-[359px]:gap-x-3 sm:gap-x-6 lg:order-1 lg:mt-5 apretado:mt-3">
                   {/* Los números de uso real: que se vea que la app está viva. En
                       el celular, debajo del titular (#63); en escritorio, debajo
-                      de la bajada. */}
+                      de la bajada. Los tres de Forge entran en un renglón desde
+                      320 px (#64): por eso la separación y, en los más chicos,
+                      la letra se achican. */}
                   {caso.numeros.map((n) => (
-                    <div key={n.etiqueta} className="flex items-baseline gap-2">
-                      <dd className="text-xl leading-none font-extrabold apretado:text-lg">
+                    <div key={n.etiqueta} className="flex items-baseline gap-2 max-[359px]:gap-1.5">
+                      <dd className="text-xl leading-none font-extrabold max-[359px]:text-lg apretado:text-lg">
                         <Contador valor={n.valor} />
                       </dd>
-                      <dt className="text-[13px] text-(--caso-suave)">{n.etiqueta}</dt>
+                      <dt className="text-[13px] text-(--caso-suave) max-[359px]:text-[12px]">{n.etiqueta}</dt>
                     </div>
                   ))}
                 </dl>

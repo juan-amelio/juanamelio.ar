@@ -171,7 +171,7 @@ export const en: Textos = {
       titular: "From Trello to a board with human review.",
       bajada:
         "The board where my team works, with an agent that runs on each developer's machine and a plugin for working with AI without losing control.",
-      numeros: ["projects", "tasks on the board", "in production"],
+      numeros: ["projects", "tasks", "in production"],
       funciones: {
         celular: [],
         escritorio: [

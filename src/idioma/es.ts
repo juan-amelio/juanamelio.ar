@@ -187,7 +187,7 @@ export const es = {
       titular: "De Trello a un tablero con revisión humana.",
       bajada:
         "El tablero donde trabaja mi equipo, con un agente que corre en la máquina de cada desarrollador y un plugin para trabajar con IA sin perder el control.",
-      numeros: ["proyectos", "tareas en el tablero", "en producción"],
+      numeros: ["proyectos", "tareas", "en producción"],
       funciones: {
         celular: [],
         escritorio: [
