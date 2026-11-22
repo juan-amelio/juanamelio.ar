@@ -224,9 +224,12 @@ function armar(cuadros, desde, hasta, salida) {
  * - cookies: [{ name, value }] puestas antes de entrar (el tema de Forge).
  * - carpeta: dónde dejar el MP4 y el póster.
  * - final: cuánto se queda quieto el último cuadro.
+ * - listo: (page) => locator de algo que sólo está cuando la pantalla terminó
+ *   de cargar. El corte empieza recién ahí, y no con el esqueleto de carga:
+ *   como el video da vueltas, ese esqueleto parecía una app que se traba (#60).
  */
 export async function grabar(nombre, opciones, guion) {
-  const { base, email, ruta, dispositivo, reloj, antes, carpeta, final = 1500, esquema = "dark", cookies = [] } = opciones;
+  const { base, email, ruta, dispositivo, reloj, antes, carpeta, final = 1500, esquema = "dark", cookies = [], listo } = opciones;
   antes?.();
   // El screencast toma la ventana y no el viewport emulado, y a 1x: la ventana
   // va del tamaño del viewport y la densidad se fuerza desde afuera.
@@ -265,6 +268,7 @@ export async function grabar(nombre, opciones, guion) {
     // Se arranca de cero en la pantalla del guion, con su animación de entrada.
     await page.goto(`${base}${ruta}`);
     await page.waitForLoadState("domcontentloaded");
+    if (listo) await listo(page).waitFor({ state: "visible" });
     // Con la hora de acá y no la de la página: el reloj del navegador está corrido.
     const desde = Date.now() / 1000;
     await page.waitForLoadState("networkidle");
