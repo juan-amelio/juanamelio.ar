@@ -82,7 +82,6 @@ export const es = {
     dispositivo: { celular: "Celular", escritorio: "Escritorio" } as Record<Dispositivo, string>,
     solo: (dispositivo: string) => `Solo en ${dispositivo.toLowerCase()}`,
     desdeDonde: "Desde dónde se usa",
-    verEnGrande: "Ver en grande",
   },
   casos: {
     "global-fit": {

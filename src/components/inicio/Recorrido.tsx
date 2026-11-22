@@ -5,7 +5,7 @@ import { CASOS_EN, MAX_ANCHO, ORDEN, type Caso, type Dispositivo, type Pantalla,
 import { Icono, IconoDispositivo, IconoFlecha } from "@/components/casos/IconosFuncion";
 import { Contador } from "@/components/casos/Contador";
 import { Halos, Logo, Marca } from "@/components/casos/Marca";
-import { VerEnGrande } from "@/components/maquetas/VerEnGrande";
+import { Encajar } from "@/components/maquetas/Encajar";
 import { useIdioma, useTextos } from "@/idioma/Idioma";
 
 const FUENTE: Record<Slug, string> = {
@@ -96,27 +96,6 @@ export function Recorrido() {
     return () => clearTimeout(t);
   }, [terminada, CASOS]);
 
-  /* En el celular la lista de funciones corre de costado: la elegida (a mano,
-     con las flechas o por la rotación) se trae a la vista. Sólo se mueve la
-     lista, nunca la página, y sólo si la elegida quedó fuera de vista: si ya
-     se ve, no se le saca a la persona la lista que estaba deslizando. */
-  useEffect(() => {
-    const suave = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    for (const tab of document.querySelectorAll<HTMLElement>("[data-funciones] [aria-selected=true]")) {
-      const lista = tab.parentElement!;
-      const tope = lista.scrollWidth - lista.clientWidth;
-      if (tope <= 0) continue;
-      const caja = lista.getBoundingClientRect();
-      const elegida = tab.getBoundingClientRect();
-      if (elegida.left >= caja.left && elegida.right <= caja.right) continue;
-      const desplazamiento = elegida.left - caja.left;
-      const centrada = lista.scrollLeft + desplazamiento - (lista.clientWidth - tab.offsetWidth) / 2;
-      const izquierda = Math.min(tope, Math.max(0, centrada));
-      if (Math.abs(izquierda - lista.scrollLeft) < 1) continue;
-      lista.scrollTo({ left: izquierda, behavior: suave ? "smooth" : "instant" });
-    }
-  }, [eleccion]);
-
   /* Las flechas recorren todas las funciones del caso, celular y escritorio,
      y como cualquier elección hecha a mano, frenan la rotación. */
   const pasar = (slug: Slug, paso: 1 | -1) => elegir(slug, vecina(CASOS, slug, eleccion[slug], paso));
@@ -143,12 +122,18 @@ export function Recorrido() {
                 ref={(el) => {
                   pasos.current[slug] = el;
                 }}
-                className={`${FUENTE[slug]} flex min-h-svh snap-start scroll-mt-0! flex-col justify-center py-20 transition-opacity duration-500 lg:pt-20 lg:pb-8 apretado:pb-5 ${
+                className={`${FUENTE[slug]} flex min-h-svh snap-start scroll-mt-0! flex-col justify-center pt-16 pb-20 transition-opacity duration-500 lg:pt-20 lg:pb-8 apretado:pb-5 ${
                   activo === slug ? "opacity-100" : "lg:opacity-30"
                 }`}
               >
-                <p className="flex items-center gap-3.5 text-[22px] apretado:text-[19px]">
-                  <Logo caso={slug} alt="" tamano={56} className="size-14 apretado:size-11" />
+                {/* En el celular, la escena del caso entra en una pantalla (#62):
+                    logo, titular, el selector, la grabación achicada al lugar
+                    que sobra y los controles pegados abajo. La bajada y los
+                    números quedan después. En escritorio esta caja no existe
+                    (lg:contents) y todo sigue en la columna de la izquierda. */}
+                <div className="flex h-[calc(100svh-4rem)] flex-col pt-4 pb-2 lg:contents">
+                <p className="flex items-center gap-3 text-[19px] lg:gap-3.5 lg:text-[22px] apretado:text-[19px]">
+                  <Logo caso={slug} alt="" tamano={56} className="size-10 lg:size-14 apretado:size-11" />
                   <Marca caso={slug} />
                   {/* Lo que se puede visitar de verdad (#51), a la vista mientras se
                       mira el caso. Borde y texto del caso, no el acento: el lima
@@ -168,10 +153,59 @@ export function Recorrido() {
                     </a>
                   )}
                 </p>
-                <h2 className="mt-4 max-w-[16ch] text-[clamp(32px,3.6vw,52px)] leading-[1.02] font-extrabold tracking-[-0.03em] apretado:mt-3 apretado:text-[clamp(28px,2.9vw,40px)]">
+                <h2 className="mt-3 max-w-[16ch] text-[28px] leading-[1.02] font-extrabold tracking-[-0.03em] sm:text-[clamp(32px,3.6vw,52px)] lg:mt-4 apretado:mt-3 apretado:text-[clamp(28px,2.9vw,40px)]">
                   {caso.titular}
                 </h2>
-                <p className="mt-4 max-w-[50ch] text-[17px] leading-relaxed text-(--caso-texto-medio) apretado:mt-3 apretado:text-[15px]">{caso.bajada}</p>
+
+                <div className="mt-4 flex items-center justify-between gap-3 lg:hidden">
+                  <Selector
+                    compacto
+                    disponibles={disponibles}
+                    actual={dispositivo}
+                    onElegir={(d) => elegir(slug, { dispositivo: d, indice: 0 })}
+                  />
+                  <p className="text-[13px] text-(--caso-suave)">{t.datosDeDemo}</p>
+                </div>
+                <div className="relative isolate my-3 flex min-h-0 flex-1 flex-col lg:hidden">
+                  <div aria-hidden="true" data-caso={slug} className="halo pointer-events-none absolute -inset-x-10 -inset-y-6 -z-10" />
+                  {/* Las dos se dibujan a su tamaño (el iPhone a 320 px, la
+                      ventana a 560) y se achican enteras para entrar. */}
+                  <Encajar>
+                    <div key={`${dispositivo}-${indice}`} className={`entrar ${dispositivo === "celular" ? "w-80" : "w-140"}`}>
+                      {pantallas[indice].maqueta(true, alTerminar(slug))}
+                    </div>
+                  </Encajar>
+                </div>
+                {/* Los controles, pegados a la grabación: cuál se ve, cuántas
+                    hay y las flechas. Reemplazan la tira de funciones, que en el
+                    celular corría de costado y quedaba cortada. */}
+                <div className="flex items-center gap-2 lg:hidden">
+                  <Flecha slug={slug} hacia={vecina(CASOS, slug, eleccion[slug], -1)} onPasar={() => pasar(slug, -1)} />
+                  <p className="flex min-w-0 flex-1 items-baseline justify-center gap-2">
+                    <span className="truncate text-[16px] font-bold">{pantallas[indice].titulo}</span>
+                    {/* Con una sola (A7 en el celular), «1/1» no dice nada. */}
+                    {pantallas.length > 1 && (
+                      <span className="shrink-0 text-[13px] text-(--caso-suave) tabular-nums">
+                        {indice + 1}/{pantallas.length}
+                      </span>
+                    )}
+                  </p>
+                  <Flecha slug={slug} hacia={vecina(CASOS, slug, eleccion[slug], 1)} siguiente onPasar={() => pasar(slug, 1)} />
+                </div>
+                {/* Angosto en el celular: a la derecha está el botón de WhatsApp.
+                    Reserva el alto del texto más largo del caso, así la grabación
+                    no cambia de tamaño al pasar de una a otra (#46). */}
+                <div className="mt-2 grid grid-cols-[minmax(0,1fr)] px-16 text-center lg:hidden">
+                  {enOrden(CASOS, slug).map((e) => (
+                    <p key={`${e.dispositivo}-${e.indice}`} aria-hidden="true" className="invisible text-[14px] leading-snug [grid-area:1/1]">
+                      {caso.funciones[e.dispositivo][e.indice].texto}
+                    </p>
+                  ))}
+                  <p className="text-[14px] leading-snug text-(--caso-texto-medio) [grid-area:1/1]">{pantallas[indice].texto}</p>
+                </div>
+                </div>
+
+                <p className="mt-6 max-w-[50ch] lg:mt-4 text-[17px] leading-relaxed text-(--caso-texto-medio) apretado:mt-3 apretado:text-[15px]">{caso.bajada}</p>
 
                 <dl className="mt-5 flex flex-wrap gap-x-6 gap-y-2 apretado:mt-3">
                   {/* Los números de uso real: que se vea que la app está viva. */}
@@ -185,7 +219,7 @@ export function Recorrido() {
                   ))}
                 </dl>
 
-                <div className="mt-7 apretado:mt-4">
+                <div className="mt-7 hidden lg:block apretado:mt-4">
                   <Selector
                     disponibles={disponibles}
                     actual={dispositivo}
@@ -213,9 +247,8 @@ export function Recorrido() {
                     <div
                       key={dispositivo}
                       role="tablist"
-                      data-funciones
                       aria-label={t.queHace(caso.nombre)}
-                      className="entrar -mx-4 flex gap-1 overflow-x-auto px-4 pb-2 [scrollbar-width:none] [grid-area:1/1] lg:mx-0 lg:flex-col lg:self-start lg:overflow-visible lg:px-0 lg:pb-0"
+                      className="entrar flex flex-col gap-1 self-start [grid-area:1/1]"
                     >
                       {pantallas.map((p, i) => (
                         <Funcion key={p.titulo} pantalla={p} on={i === indice} onElegir={() => elegir(slug, { indice: i })} />
@@ -224,37 +257,6 @@ export function Recorrido() {
                   </div>
                 </div>
 
-                {/* En el celular, la pantalla elegida va acá abajo. El texto
-                    reserva el alto del más largo del caso, así las flechas de
-                    abajo no se corren al pasar de una función a otra (#46). */}
-                <div className="mt-6 lg:hidden">
-                  <div className="grid grid-cols-[minmax(0,1fr)]">
-                    {enOrden(CASOS, slug).map((e) => (
-                      <p
-                        key={`${e.dispositivo}-${e.indice}`}
-                        aria-hidden="true"
-                        className="invisible max-w-[52ch] text-[15px] leading-relaxed [grid-area:1/1]"
-                      >
-                        {caso.funciones[e.dispositivo][e.indice].texto}
-                      </p>
-                    ))}
-                    <p className="max-w-[52ch] text-[15px] leading-relaxed text-(--caso-texto-medio) [grid-area:1/1]">{pantallas[indice].texto}</p>
-                  </div>
-                  <div className="relative isolate mt-8">
-                    <div aria-hidden="true" data-caso={slug} className="halo pointer-events-none absolute -inset-x-10 -inset-y-16 -z-10" />
-                    <div key={`${dispositivo}-${indice}`} className={`entrar relative mx-auto w-full ${MAX_ANCHO[dispositivo]}`}>
-                      {pantallas[indice].maqueta(true, alTerminar(slug))}
-                      {/* Achicada al ancho del teléfono, la de escritorio no se lee (#61). */}
-                      {dispositivo === "escritorio" && <VerEnGrande />}
-                    </div>
-                  </div>
-                  {/* Juntas al centro: en la punta derecha las tapa el botón de WhatsApp. */}
-                  <div className="mt-4 flex items-center justify-center gap-6">
-                    <Flecha slug={slug} hacia={vecina(CASOS, slug, eleccion[slug], -1)} onPasar={() => pasar(slug, -1)} />
-                    <p className="text-[13px] text-(--caso-suave)">{t.datosDeDemo}</p>
-                    <Flecha slug={slug} hacia={vecina(CASOS, slug, eleccion[slug], 1)} siguiente onPasar={() => pasar(slug, 1)} />
-                  </div>
-                </div>
               </article>
             );
           })}
@@ -398,21 +400,24 @@ function Flecha({
 }
 
 /* Celular o escritorio. Con uno solo (Forge no tiene versión de celular) se
-   muestra igual, como rótulo, para que se sepa desde dónde se usa. */
+   muestra igual, como rótulo, para que se sepa desde dónde se usa.
+   `compacto` es el del celular (#62): más bajo, y el nombre sólo del elegido. */
 function Selector({
   disponibles,
   actual,
   onElegir,
+  compacto = false,
 }: {
   disponibles: Dispositivo[];
   actual: Dispositivo;
   onElegir: (d: Dispositivo) => void;
+  compacto?: boolean;
 }) {
   const t = useTextos().recorrido;
   const NOMBRE = t.dispositivo;
   if (disponibles.length === 1) {
     return (
-      <p className="inline-flex items-center gap-2 rounded-full bg-(--caso-superficie) px-3.5 py-2 text-[13px] font-semibold text-(--caso-texto-medio)">
+      <p className={`inline-flex items-center gap-2 rounded-full bg-(--caso-superficie) font-semibold text-(--caso-texto-medio) ${compacto ? "px-3 py-1.5 text-[13px]" : "px-3.5 py-2 text-[13px]"}`}>
         <IconoDispositivo escritorio={disponibles[0] === "escritorio"} className="size-4" />
         {t.solo(NOMBRE[disponibles[0]])}
       </p>
@@ -428,13 +433,14 @@ function Selector({
             type="button"
             role="radio"
             aria-checked={on}
+            aria-label={compacto ? NOMBRE[d] : undefined}
             onClick={() => onElegir(d)}
-            className={`flex cursor-pointer items-center gap-2 rounded-full px-4 py-2 text-[14px] apretado:py-1.5 font-semibold transition-colors duration-300 ${
-              on ? "bg-(--caso-acento) text-(--caso-sobre-acento)" : "text-(--caso-texto-medio) hover:text-(--caso-texto)"
-            }`}
+            className={`flex cursor-pointer items-center gap-2 rounded-full font-semibold transition-colors duration-300 ${
+              compacto ? "h-9 px-3 text-[13px]" : "px-4 py-2 text-[14px] apretado:py-1.5"
+            } ${on ? "bg-(--caso-acento) text-(--caso-sobre-acento)" : "text-(--caso-texto-medio) hover:text-(--caso-texto)"}`}
           >
             <IconoDispositivo escritorio={d === "escritorio"} className="size-4" />
-            {NOMBRE[d]}
+            {(!compacto || on) && <span aria-hidden={compacto || undefined}>{NOMBRE[d]}</span>}
           </button>
         );
       })}
