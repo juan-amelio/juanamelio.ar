@@ -131,20 +131,23 @@ export function Portada() {
   return (
     <section ref={ref} id="inicio" className="portada relative isolate overflow-hidden lg:snap-start lg:scroll-mt-0!">
       <div className="mx-auto grid min-h-svh max-w-7xl items-center gap-x-12 gap-y-6 px-4 pt-24 pb-16 sm:px-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:pb-20">
-        <div className="portada-texto relative z-10">
+        {/* En el celular el orden es otro (#63): titular, la ronda, «Bajá y
+            miralas por dentro» y recién ahí la bajada. La caja del texto se
+            disuelve (contents) y cada pieza toma su lugar con order. */}
+        <div className="portada-texto relative z-10 max-lg:contents">
           <h1 className="animate-subir max-w-[11ch] text-[clamp(44px,7.2vw,112px)] leading-[0.94] font-extrabold tracking-[-0.04em]">
             {t.titulo}
           </h1>
-          <p className="animate-subir mt-7 max-w-[34ch] text-xl leading-normal text-tinta-media [animation-delay:.12s]">
+          <p className="animate-subir max-w-[34ch] text-xl leading-normal text-tinta-media [animation-delay:.12s] max-lg:order-4 lg:mt-7">
             {t.bajada}
           </p>
-          <EnlaceSeccion href="/#proyectos" className="animate-subir group mt-10 inline-flex items-center gap-3 text-base font-semibold [animation-delay:.24s]">
+          <EnlaceSeccion href="/#proyectos" className="animate-subir group inline-flex items-center gap-3 text-base font-semibold [animation-delay:.24s] max-lg:order-3 max-lg:justify-self-center lg:mt-10">
             <span className="indicador" aria-hidden="true" />
             {t.bajar}
           </EnlaceSeccion>
         </div>
 
-        <div className="portada-ronda flex flex-col items-center">
+        <div className="portada-ronda flex flex-col items-center max-lg:order-2">
           <div
             role="group"
             aria-roledescription={t.carrusel}

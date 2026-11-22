@@ -309,9 +309,18 @@ body {
   background: var(--caso-brillo);
 }
 
-.portada-texto {
-  transform: translateY(calc(var(--salida) * -70px));
-  opacity: calc(1 - var(--salida) * 1.4);
+/* Al bajar, la portada se va: sólo en escritorio. En el celular la ronda y su
+   tarjeta quedan a mitad de pantalla y se veían apagadas al seguir (#63). */
+@media (min-width: 64rem) {
+  .portada-texto {
+    transform: translateY(calc(var(--salida) * -70px));
+    opacity: calc(1 - var(--salida) * 1.4);
+  }
+
+  .portada-ronda {
+    transform: translateY(calc(var(--salida) * 140px));
+    opacity: calc(1 - var(--salida) * 1.4);
+  }
 }
 
 .escenario {
@@ -325,11 +334,6 @@ body {
   syntax: "<angle>";
   inherits: true;
   initial-value: 0deg;
-}
-
-.portada-ronda {
-  transform: translateY(calc(var(--salida) * 140px));
-  opacity: calc(1 - var(--salida) * 1.4);
 }
 
 .anillo {
